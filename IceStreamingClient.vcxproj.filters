@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{64530b78-922b-4c35-9951-895ca152bdfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{378f3eb9-060b-48fc-9de3-7b3f4f915c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration Files">
+      <UniqueIdentifier>{a0456991-bcbd-4568-a00d-41c1110d0486}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="IceStreamingClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IIceStreamer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IIceStreamer.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="IceStreamingClient.cfg">
+      <Filter>Configuration Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

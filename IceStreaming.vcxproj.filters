@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Cuda\CudaKernel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IceStreamProducer.cpp">
+      <Filter>Ice</Filter>
+    </ClCompile>
+    <ClCompile Include="IIceStreamerImpl.cpp">
+      <Filter>Ice</Filter>
+    </ClCompile>
+    <ClCompile Include="IIceStreamer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IceStreamingServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Cuda\CudaKernel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cuda\CudaRayTracer.h">
+      <Filter>Cuda\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Cuda\CudaDataTypes.h">
+      <Filter>Cuda\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Trace.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IceStreamProducer.h">
+      <Filter>Ice</Filter>
+    </ClInclude>
+    <ClInclude Include="IIceStreamerImpl.h">
+      <Filter>Ice</Filter>
+    </ClInclude>
+    <ClInclude Include="IIceStreamer.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Cuda\Colors.cuh">
+      <Filter>Cuda\Headers</Filter>
+    </None>
+    <None Include="Cuda\Vectors.cuh">
+      <Filter>Cuda\Headers</Filter>
+    </None>
+    <None Include="Cuda\Intersections.cuh">
+      <Filter>Cuda\Headers</Filter>
+    </None>
+    <None Include="Cuda\Scene.cuh">
+      <Filter>Cuda\Headers</Filter>
+    </None>
+    <None Include="Cuda\TextureMapping.cuh">
+      <Filter>Cuda\Headers</Filter>
+    </None>
+    <None Include="IIceStreamer.ice">
+      <Filter>Ice</Filter>
+    </None>
+    <None Include="IceStreamingServer.cfg">
+      <Filter>Configuration Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Cuda">
+      <UniqueIdentifier>{ece801e0-275d-4bf2-bfed-95edbdee4a42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{64530b78-922b-4c35-9951-895ca152bdfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cuda\Headers">
+      <UniqueIdentifier>{e66e487a-ecbb-4aef-980e-22bc0264940e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cuda\Source">
+      <UniqueIdentifier>{27f7a74a-884d-4a39-864a-39b1eb371eb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ice">
+      <UniqueIdentifier>{2f5dc99f-3d60-4479-bcfc-75d12f11af49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{378f3eb9-060b-48fc-9de3-7b3f4f915c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration Files">
+      <UniqueIdentifier>{178ed84c-8b2d-4111-92aa-ddd9155d45db}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="Cuda\CudaRayTracer.cu">
+      <Filter>Cuda\Source</Filter>
+    </CudaCompile>
+  </ItemGroup>
+</Project>
