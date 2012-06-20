@@ -12,15 +12,15 @@
 #include "IIceStreamerImpl.h"
 
 const unsigned int gDraft        = 1;
-const unsigned int gWindowWidth  = 512;
-const unsigned int gWindowHeight = 256;
+const unsigned int gWindowWidth  = 511;
+const unsigned int gWindowHeight = 511;
 const unsigned int gWindowDepth  = 4;
 
 
 IceStreamProducer::IceStreamProducer() :
    cudaKernel_(nullptr),
    producerAdapter_(nullptr),
-   nbPrimitives_(0), nbLamps_(0), nbMaterials_(0), nbTextures_(0),
+   nbPrimitives_(0), nbLamps_(0), nbMaterials_(0), nbTextures_(20),
    Ice::Application(Ice::NoSignalHandling)
 {
 }
@@ -38,22 +38,23 @@ int IceStreamProducer::run( int argc, char* argv[] )
       cudaKernel_ = new CudaKernel( gDraft );
       cudaKernel_->deviceQuery();
       cudaKernel_->initializeDevice( gWindowWidth, gWindowHeight, 512, 32, 20+nbTextures_, nbTextures_, NULL, 0 );
+      createTextures();
       createRandomMaterials();
 
       // Create Scene
-      for( int i(0); i<20; ++i )
+      for( int i(0); i<5; ++i )
       {
          nbPrimitives_ = cudaKernel_->addPrimitive( ptSphere );
          cudaKernel_->setPrimitive( nbPrimitives_,  
-            rand()%200-100.f, rand()%200-100.f, rand()%200-100.f, rand()%50+20.f, 0.f, rand()%nbMaterials_, 1, 1); 
+            rand()%800-400.f, rand()%200-100.f, rand()%800-400.f, rand()%50+20.f, 0.f, rand()%20, 1, 1); 
       }
       
       
       nbPrimitives_ = cudaKernel_->addPrimitive(ptCheckboard);
-      cudaKernel_->setPrimitive( nbPrimitives_,  0.f, -100.f,    0.f, 200, 200, 3, 10, 10); 
+      cudaKernel_->setPrimitive( nbPrimitives_,  0.f, -100.f,    0.f, 1000, 1000, 20+rand()%nbTextures_, 2, 2); 
 
       nbLamps_ = cudaKernel_->addLamp( ltSphere );
-      cudaKernel_->setLamp( nbLamps_, -500.f, 500.f, -500.f, 10.f, 0.f, 1.f, 1.f, 1.f, 1.f );
+      cudaKernel_->setLamp( nbLamps_, -500.f, 1000.f, -500.f, 10.f, 0.f, 1.f, 1.f, 1.f, 1.f );
 
       producerAdapter_ = communicator()->createObjectAdapterWithEndpoints("IIceStreamer", "tcp -p 10000 -z");
       producerAdapter_->add( new IIceStreamerImpl(cudaKernel_), communicator()->stringToIdentity("IceStreamer"));
@@ -148,3 +149,17 @@ void IceStreamProducer::createRandomMaterials()
    }
 }
 
+void IceStreamProducer::createTextures()
+{
+   // Textures
+   for( int i(0); i<nbTextures_; i++)
+   {
+      char tmp[5];
+      sprintf_s(tmp, "%03d", i+1);
+      std::string filename("../../../Medias/trunk/Textures/256/");
+      filename += tmp;
+      filename += ".bmp";
+      cudaKernel_->addTexture(filename.c_str());
+   }
+   std::cout << nbTextures_ << " textures" << std::endl;
+}

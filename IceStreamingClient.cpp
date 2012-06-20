@@ -22,7 +22,7 @@
 ::IceStreamer::BitmapProviderPrx bitmapProvider;
 
 // General Settings
-const long TARGET_FPS = 60;
+const long TARGET_FPS = 200;
 const long REFRESH_DELAY = 1000/TARGET_FPS; //ms
 
 // GPU
@@ -31,8 +31,8 @@ int device       = 0;
 
 // Rendering window vars
 const unsigned int draft        = 1;
-unsigned int window_width       = 512;
-unsigned int window_height      = 256;
+unsigned int window_width       = 511;
+unsigned int window_height      = 511;
 const unsigned int window_depth = 4;
 
 // ----------------------------------
@@ -411,7 +411,7 @@ void main( int argc, char* argv[] )
       }
       else
       {
-         connectionString += "77.196.118.36";
+         connectionString += "localhost";
       }
 
       std::cout << "Connection string: " << connectionString << std::endl;
