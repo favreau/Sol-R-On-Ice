@@ -37,15 +37,15 @@
 #   endif
 #endif
 
-static const ::std::string __IceStreamer__BitmapProvider__setCamera_name = "setCamera";
+static const ::std::string __Streamer__BitmapProvider__setCamera_name = "setCamera";
 
-static const ::std::string __IceStreamer__BitmapProvider__getBitmap_name = "getBitmap";
+static const ::std::string __Streamer__BitmapProvider__getBitmap_name = "getBitmap";
 
-::Ice::Object* IceInternal::upCast(::IceStreamer::BitmapProvider* p) { return p; }
-::IceProxy::Ice::Object* IceInternal::upCast(::IceProxy::IceStreamer::BitmapProvider* p) { return p; }
+::Ice::Object* IceInternal::upCast(::Streamer::BitmapProvider* p) { return p; }
+::IceProxy::Ice::Object* IceInternal::upCast(::IceProxy::Streamer::BitmapProvider* p) { return p; }
 
 void
-IceStreamer::__read(::IceInternal::BasicStream* __is, ::IceStreamer::BitmapProviderPrx& v)
+Streamer::__read(::IceInternal::BasicStream* __is, ::Streamer::BitmapProviderPrx& v)
 {
     ::Ice::ObjectPrx proxy;
     __is->read(proxy);
@@ -55,13 +55,13 @@ IceStreamer::__read(::IceInternal::BasicStream* __is, ::IceStreamer::BitmapProvi
     }
     else
     {
-        v = new ::IceProxy::IceStreamer::BitmapProvider;
+        v = new ::IceProxy::Streamer::BitmapProvider;
         v->__copyFrom(proxy);
     }
 }
 
 void
-IceProxy::IceStreamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __ctx)
+IceProxy::Streamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __ctx)
 {
     int __cnt = 0;
     while(true)
@@ -70,7 +70,7 @@ IceProxy::IceStreamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float e
         try
         {
             __delBase = __getDelegate(false);
-            ::IceDelegate::IceStreamer::BitmapProvider* __del = dynamic_cast< ::IceDelegate::IceStreamer::BitmapProvider*>(__delBase.get());
+            ::IceDelegate::Streamer::BitmapProvider* __del = dynamic_cast< ::IceDelegate::Streamer::BitmapProvider*>(__delBase.get());
             __del->setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, __ctx);
             return;
         }
@@ -86,12 +86,12 @@ IceProxy::IceStreamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float e
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::IceStreamer::BitmapProvider::begin_setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::Streamer::BitmapProvider::begin_setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
-    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __IceStreamer__BitmapProvider__setCamera_name, __del, __cookie);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Streamer__BitmapProvider__setCamera_name, __del, __cookie);
     try
     {
-        __result->__prepare(__IceStreamer__BitmapProvider__setCamera_name, ::Ice::Normal, __ctx);
+        __result->__prepare(__Streamer__BitmapProvider__setCamera_name, ::Ice::Normal, __ctx);
         ::IceInternal::BasicStream* __os = __result->__getOs();
         __os->write(ex);
         __os->write(ey);
@@ -113,13 +113,13 @@ IceProxy::IceStreamer::BitmapProvider::begin_setCamera(::Ice::Float ex, ::Ice::F
 }
 
 void
-IceProxy::IceStreamer::BitmapProvider::end_setCamera(const ::Ice::AsyncResultPtr& __result)
+IceProxy::Streamer::BitmapProvider::end_setCamera(const ::Ice::AsyncResultPtr& __result)
 {
-    __end(__result, __IceStreamer__BitmapProvider__setCamera_name);
+    __end(__result, __Streamer__BitmapProvider__setCamera_name);
 }
 
-::IceStreamer::bytes
-IceProxy::IceStreamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __ctx)
+::Streamer::bytes
+IceProxy::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __ctx)
 {
     int __cnt = 0;
     while(true)
@@ -127,9 +127,9 @@ IceProxy::IceStreamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Floa
         ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
         try
         {
-            __checkTwowayOnly(__IceStreamer__BitmapProvider__getBitmap_name);
+            __checkTwowayOnly(__Streamer__BitmapProvider__getBitmap_name);
             __delBase = __getDelegate(false);
-            ::IceDelegate::IceStreamer::BitmapProvider* __del = dynamic_cast< ::IceDelegate::IceStreamer::BitmapProvider*>(__delBase.get());
+            ::IceDelegate::Streamer::BitmapProvider* __del = dynamic_cast< ::IceDelegate::Streamer::BitmapProvider*>(__delBase.get());
             return __del->getBitmap(timer, depthOfField, transparentColor, __ctx);
         }
         catch(const ::IceInternal::LocalExceptionWrapper& __ex)
@@ -144,13 +144,13 @@ IceProxy::IceStreamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Floa
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::IceStreamer::BitmapProvider::begin_getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::Streamer::BitmapProvider::begin_getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
-    __checkAsyncTwowayOnly(__IceStreamer__BitmapProvider__getBitmap_name);
-    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __IceStreamer__BitmapProvider__getBitmap_name, __del, __cookie);
+    __checkAsyncTwowayOnly(__Streamer__BitmapProvider__getBitmap_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Streamer__BitmapProvider__getBitmap_name, __del, __cookie);
     try
     {
-        __result->__prepare(__IceStreamer__BitmapProvider__getBitmap_name, ::Ice::Normal, __ctx);
+        __result->__prepare(__Streamer__BitmapProvider__getBitmap_name, ::Ice::Normal, __ctx);
         ::IceInternal::BasicStream* __os = __result->__getOs();
         __os->write(timer);
         __os->write(depthOfField);
@@ -165,11 +165,11 @@ IceProxy::IceStreamer::BitmapProvider::begin_getBitmap(::Ice::Float timer, ::Ice
     return __result;
 }
 
-::IceStreamer::bytes
-IceProxy::IceStreamer::BitmapProvider::end_getBitmap(const ::Ice::AsyncResultPtr& __result)
+::Streamer::bytes
+IceProxy::Streamer::BitmapProvider::end_getBitmap(const ::Ice::AsyncResultPtr& __result)
 {
-    ::Ice::AsyncResult::__check(__result, this, __IceStreamer__BitmapProvider__getBitmap_name);
-    ::IceStreamer::bytes __ret;
+    ::Ice::AsyncResult::__check(__result, this, __Streamer__BitmapProvider__getBitmap_name);
+    ::Streamer::bytes __ret;
     if(!__result->__wait())
     {
         try
@@ -191,33 +191,33 @@ IceProxy::IceStreamer::BitmapProvider::end_getBitmap(const ::Ice::AsyncResultPtr
 }
 
 const ::std::string&
-IceProxy::IceStreamer::BitmapProvider::ice_staticId()
+IceProxy::Streamer::BitmapProvider::ice_staticId()
 {
-    return ::IceStreamer::BitmapProvider::ice_staticId();
+    return ::Streamer::BitmapProvider::ice_staticId();
 }
 
 ::IceInternal::Handle< ::IceDelegateM::Ice::Object>
-IceProxy::IceStreamer::BitmapProvider::__createDelegateM()
+IceProxy::Streamer::BitmapProvider::__createDelegateM()
 {
-    return ::IceInternal::Handle< ::IceDelegateM::Ice::Object>(new ::IceDelegateM::IceStreamer::BitmapProvider);
+    return ::IceInternal::Handle< ::IceDelegateM::Ice::Object>(new ::IceDelegateM::Streamer::BitmapProvider);
 }
 
 ::IceInternal::Handle< ::IceDelegateD::Ice::Object>
-IceProxy::IceStreamer::BitmapProvider::__createDelegateD()
+IceProxy::Streamer::BitmapProvider::__createDelegateD()
 {
-    return ::IceInternal::Handle< ::IceDelegateD::Ice::Object>(new ::IceDelegateD::IceStreamer::BitmapProvider);
+    return ::IceInternal::Handle< ::IceDelegateD::Ice::Object>(new ::IceDelegateD::Streamer::BitmapProvider);
 }
 
 ::IceProxy::Ice::Object*
-IceProxy::IceStreamer::BitmapProvider::__newInstance() const
+IceProxy::Streamer::BitmapProvider::__newInstance() const
 {
     return new BitmapProvider;
 }
 
 void
-IceDelegateM::IceStreamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __context)
+IceDelegateM::Streamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __context)
 {
-    ::IceInternal::Outgoing __og(__handler.get(), __IceStreamer__BitmapProvider__setCamera_name, ::Ice::Normal, __context);
+    ::IceInternal::Outgoing __og(__handler.get(), __Streamer__BitmapProvider__setCamera_name, ::Ice::Normal, __context);
     try
     {
         ::IceInternal::BasicStream* __os = __og.os();
@@ -261,10 +261,10 @@ IceDelegateM::IceStreamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Flo
     }
 }
 
-::IceStreamer::bytes
-IceDelegateM::IceStreamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __context)
+::Streamer::bytes
+IceDelegateM::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __context)
 {
-    ::IceInternal::Outgoing __og(__handler.get(), __IceStreamer__BitmapProvider__getBitmap_name, ::Ice::Normal, __context);
+    ::IceInternal::Outgoing __og(__handler.get(), __Streamer__BitmapProvider__getBitmap_name, ::Ice::Normal, __context);
     try
     {
         ::IceInternal::BasicStream* __os = __og.os();
@@ -277,7 +277,7 @@ IceDelegateM::IceStreamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::
         __og.abort(__ex);
     }
     bool __ok = __og.invoke();
-    ::IceStreamer::bytes __ret;
+    ::Streamer::bytes __ret;
     try
     {
         if(!__ok)
@@ -307,7 +307,7 @@ IceDelegateM::IceStreamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::
 }
 
 void
-IceDelegateD::IceStreamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __context)
+IceDelegateD::Streamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __context)
 {
     class _DirectI : public ::IceInternal::Direct
     {
@@ -330,7 +330,7 @@ IceDelegateD::IceStreamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Flo
         virtual ::Ice::DispatchStatus
         run(::Ice::Object* object)
         {
-            ::IceStreamer::BitmapProvider* servant = dynamic_cast< ::IceStreamer::BitmapProvider*>(object);
+            ::Streamer::BitmapProvider* servant = dynamic_cast< ::Streamer::BitmapProvider*>(object);
             if(!servant)
             {
                 throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
@@ -353,7 +353,7 @@ IceDelegateD::IceStreamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Flo
     };
     
     ::Ice::Current __current;
-    __initCurrent(__current, __IceStreamer__BitmapProvider__setCamera_name, ::Ice::Normal, __context);
+    __initCurrent(__current, __Streamer__BitmapProvider__setCamera_name, ::Ice::Normal, __context);
     try
     {
         _DirectI __direct(ex, ey, ez, dx, dy, dz, ax, ay, az, __current);
@@ -386,14 +386,14 @@ IceDelegateD::IceStreamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Flo
     }
 }
 
-::IceStreamer::bytes
-IceDelegateD::IceStreamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __context)
+::Streamer::bytes
+IceDelegateD::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __context)
 {
     class _DirectI : public ::IceInternal::Direct
     {
     public:
 
-        _DirectI(::IceStreamer::bytes& __result, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Current& __current) : 
+        _DirectI(::Streamer::bytes& __result, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result),
             _m_timer(timer),
@@ -405,7 +405,7 @@ IceDelegateD::IceStreamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::
         virtual ::Ice::DispatchStatus
         run(::Ice::Object* object)
         {
-            ::IceStreamer::BitmapProvider* servant = dynamic_cast< ::IceStreamer::BitmapProvider*>(object);
+            ::Streamer::BitmapProvider* servant = dynamic_cast< ::Streamer::BitmapProvider*>(object);
             if(!servant)
             {
                 throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
@@ -416,15 +416,15 @@ IceDelegateD::IceStreamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::
         
     private:
         
-        ::IceStreamer::bytes& _result;
+        ::Streamer::bytes& _result;
         ::Ice::Float _m_timer;
         ::Ice::Float _m_depthOfField;
         ::Ice::Float _m_transparentColor;
     };
     
     ::Ice::Current __current;
-    __initCurrent(__current, __IceStreamer__BitmapProvider__getBitmap_name, ::Ice::Normal, __context);
-    ::IceStreamer::bytes __result;
+    __initCurrent(__current, __Streamer__BitmapProvider__getBitmap_name, ::Ice::Normal, __context);
+    ::Streamer::bytes __result;
     try
     {
         _DirectI __direct(__result, timer, depthOfField, transparentColor, __current);
@@ -459,44 +459,44 @@ IceDelegateD::IceStreamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::
 }
 
 ::Ice::ObjectPtr
-IceStreamer::BitmapProvider::ice_clone() const
+Streamer::BitmapProvider::ice_clone() const
 {
     throw ::Ice::CloneNotImplementedException(__FILE__, __LINE__);
     return 0; // to avoid a warning with some compilers
 }
 
-static const ::std::string __IceStreamer__BitmapProvider_ids[2] =
+static const ::std::string __Streamer__BitmapProvider_ids[2] =
 {
     "::Ice::Object",
-    "::IceStreamer::BitmapProvider"
+    "::Streamer::BitmapProvider"
 };
 
 bool
-IceStreamer::BitmapProvider::ice_isA(const ::std::string& _s, const ::Ice::Current&) const
+Streamer::BitmapProvider::ice_isA(const ::std::string& _s, const ::Ice::Current&) const
 {
-    return ::std::binary_search(__IceStreamer__BitmapProvider_ids, __IceStreamer__BitmapProvider_ids + 2, _s);
+    return ::std::binary_search(__Streamer__BitmapProvider_ids, __Streamer__BitmapProvider_ids + 2, _s);
 }
 
 ::std::vector< ::std::string>
-IceStreamer::BitmapProvider::ice_ids(const ::Ice::Current&) const
+Streamer::BitmapProvider::ice_ids(const ::Ice::Current&) const
 {
-    return ::std::vector< ::std::string>(&__IceStreamer__BitmapProvider_ids[0], &__IceStreamer__BitmapProvider_ids[2]);
+    return ::std::vector< ::std::string>(&__Streamer__BitmapProvider_ids[0], &__Streamer__BitmapProvider_ids[2]);
 }
 
 const ::std::string&
-IceStreamer::BitmapProvider::ice_id(const ::Ice::Current&) const
+Streamer::BitmapProvider::ice_id(const ::Ice::Current&) const
 {
-    return __IceStreamer__BitmapProvider_ids[1];
+    return __Streamer__BitmapProvider_ids[1];
 }
 
 const ::std::string&
-IceStreamer::BitmapProvider::ice_staticId()
+Streamer::BitmapProvider::ice_staticId()
 {
-    return __IceStreamer__BitmapProvider_ids[1];
+    return __Streamer__BitmapProvider_ids[1];
 }
 
 ::Ice::DispatchStatus
-IceStreamer::BitmapProvider::___setCamera(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+Streamer::BitmapProvider::___setCamera(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
 {
     __checkMode(::Ice::Normal, __current.mode);
     ::IceInternal::BasicStream* __is = __inS.is();
@@ -525,7 +525,7 @@ IceStreamer::BitmapProvider::___setCamera(::IceInternal::Incoming& __inS, const 
 }
 
 ::Ice::DispatchStatus
-IceStreamer::BitmapProvider::___getBitmap(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+Streamer::BitmapProvider::___getBitmap(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
 {
     __checkMode(::Ice::Normal, __current.mode);
     ::IceInternal::BasicStream* __is = __inS.is();
@@ -538,7 +538,7 @@ IceStreamer::BitmapProvider::___getBitmap(::IceInternal::Incoming& __inS, const 
     __is->read(transparentColor);
     __is->endReadEncaps();
     ::IceInternal::BasicStream* __os = __inS.os();
-    ::IceStreamer::bytes __ret = getBitmap(timer, depthOfField, transparentColor, __current);
+    ::Streamer::bytes __ret = getBitmap(timer, depthOfField, transparentColor, __current);
     if(__ret.size() == 0)
     {
         __os->writeSize(0);
@@ -550,7 +550,7 @@ IceStreamer::BitmapProvider::___getBitmap(::IceInternal::Incoming& __inS, const 
     return ::Ice::DispatchOK;
 }
 
-static ::std::string __IceStreamer__BitmapProvider_all[] =
+static ::std::string __Streamer__BitmapProvider_all[] =
 {
     "getBitmap",
     "ice_id",
@@ -561,15 +561,15 @@ static ::std::string __IceStreamer__BitmapProvider_all[] =
 };
 
 ::Ice::DispatchStatus
-IceStreamer::BitmapProvider::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
+Streamer::BitmapProvider::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< ::std::string*, ::std::string*> r = ::std::equal_range(__IceStreamer__BitmapProvider_all, __IceStreamer__BitmapProvider_all + 6, current.operation);
+    ::std::pair< ::std::string*, ::std::string*> r = ::std::equal_range(__Streamer__BitmapProvider_all, __Streamer__BitmapProvider_all + 6, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
     }
 
-    switch(r.first - __IceStreamer__BitmapProvider_all)
+    switch(r.first - __Streamer__BitmapProvider_all)
     {
         case 0:
         {
@@ -602,7 +602,7 @@ IceStreamer::BitmapProvider::__dispatch(::IceInternal::Incoming& in, const ::Ice
 }
 
 void
-IceStreamer::BitmapProvider::__write(::IceInternal::BasicStream* __os) const
+Streamer::BitmapProvider::__write(::IceInternal::BasicStream* __os) const
 {
     __os->writeTypeId(ice_staticId());
     __os->startWriteSlice();
@@ -615,7 +615,7 @@ IceStreamer::BitmapProvider::__write(::IceInternal::BasicStream* __os) const
 }
 
 void
-IceStreamer::BitmapProvider::__read(::IceInternal::BasicStream* __is, bool __rid)
+Streamer::BitmapProvider::__read(::IceInternal::BasicStream* __is, bool __rid)
 {
     if(__rid)
     {
@@ -634,30 +634,30 @@ IceStreamer::BitmapProvider::__read(::IceInternal::BasicStream* __is, bool __rid
 // COMPILERFIX: Stream API is not supported with VC++ 6
 #if !defined(_MSC_VER) || (_MSC_VER >= 1300)
 void
-IceStreamer::BitmapProvider::__write(const ::Ice::OutputStreamPtr&) const
+Streamer::BitmapProvider::__write(const ::Ice::OutputStreamPtr&) const
 {
     Ice::MarshalException ex(__FILE__, __LINE__);
-    ex.reason = "type IceStreamer::BitmapProvider was not generated with stream support";
+    ex.reason = "type Streamer::BitmapProvider was not generated with stream support";
     throw ex;
 }
 
 void
-IceStreamer::BitmapProvider::__read(const ::Ice::InputStreamPtr&, bool)
+Streamer::BitmapProvider::__read(const ::Ice::InputStreamPtr&, bool)
 {
     Ice::MarshalException ex(__FILE__, __LINE__);
-    ex.reason = "type IceStreamer::BitmapProvider was not generated with stream support";
+    ex.reason = "type Streamer::BitmapProvider was not generated with stream support";
     throw ex;
 }
 #endif
 
 void 
-IceStreamer::__patch__BitmapProviderPtr(void* __addr, ::Ice::ObjectPtr& v)
+Streamer::__patch__BitmapProviderPtr(void* __addr, ::Ice::ObjectPtr& v)
 {
-    ::IceStreamer::BitmapProviderPtr* p = static_cast< ::IceStreamer::BitmapProviderPtr*>(__addr);
+    ::Streamer::BitmapProviderPtr* p = static_cast< ::Streamer::BitmapProviderPtr*>(__addr);
     assert(p);
-    *p = ::IceStreamer::BitmapProviderPtr::dynamicCast(v);
+    *p = ::Streamer::BitmapProviderPtr::dynamicCast(v);
     if(v && !*p)
     {
-        IceInternal::Ex::throwUOE(::IceStreamer::BitmapProvider::ice_staticId(), v->ice_id());
+        IceInternal::Ex::throwUOE(::Streamer::BitmapProvider::ice_staticId(), v->ice_id());
     }
 }

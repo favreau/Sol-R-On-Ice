@@ -159,6 +159,8 @@ public:
 public:
 
    int getImageSize() { return m_imageWidth*m_imageHeight*4; } // Image depth: 32 bits
+   int getImageWidth() { return m_imageWidth; }
+   int getImageHeight() { return m_imageHeight; }
 
 #ifdef USE_KINECT
 public:

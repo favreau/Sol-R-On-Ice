@@ -3,7 +3,7 @@
 #include "IIceStreamer.h"
 #include "Cuda/CudaKernel.h"
 
-class IIceStreamerImpl : public ::IceStreamer::BitmapProvider
+class IIceStreamerImpl : public ::Streamer::BitmapProvider
 {
 
 public:
@@ -19,7 +19,7 @@ public:
       ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az,
       const ::Ice::Current& );
 
-   ::IceStreamer::bytes getBitmap(
+   ::Streamer::bytes getBitmap(
       ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, 
       const ::Ice::Current& );
 

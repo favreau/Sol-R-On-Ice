@@ -1,7 +1,7 @@
 #ifndef ICESTREAMER
 #define ICESTREAMER
 
-module IceStreamer
+module Streamer
 {
    sequence<byte> bytes;
 

@@ -370,13 +370,6 @@ __device__ float4 launchRay(
    memset(recursiveRatio,0,sizeof(float4)*gNbIterations );
    memset(recursiveBlinn,0,sizeof(float4)*gNbIterations );
 
-   // Refracted ray
-   float4 reflectedOrigins[gNbIterations];
-   float4 reflectedDirections[gNbIterations];
-   int    reflectedRays(0);
-   float4 reflectedColor = {0.f,0.f,0.f,0.f};
-   float  reflectedRatio = 0.f;
-
    // Variable declarations
    float  shadowIntensity = 0.f;
    float4 refractionFromColor;
@@ -421,10 +414,7 @@ __device__ float4 launchRay(
             origin, normal, closestPrimitive, closestIntersection, 
             timer, refractionFromColor, shadowIntensity, recursiveBlinn[iteration], transparentColor );
 
-         // ----------
-         // Refraction
-         // ----------
-         if( materials[primitives[closestPrimitive].materialId].transparency != 0.f ) 
+         if( materials[primitives[closestPrimitive].materialId].refraction != 0.f ) 
          {
             // ----------
             // Refraction
@@ -442,24 +432,29 @@ __device__ float4 launchRay(
             refraction = (refraction == initialRefraction) ? 1.0f : refraction;
             vectorRefraction( O_R, O_E, refraction, normal, initialRefraction );
             reflectedTarget = closestIntersection - O_R;
+
             initialRefraction = refraction;
 
-            recursiveRatio[iteration].x = materials[primitives[closestPrimitive].materialId].transparency;
+            recursiveRatio[iteration].x = materials[primitives[closestPrimitive].materialId].reflection;
             recursiveRatio[iteration].z = 1.f;
          }
-
-         // ----------
-         // Reflection
-         // ----------
-         if( reflectedRays == 0 && materials[primitives[closestPrimitive].materialId].reflection != 0.f ) 
+         else 
          {
-            reflectedRatio = materials[primitives[closestPrimitive].materialId].reflection;
-            O_E = rayOrigin - closestIntersection;
-            vectorReflection( O_R, O_E, normal );
+            // ----------
+            // Reflection
+            // ----------
+            if( materials[primitives[closestPrimitive].materialId].reflection != 0.f ) 
+            {
+               O_E = rayOrigin - closestIntersection;
+               vectorReflection( O_R, O_E, normal );
+               reflectedTarget = closestIntersection - O_R;
 
-            reflectedOrigins[reflectedRays]    = closestIntersection; 
-            reflectedDirections[reflectedRays] = closestIntersection - O_R;
-            reflectedRays++;
+               recursiveRatio[iteration].x = materials[primitives[closestPrimitive].materialId].reflection;
+            }
+            else 
+            {
+               carryon = false;
+            }
          }
          rayOrigin = closestIntersection; 
          rayTarget = reflectedTarget;
@@ -468,31 +463,11 @@ __device__ float4 launchRay(
       }
    }
 
-   for( int i(0); i<reflectedRays; ++i )
-   {
-      carryon = intersectionWithPrimitives(
-         primitives, nbActivePrimitives,
-         materials, textures, levels,
-         reflectedOrigins[i], reflectedDirections[i],
-         timer, 
-         closestPrimitive, closestIntersection, 
-         normal,
-         transparentColor);
-      if( carryon )
-      {
-         // Get object color
-         reflectedColor = colorFromObject( 
-            primitives, nbActivePrimitives, lamps, nbActiveLamps, materials, textures, kinectVideo, levels,
-            origin, normal, closestPrimitive, closestIntersection, 
-            timer, refractionFromColor, shadowIntensity, recursiveBlinn[iteration], transparentColor );
-      }
-   }
-
    for( int i=iteration-2; i>=0; --i ) 
    {
       recursiveColor[i] = (recursiveColor[i+1]*recursiveRatio[i].x + recursiveColor[i]*(1.f-recursiveRatio[i].x));
    }
-   intersectionColor = recursiveColor[0]*(1.f-reflectedRatio) + reflectedColor*reflectedRatio;
+   intersectionColor = recursiveColor[0];
 
    // Specular reflection
    intersectionColor += recursiveBlinn[0];

@@ -19,7 +19,7 @@
 
 // Ice
 ::Ice::CommunicatorPtr communicator;
-::IceStreamer::BitmapProviderPrx bitmapProvider;
+::Streamer::BitmapProviderPrx bitmapProvider;
 
 // General Settings
 const long TARGET_FPS = 200;
@@ -31,8 +31,8 @@ int device       = 0;
 
 // Rendering window vars
 const unsigned int draft        = 1;
-unsigned int window_width       = 511;
-unsigned int window_height      = 511;
+unsigned int window_width       = 256;
+unsigned int window_height      = 256;
 const unsigned int window_depth = 4;
 
 // ----------------------------------
@@ -259,8 +259,15 @@ void timerEvent(int value)
    */
    try 
    {
-      IceStreamer::bytes bitmap = bitmapProvider->getBitmap( anim, gDepthOfField, gTransparentColor );
-      for( int i(0); i<bitmap.size(); ++i) ubImage[i] = bitmap[i];
+      Streamer::bytes bitmap = bitmapProvider->getBitmap( anim, gDepthOfField, gTransparentColor );
+      int c(0);
+      for( int i(54); i<bitmap.size()-3; i+=3) {
+         ubImage[c+0] = bitmap[i+2];
+         ubImage[c+1] = bitmap[i+1];
+         ubImage[c+2] = bitmap[i+0];
+         ubImage[c+3] = 0;
+         c+=4;
+      }
    }
    catch(const Ice::Exception& e)
    {
@@ -415,7 +422,7 @@ void main( int argc, char* argv[] )
       }
 
       std::cout << "Connection string: " << connectionString << std::endl;
-      bitmapProvider = ::IceStreamer::BitmapProviderPrx::checkedCast(
+      bitmapProvider = ::Streamer::BitmapProviderPrx::checkedCast(
          communicator->stringToProxy(connectionString));
 
       // First initialize OpenGL context, so we can properly set the GL for CUDA.

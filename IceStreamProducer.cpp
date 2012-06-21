@@ -6,14 +6,17 @@
 * and other countries.
 */
 
+// System
+#include <time.h>
+
 // Project
 #include "Trace.h"
 #include "IceStreamProducer.h"
 #include "IIceStreamerImpl.h"
 
 const unsigned int gDraft        = 1;
-const unsigned int gWindowWidth  = 511;
-const unsigned int gWindowHeight = 511;
+const unsigned int gWindowWidth  = 256;
+const unsigned int gWindowHeight = 256;
 const unsigned int gWindowDepth  = 4;
 
 
@@ -34,6 +37,7 @@ int IceStreamProducer::run( int argc, char* argv[] )
 {
    try
    {
+      srand(time(NULL));
       // Initialize Kernel
       cudaKernel_ = new CudaKernel( gDraft );
       cudaKernel_->deviceQuery();
@@ -46,12 +50,12 @@ int IceStreamProducer::run( int argc, char* argv[] )
       {
          nbPrimitives_ = cudaKernel_->addPrimitive( ptSphere );
          cudaKernel_->setPrimitive( nbPrimitives_,  
-            rand()%800-400.f, rand()%200-100.f, rand()%800-400.f, rand()%50+20.f, 0.f, rand()%20, 1, 1); 
+            rand()%800-400.f, rand()%200-100.f, rand()%800-400.f, rand()%100+30.f, 0.f, rand()%3, 1, 1); 
       }
       
       
       nbPrimitives_ = cudaKernel_->addPrimitive(ptCheckboard);
-      cudaKernel_->setPrimitive( nbPrimitives_,  0.f, -100.f,    0.f, 1000, 1000, 20+rand()%nbTextures_, 2, 2); 
+      cudaKernel_->setPrimitive( nbPrimitives_,  0.f, -100.f,    0.f, 1000, 1000, 20+rand()%nbMaterials_, 2, 2); 
 
       nbLamps_ = cudaKernel_->addLamp( ltSphere );
       cudaKernel_->setLamp( nbLamps_, -500.f, 1000.f, -500.f, 10.f, 0.f, 1.f, 1.f, 1.f, 1.f );
@@ -105,7 +109,7 @@ void IceStreamProducer::createRandomMaterials()
          r = 1.f;
          g = 1.f;
          b = 1.f;
-         reflection   = 0.1f;
+         reflection   = 0.8f;
          refraction   = 0.9f;
          transparency = 0.9f;
          break;
