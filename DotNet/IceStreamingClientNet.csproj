@@ -176,12 +176,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\00fd024.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\001.bmp" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -192,7 +186,7 @@
   -->
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ZerocIce_VerboseLevel="1" ZerocIce_Enabled="True" />
+      <UserProperties ZerocIce_Enabled="True" ZerocIce_VerboseLevel="1" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
