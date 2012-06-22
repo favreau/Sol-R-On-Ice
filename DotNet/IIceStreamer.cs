@@ -49,6 +49,9 @@ namespace Streamer
 
     [_System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.4.2")]
     public delegate void Callback_BitmapProvider_getBitmap(byte[] ret__);
+
+    [_System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.4.2")]
+    public delegate void Callback_BitmapProvider_helloWorld(string ret__);
 }
 
 namespace Streamer
@@ -77,6 +80,17 @@ namespace Streamer
         Ice.AsyncResult begin_getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> ctx__, Ice.AsyncCallback cb__, object cookie__);
 
         byte[] end_getBitmap(Ice.AsyncResult r__);
+
+        string helloWorld(string something);
+        string helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> context__);
+
+        Ice.AsyncResult<Streamer.Callback_BitmapProvider_helloWorld> begin_helloWorld(string something);
+        Ice.AsyncResult<Streamer.Callback_BitmapProvider_helloWorld> begin_helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> ctx__);
+
+        Ice.AsyncResult begin_helloWorld(string something, Ice.AsyncCallback cb__, object cookie__);
+        Ice.AsyncResult begin_helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> ctx__, Ice.AsyncCallback cb__, object cookie__);
+
+        string end_helloWorld(Ice.AsyncResult r__);
     }
 }
 
@@ -88,6 +102,8 @@ namespace Streamer
         void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, Ice.Current current__);
 
         byte[] getBitmap(float timer, float depthOfField, float transparentColor, Ice.Current current__);
+
+        string helloWorld(string something, Ice.Current current__);
     }
 
     [_System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.4.2")]
@@ -96,6 +112,8 @@ namespace Streamer
         void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az);
 
         byte[] getBitmap(float timer, float depthOfField, float transparentColor);
+
+        string helloWorld(string something);
     }
 }
 
@@ -149,6 +167,44 @@ namespace Streamer
                     delBase__ = getDelegate__(false);
                     BitmapProviderDel_ del__ = (BitmapProviderDel_)delBase__;
                     return del__.getBitmap(timer, depthOfField, transparentColor, context__);
+                }
+                catch(IceInternal.LocalExceptionWrapper ex__)
+                {
+                    handleExceptionWrapper__(delBase__, ex__);
+                }
+                catch(Ice.LocalException ex__)
+                {
+                    handleException__(delBase__, ex__, true, ref cnt__);
+                }
+            }
+        }
+
+        public string helloWorld(string something)
+        {
+            return helloWorld(something, null, false);
+        }
+
+        public string helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> context__)
+        {
+            return helloWorld(something, context__, true);
+        }
+
+        private string helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> context__, bool explicitContext__)
+        {
+            if(explicitContext__ && context__ == null)
+            {
+                context__ = emptyContext_;
+            }
+            int cnt__ = 0;
+            while(true)
+            {
+                Ice.ObjectDel_ delBase__ = null;
+                try
+                {
+                    checkTwowayOnly__("helloWorld");
+                    delBase__ = getDelegate__(false);
+                    BitmapProviderDel_ del__ = (BitmapProviderDel_)delBase__;
+                    return del__.helloWorld(something, context__);
                 }
                 catch(IceInternal.LocalExceptionWrapper ex__)
                 {
@@ -279,6 +335,95 @@ namespace Streamer
             try
             {
                 ret__ = end_getBitmap(r__);
+            }
+            catch(Ice.Exception ex__)
+            {
+                if(excb__ != null)
+                {
+                    excb__(ex__);
+                }
+                return;
+            }
+            if(cb__ != null)
+            {
+                cb__(ret__);
+            }
+        }
+
+        public Ice.AsyncResult<Streamer.Callback_BitmapProvider_helloWorld> begin_helloWorld(string something)
+        {
+            return begin_helloWorld(something, null, false, null, null);
+        }
+
+        public Ice.AsyncResult<Streamer.Callback_BitmapProvider_helloWorld> begin_helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> ctx__)
+        {
+            return begin_helloWorld(something, ctx__, true, null, null);
+        }
+
+        public Ice.AsyncResult begin_helloWorld(string something, Ice.AsyncCallback cb__, object cookie__)
+        {
+            return begin_helloWorld(something, null, false, cb__, cookie__);
+        }
+
+        public Ice.AsyncResult begin_helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> ctx__, Ice.AsyncCallback cb__, object cookie__)
+        {
+            return begin_helloWorld(something, ctx__, true, cb__, cookie__);
+        }
+
+        private const string __helloWorld_name = "helloWorld";
+
+        public string end_helloWorld(Ice.AsyncResult r__)
+        {
+            IceInternal.OutgoingAsync outAsync__ = (IceInternal.OutgoingAsync)r__;
+            IceInternal.OutgoingAsync.check__(outAsync__, this, __helloWorld_name);
+            if(!outAsync__.wait__())
+            {
+                try
+                {
+                    outAsync__.throwUserException__();
+                }
+                catch(Ice.UserException ex__)
+                {
+                    throw new Ice.UnknownUserException(ex__.ice_name(), ex__);
+                }
+            }
+            string ret__;
+            IceInternal.BasicStream is__ = outAsync__.istr__;
+            is__.startReadEncaps();
+            ret__ = is__.readString();
+            is__.endReadEncaps();
+            return ret__;
+        }
+
+        private Ice.AsyncResult<Streamer.Callback_BitmapProvider_helloWorld> begin_helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> ctx__, bool explicitContext__, Ice.AsyncCallback cb__, object cookie__)
+        {
+            checkAsyncTwowayOnly__(__helloWorld_name);
+            IceInternal.TwowayOutgoingAsync<Streamer.Callback_BitmapProvider_helloWorld> result__ =  new IceInternal.TwowayOutgoingAsync<Streamer.Callback_BitmapProvider_helloWorld>(this, __helloWorld_name, helloWorld_completed__, cookie__);
+            if(cb__ != null)
+            {
+                result__.whenCompletedWithAsyncCallback(cb__);
+            }
+            try
+            {
+                result__.prepare__(__helloWorld_name, Ice.OperationMode.Normal, ctx__, explicitContext__);
+                IceInternal.BasicStream os__ = result__.ostr__;
+                os__.writeString(something);
+                os__.endWriteEncaps();
+                result__.send__(true);
+            }
+            catch(Ice.LocalException ex__)
+            {
+                result__.exceptionAsync__(ex__);
+            }
+            return result__;
+        }
+
+        private void helloWorld_completed__(Ice.AsyncResult r__, Streamer.Callback_BitmapProvider_helloWorld cb__, Ice.ExceptionCallback excb__)
+        {
+            string ret__;
+            try
+            {
+                ret__ = end_helloWorld(r__);
             }
             catch(Ice.Exception ex__)
             {
@@ -521,6 +666,8 @@ namespace Streamer
         void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> context__);
 
         byte[] getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__);
+
+        string helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> context__);
     }
 }
 
@@ -564,6 +711,52 @@ namespace Streamer
                     is__.startReadEncaps();
                     byte[] ret__;
                     ret__ = is__.readByteSeq();
+                    is__.endReadEncaps();
+                    return ret__;
+                }
+                catch(Ice.LocalException ex__)
+                {
+                    throw new IceInternal.LocalExceptionWrapper(ex__, false);
+                }
+            }
+            finally
+            {
+                handler__.reclaimOutgoing(og__);
+            }
+        }
+
+        public string helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> context__)
+        {
+            IceInternal.Outgoing og__ = handler__.getOutgoing("helloWorld", Ice.OperationMode.Normal, context__);
+            try
+            {
+                try
+                {
+                    IceInternal.BasicStream os__ = og__.ostr();
+                    os__.writeString(something);
+                }
+                catch(Ice.LocalException ex__)
+                {
+                    og__.abort(ex__);
+                }
+                bool ok__ = og__.invoke();
+                try
+                {
+                    if(!ok__)
+                    {
+                        try
+                        {
+                            og__.throwUserException();
+                        }
+                        catch(Ice.UserException ex__)
+                        {
+                            throw new Ice.UnknownUserException(ex__.ice_name(), ex__);
+                        }
+                    }
+                    IceInternal.BasicStream is__ = og__.istr();
+                    is__.startReadEncaps();
+                    string ret__;
+                    ret__ = is__.readString();
                     is__.endReadEncaps();
                     return ret__;
                 }
@@ -684,6 +877,51 @@ namespace Streamer
         }
 
         [_System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031")]
+        public string helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> context__)
+        {
+            Ice.Current current__ = new Ice.Current();
+            initCurrent__(ref current__, "helloWorld", Ice.OperationMode.Normal, context__);
+            string result__ = null;
+            IceInternal.Direct.RunDelegate run__ = delegate(Ice.Object obj__)
+            {
+                BitmapProvider servant__ = null;
+                try
+                {
+                    servant__ = (BitmapProvider)obj__;
+                }
+                catch(_System.InvalidCastException)
+                {
+                    throw new Ice.OperationNotExistException(current__.id, current__.facet, current__.operation);
+                }
+                result__ = servant__.helloWorld(something, current__);
+                return Ice.DispatchStatus.DispatchOK;
+            };
+            IceInternal.Direct direct__ = null;
+            try
+            {
+                direct__ = new IceInternal.Direct(current__, run__);
+                try
+                {
+                    Ice.DispatchStatus status__ = direct__.servant().collocDispatch__(direct__);
+                    _System.Diagnostics.Debug.Assert(status__ == Ice.DispatchStatus.DispatchOK);
+                }
+                finally
+                {
+                    direct__.destroy();
+                }
+            }
+            catch(Ice.SystemException)
+            {
+                throw;
+            }
+            catch(_System.Exception ex__)
+            {
+                IceInternal.LocalExceptionWrapper.throwWrapper(ex__);
+            }
+            return result__;
+        }
+
+        [_System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031")]
         public void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> context__)
         {
             Ice.Current current__ = new Ice.Current();
@@ -749,6 +987,13 @@ namespace Streamer
         }
 
         public abstract byte[] getBitmap(float timer, float depthOfField, float transparentColor, Ice.Current current__);
+
+        public string helloWorld(string something)
+        {
+            return helloWorld(something, Ice.ObjectImpl.defaultCurrent);
+        }
+
+        public abstract string helloWorld(string something, Ice.Current current__);
 
         #endregion
 
@@ -847,9 +1092,25 @@ namespace Streamer
             return Ice.DispatchStatus.DispatchOK;
         }
 
+        [_System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+        public static Ice.DispatchStatus helloWorld___(BitmapProvider obj__, IceInternal.Incoming inS__, Ice.Current current__)
+        {
+            checkMode__(Ice.OperationMode.Normal, current__.mode);
+            IceInternal.BasicStream is__ = inS__.istr();
+            is__.startReadEncaps();
+            string something;
+            something = is__.readString();
+            is__.endReadEncaps();
+            IceInternal.BasicStream os__ = inS__.ostr();
+            string ret__ = obj__.helloWorld(something, current__);
+            os__.writeString(ret__);
+            return Ice.DispatchStatus.DispatchOK;
+        }
+
         private static string[] all__ =
         {
             "getBitmap",
+            "helloWorld",
             "ice_id",
             "ice_ids",
             "ice_isA",
@@ -873,21 +1134,25 @@ namespace Streamer
                 }
                 case 1:
                 {
-                    return ice_id___(this, inS__, current__);
+                    return helloWorld___(this, inS__, current__);
                 }
                 case 2:
                 {
-                    return ice_ids___(this, inS__, current__);
+                    return ice_id___(this, inS__, current__);
                 }
                 case 3:
                 {
-                    return ice_isA___(this, inS__, current__);
+                    return ice_ids___(this, inS__, current__);
                 }
                 case 4:
                 {
-                    return ice_ping___(this, inS__, current__);
+                    return ice_isA___(this, inS__, current__);
                 }
                 case 5:
+                {
+                    return ice_ping___(this, inS__, current__);
+                }
+                case 6:
                 {
                     return setCamera___(this, inS__, current__);
                 }

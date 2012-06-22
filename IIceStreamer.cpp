@@ -41,6 +41,8 @@ static const ::std::string __Streamer__BitmapProvider__setCamera_name = "setCame
 
 static const ::std::string __Streamer__BitmapProvider__getBitmap_name = "getBitmap";
 
+static const ::std::string __Streamer__BitmapProvider__helloWorld_name = "helloWorld";
+
 ::Ice::Object* IceInternal::upCast(::Streamer::BitmapProvider* p) { return p; }
 ::IceProxy::Ice::Object* IceInternal::upCast(::IceProxy::Streamer::BitmapProvider* p) { return p; }
 
@@ -190,6 +192,74 @@ IceProxy::Streamer::BitmapProvider::end_getBitmap(const ::Ice::AsyncResultPtr& _
     return __ret;
 }
 
+::std::string
+IceProxy::Streamer::BitmapProvider::helloWorld(const ::std::string& something, const ::Ice::Context* __ctx)
+{
+    int __cnt = 0;
+    while(true)
+    {
+        ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
+        try
+        {
+            __checkTwowayOnly(__Streamer__BitmapProvider__helloWorld_name);
+            __delBase = __getDelegate(false);
+            ::IceDelegate::Streamer::BitmapProvider* __del = dynamic_cast< ::IceDelegate::Streamer::BitmapProvider*>(__delBase.get());
+            return __del->helloWorld(something, __ctx);
+        }
+        catch(const ::IceInternal::LocalExceptionWrapper& __ex)
+        {
+            __handleExceptionWrapper(__delBase, __ex);
+        }
+        catch(const ::Ice::LocalException& __ex)
+        {
+            __handleException(__delBase, __ex, true, __cnt);
+        }
+    }
+}
+
+::Ice::AsyncResultPtr
+IceProxy::Streamer::BitmapProvider::begin_helloWorld(const ::std::string& something, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__Streamer__BitmapProvider__helloWorld_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Streamer__BitmapProvider__helloWorld_name, __del, __cookie);
+    try
+    {
+        __result->__prepare(__Streamer__BitmapProvider__helloWorld_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->__getOs();
+        __os->write(something);
+        __os->endWriteEncaps();
+        __result->__send(true);
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __result->__exceptionAsync(__ex);
+    }
+    return __result;
+}
+
+::std::string
+IceProxy::Streamer::BitmapProvider::end_helloWorld(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __Streamer__BitmapProvider__helloWorld_name);
+    ::std::string __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__getIs();
+    __is->startReadEncaps();
+    __is->read(__ret);
+    __is->endReadEncaps();
+    return __ret;
+}
+
 const ::std::string&
 IceProxy::Streamer::BitmapProvider::ice_staticId()
 {
@@ -297,6 +367,47 @@ IceDelegateM::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Flo
         ::std::pair<const ::Ice::Byte*, const ::Ice::Byte*> _____ret;
         __is->read(_____ret);
         ::std::vector< ::Ice::Byte>(_____ret.first, _____ret.second).swap(__ret);
+        __is->endReadEncaps();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(__ex, false);
+    }
+}
+
+::std::string
+IceDelegateM::Streamer::BitmapProvider::helloWorld(const ::std::string& something, const ::Ice::Context* __context)
+{
+    ::IceInternal::Outgoing __og(__handler.get(), __Streamer__BitmapProvider__helloWorld_name, ::Ice::Normal, __context);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.os();
+        __os->write(something);
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    bool __ok = __og.invoke();
+    ::std::string __ret;
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __og.throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+                throw __uue;
+            }
+        }
+        ::IceInternal::BasicStream* __is = __og.is();
+        __is->startReadEncaps();
+        __is->read(__ret);
         __is->endReadEncaps();
         return __ret;
     }
@@ -458,6 +569,74 @@ IceDelegateD::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Flo
     return __result;
 }
 
+::std::string
+IceDelegateD::Streamer::BitmapProvider::helloWorld(const ::std::string& something, const ::Ice::Context* __context)
+{
+    class _DirectI : public ::IceInternal::Direct
+    {
+    public:
+
+        _DirectI(::std::string& __result, const ::std::string& something, const ::Ice::Current& __current) : 
+            ::IceInternal::Direct(__current),
+            _result(__result),
+            _m_something(something)
+        {
+        }
+        
+        virtual ::Ice::DispatchStatus
+        run(::Ice::Object* object)
+        {
+            ::Streamer::BitmapProvider* servant = dynamic_cast< ::Streamer::BitmapProvider*>(object);
+            if(!servant)
+            {
+                throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
+            }
+            _result = servant->helloWorld(_m_something, _current);
+            return ::Ice::DispatchOK;
+        }
+        
+    private:
+        
+        ::std::string& _result;
+        const ::std::string& _m_something;
+    };
+    
+    ::Ice::Current __current;
+    __initCurrent(__current, __Streamer__BitmapProvider__helloWorld_name, ::Ice::Normal, __context);
+    ::std::string __result;
+    try
+    {
+        _DirectI __direct(__result, something, __current);
+        try
+        {
+            __direct.servant()->__collocDispatch(__direct);
+        }
+        catch(...)
+        {
+            __direct.destroy();
+            throw;
+        }
+        __direct.destroy();
+    }
+    catch(const ::Ice::SystemException&)
+    {
+        throw;
+    }
+    catch(const ::IceInternal::LocalExceptionWrapper&)
+    {
+        throw;
+    }
+    catch(const ::std::exception& __ex)
+    {
+        ::IceInternal::LocalExceptionWrapper::throwWrapper(__ex);
+    }
+    catch(...)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(::Ice::UnknownException(__FILE__, __LINE__, "unknown c++ exception"), false);
+    }
+    return __result;
+}
+
 ::Ice::ObjectPtr
 Streamer::BitmapProvider::ice_clone() const
 {
@@ -550,9 +729,25 @@ Streamer::BitmapProvider::___getBitmap(::IceInternal::Incoming& __inS, const ::I
     return ::Ice::DispatchOK;
 }
 
+::Ice::DispatchStatus
+Streamer::BitmapProvider::___helloWorld(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.is();
+    __is->startReadEncaps();
+    ::std::string something;
+    __is->read(something);
+    __is->endReadEncaps();
+    ::IceInternal::BasicStream* __os = __inS.os();
+    ::std::string __ret = helloWorld(something, __current);
+    __os->write(__ret);
+    return ::Ice::DispatchOK;
+}
+
 static ::std::string __Streamer__BitmapProvider_all[] =
 {
     "getBitmap",
+    "helloWorld",
     "ice_id",
     "ice_ids",
     "ice_isA",
@@ -563,7 +758,7 @@ static ::std::string __Streamer__BitmapProvider_all[] =
 ::Ice::DispatchStatus
 Streamer::BitmapProvider::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< ::std::string*, ::std::string*> r = ::std::equal_range(__Streamer__BitmapProvider_all, __Streamer__BitmapProvider_all + 6, current.operation);
+    ::std::pair< ::std::string*, ::std::string*> r = ::std::equal_range(__Streamer__BitmapProvider_all, __Streamer__BitmapProvider_all + 7, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -577,21 +772,25 @@ Streamer::BitmapProvider::__dispatch(::IceInternal::Incoming& in, const ::Ice::C
         }
         case 1:
         {
-            return ___ice_id(in, current);
+            return ___helloWorld(in, current);
         }
         case 2:
         {
-            return ___ice_ids(in, current);
+            return ___ice_id(in, current);
         }
         case 3:
         {
-            return ___ice_isA(in, current);
+            return ___ice_ids(in, current);
         }
         case 4:
         {
-            return ___ice_ping(in, current);
+            return ___ice_isA(in, current);
         }
         case 5:
+        {
+            return ___ice_ping(in, current);
+        }
+        case 6:
         {
             return ___setCamera(in, current);
         }

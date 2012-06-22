@@ -44,7 +44,8 @@ Global
 		{855E77E0-8183-41E2-8148-6272A74174D6}.Release Kinect|x64.ActiveCfg = Release|Win32
 		{855E77E0-8183-41E2-8148-6272A74174D6}.Release|Win32.ActiveCfg = Release|Win32
 		{855E77E0-8183-41E2-8148-6272A74174D6}.Release|Win32.Build.0 = Release|Win32
-		{855E77E0-8183-41E2-8148-6272A74174D6}.Release|x64.ActiveCfg = Release|Win32
+		{855E77E0-8183-41E2-8148-6272A74174D6}.Release|x64.ActiveCfg = Release|x64
+		{855E77E0-8183-41E2-8148-6272A74174D6}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

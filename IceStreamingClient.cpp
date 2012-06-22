@@ -1,5 +1,5 @@
 // Ice
-#include <Ice/Ice.h>
+#include <ice/ice.h>
 
 // Cuda
 #include <vector_functions.h>
@@ -424,6 +424,8 @@ void main( int argc, char* argv[] )
       std::cout << "Connection string: " << connectionString << std::endl;
       bitmapProvider = ::Streamer::BitmapProviderPrx::checkedCast(
          communicator->stringToProxy(connectionString));
+
+      std::cout << "helloWorld: " << bitmapProvider->helloWorld("Say something") << std::endl;
 
       // First initialize OpenGL context, so we can properly set the GL for CUDA.
       // This is necessary in order to achieve optimal performance with OpenGL/CUDA interop.

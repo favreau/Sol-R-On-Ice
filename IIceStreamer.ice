@@ -12,6 +12,8 @@ module Streamer
          float dx, float dy, float dz, 
          float ax, float ay, float az );
        bytes getBitmap(float timer, float depthOfField, float transparentColor);
+
+	   string helloWorld( string something );
    };
 
 };

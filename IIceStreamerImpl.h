@@ -23,6 +23,10 @@ public:
       ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, 
       const ::Ice::Current& );
 
+   std::string helloWorld( 
+      const std::string& something,
+      const ::Ice::Current& );
+
 private:
    
    CudaKernel*    cudaKernel_;

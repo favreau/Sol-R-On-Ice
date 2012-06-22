@@ -80,3 +80,11 @@ void IIceStreamerImpl::setCamera(
    float4 angle = {ax, ay, az, 0.f};
    cudaKernel_->setCamera( eye, direction, angle );
 }
+
+
+std::string IIceStreamerImpl::helloWorld( 
+   const std::string& something,
+   const ::Ice::Current& )
+{
+   return something + " from Cyrille";
+}

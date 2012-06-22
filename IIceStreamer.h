@@ -104,6 +104,9 @@ typedef ::IceUtil::Handle< Callback_BitmapProvider_setCamera_Base> Callback_Bitm
 class Callback_BitmapProvider_getBitmap_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_BitmapProvider_getBitmap_Base> Callback_BitmapProvider_getBitmapPtr;
 
+class Callback_BitmapProvider_helloWorld_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_BitmapProvider_helloWorld_Base> Callback_BitmapProvider_helloWorldPtr;
+
 }
 
 namespace IceProxy
@@ -209,6 +212,54 @@ private:
 
     ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    ::std::string helloWorld(const ::std::string& something)
+    {
+        return helloWorld(something, 0);
+    }
+    ::std::string helloWorld(const ::std::string& something, const ::Ice::Context& __ctx)
+    {
+        return helloWorld(something, &__ctx);
+    }
+
+    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something)
+    {
+        return begin_helloWorld(something, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something, const ::Ice::Context& __ctx)
+    {
+        return begin_helloWorld(something, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_helloWorld(something, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_helloWorld(something, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something, const ::Streamer::Callback_BitmapProvider_helloWorldPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_helloWorld(something, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something, const ::Ice::Context& __ctx, const ::Streamer::Callback_BitmapProvider_helloWorldPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_helloWorld(something, &__ctx, __del, __cookie);
+    }
+
+    ::std::string end_helloWorld(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::std::string helloWorld(const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -428,6 +479,8 @@ public:
     virtual void setCamera(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*) = 0;
 
     virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*) = 0;
+
+    virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Context*) = 0;
 };
 
 }
@@ -448,6 +501,8 @@ public:
     virtual void setCamera(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
 
     virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
+
+    virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Context*);
 };
 
 }
@@ -468,6 +523,8 @@ public:
     virtual void setCamera(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
 
     virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
+
+    virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Context*);
 };
 
 }
@@ -496,6 +553,9 @@ public:
 
     virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___getBitmap(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___helloWorld(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -719,6 +779,122 @@ template<class T, typename CT> Callback_BitmapProvider_getBitmapPtr
 newCallback_BitmapProvider_getBitmap(T* instance, void (T::*cb)(const ::Streamer::bytes&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_BitmapProvider_getBitmap<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_BitmapProvider_helloWorld : public Callback_BitmapProvider_helloWorld_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::std::string&);
+
+    CallbackNC_BitmapProvider_helloWorld(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::Streamer::BitmapProviderPrx __proxy = ::Streamer::BitmapProviderPrx::uncheckedCast(__result->getProxy());
+        ::std::string __ret;
+        try
+        {
+            __ret = __proxy->end_helloWorld(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)(__ret);
+#else
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_BitmapProvider_helloWorldPtr
+newCallback_BitmapProvider_helloWorld(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_BitmapProvider_helloWorld<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_BitmapProvider_helloWorldPtr
+newCallback_BitmapProvider_helloWorld(T* instance, void (T::*cb)(const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_BitmapProvider_helloWorld<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_BitmapProvider_helloWorld : public Callback_BitmapProvider_helloWorld_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::std::string&, const CT&);
+
+    Callback_BitmapProvider_helloWorld(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::Streamer::BitmapProviderPrx __proxy = ::Streamer::BitmapProviderPrx::uncheckedCast(__result->getProxy());
+        ::std::string __ret;
+        try
+        {
+            __ret = __proxy->end_helloWorld(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+#else
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_BitmapProvider_helloWorldPtr
+newCallback_BitmapProvider_helloWorld(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_BitmapProvider_helloWorld<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_BitmapProvider_helloWorldPtr
+newCallback_BitmapProvider_helloWorld(T* instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_BitmapProvider_helloWorld<T, CT>(instance, cb, excb, sentcb);
 }
 
 }
