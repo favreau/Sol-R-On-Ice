@@ -98,9 +98,6 @@ typedef ::std::vector< ::Ice::Byte> bytes;
 namespace Streamer
 {
 
-class Callback_BitmapProvider_setCamera_Base : virtual public ::IceInternal::CallbackBase { };
-typedef ::IceUtil::Handle< Callback_BitmapProvider_setCamera_Base> Callback_BitmapProvider_setCameraPtr;
-
 class Callback_BitmapProvider_getBitmap_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_BitmapProvider_getBitmap_Base> Callback_BitmapProvider_getBitmapPtr;
 
@@ -119,99 +116,51 @@ class BitmapProvider : virtual public ::IceProxy::Ice::Object
 {
 public:
 
-    void setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az)
+    ::Streamer::bytes getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor)
     {
-        setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, 0);
+        return getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, 0);
     }
-    void setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context& __ctx)
+    ::Streamer::bytes getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx)
     {
-        setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, &__ctx);
-    }
-
-    ::Ice::AsyncResultPtr begin_setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az)
-    {
-        return begin_setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, 0, ::IceInternal::__dummyCallback, 0);
+        return getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, &__ctx);
     }
 
-    ::Ice::AsyncResultPtr begin_setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor)
     {
-        return begin_setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx)
     {
-        return begin_setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, 0, __del, __cookie);
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, &__ctx, __del, __cookie);
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Streamer::Callback_BitmapProvider_setCameraPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, 0, __del, __cookie);
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context& __ctx, const ::Streamer::Callback_BitmapProvider_setCameraPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Streamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, &__ctx, __del, __cookie);
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, 0, __del, __cookie);
     }
 
-    void end_setCamera(const ::Ice::AsyncResultPtr&);
-    
-private:
-
-    void setCamera(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_setCamera(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
-    
-public:
-
-    ::Streamer::bytes getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx, const ::Streamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return getBitmap(timer, depthOfField, transparentColor, 0);
-    }
-    ::Streamer::bytes getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx)
-    {
-        return getBitmap(timer, depthOfField, transparentColor, &__ctx);
-    }
-
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor)
-    {
-        return begin_getBitmap(timer, depthOfField, transparentColor, 0, ::IceInternal::__dummyCallback, 0);
-    }
-
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx)
-    {
-        return begin_getBitmap(timer, depthOfField, transparentColor, &__ctx, ::IceInternal::__dummyCallback, 0);
-    }
-
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
-    {
-        return begin_getBitmap(timer, depthOfField, transparentColor, 0, __del, __cookie);
-    }
-
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
-    {
-        return begin_getBitmap(timer, depthOfField, transparentColor, &__ctx, __del, __cookie);
-    }
-
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Streamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
-    {
-        return begin_getBitmap(timer, depthOfField, transparentColor, 0, __del, __cookie);
-    }
-
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx, const ::Streamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
-    {
-        return begin_getBitmap(timer, depthOfField, transparentColor, &__ctx, __del, __cookie);
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, &__ctx, __del, __cookie);
     }
 
     ::Streamer::bytes end_getBitmap(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
@@ -476,9 +425,7 @@ class BitmapProvider : virtual public ::IceDelegate::Ice::Object
 {
 public:
 
-    virtual void setCamera(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*) = 0;
-
-    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*) = 0;
+    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*) = 0;
 
     virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Context*) = 0;
 };
@@ -498,9 +445,7 @@ class BitmapProvider : virtual public ::IceDelegate::Streamer::BitmapProvider,
 {
 public:
 
-    virtual void setCamera(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
-
-    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
+    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
 
     virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Context*);
 };
@@ -520,9 +465,7 @@ class BitmapProvider : virtual public ::IceDelegate::Streamer::BitmapProvider,
 {
 public:
 
-    virtual void setCamera(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
-
-    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
+    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
 
     virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Context*);
 };
@@ -548,10 +491,7 @@ public:
     virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
     static const ::std::string& ice_staticId();
 
-    virtual void setCamera(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Current& = ::Ice::Current()) = 0;
-    ::Ice::DispatchStatus ___setCamera(::IceInternal::Incoming&, const ::Ice::Current&);
-
-    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___getBitmap(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
@@ -582,88 +522,6 @@ inline bool operator<(const BitmapProvider& l, const BitmapProvider& r)
 
 namespace Streamer
 {
-
-template<class T>
-class CallbackNC_BitmapProvider_setCamera : public Callback_BitmapProvider_setCamera_Base, public ::IceInternal::OnewayCallbackNC<T>
-{
-public:
-
-    typedef IceUtil::Handle<T> TPtr;
-
-    typedef void (T::*Exception)(const ::Ice::Exception&);
-    typedef void (T::*Sent)(bool);
-    typedef void (T::*Response)();
-
-    CallbackNC_BitmapProvider_setCamera(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
-        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
-    {
-    }
-};
-
-template<class T> Callback_BitmapProvider_setCameraPtr
-newCallback_BitmapProvider_setCamera(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
-{
-    return new CallbackNC_BitmapProvider_setCamera<T>(instance, cb, excb, sentcb);
-}
-
-template<class T> Callback_BitmapProvider_setCameraPtr
-newCallback_BitmapProvider_setCamera(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
-{
-    return new CallbackNC_BitmapProvider_setCamera<T>(instance, 0, excb, sentcb);
-}
-
-template<class T> Callback_BitmapProvider_setCameraPtr
-newCallback_BitmapProvider_setCamera(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
-{
-    return new CallbackNC_BitmapProvider_setCamera<T>(instance, cb, excb, sentcb);
-}
-
-template<class T> Callback_BitmapProvider_setCameraPtr
-newCallback_BitmapProvider_setCamera(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
-{
-    return new CallbackNC_BitmapProvider_setCamera<T>(instance, 0, excb, sentcb);
-}
-
-template<class T, typename CT>
-class Callback_BitmapProvider_setCamera : public Callback_BitmapProvider_setCamera_Base, public ::IceInternal::OnewayCallback<T, CT>
-{
-public:
-
-    typedef IceUtil::Handle<T> TPtr;
-
-    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
-    typedef void (T::*Sent)(bool , const CT&);
-    typedef void (T::*Response)(const CT&);
-
-    Callback_BitmapProvider_setCamera(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
-        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
-    {
-    }
-};
-
-template<class T, typename CT> Callback_BitmapProvider_setCameraPtr
-newCallback_BitmapProvider_setCamera(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
-{
-    return new Callback_BitmapProvider_setCamera<T, CT>(instance, cb, excb, sentcb);
-}
-
-template<class T, typename CT> Callback_BitmapProvider_setCameraPtr
-newCallback_BitmapProvider_setCamera(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
-{
-    return new Callback_BitmapProvider_setCamera<T, CT>(instance, 0, excb, sentcb);
-}
-
-template<class T, typename CT> Callback_BitmapProvider_setCameraPtr
-newCallback_BitmapProvider_setCamera(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
-{
-    return new Callback_BitmapProvider_setCamera<T, CT>(instance, cb, excb, sentcb);
-}
-
-template<class T, typename CT> Callback_BitmapProvider_setCameraPtr
-newCallback_BitmapProvider_setCamera(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
-{
-    return new Callback_BitmapProvider_setCamera<T, CT>(instance, 0, excb, sentcb);
-}
 
 template<class T>
 class CallbackNC_BitmapProvider_getBitmap : public Callback_BitmapProvider_getBitmap_Base, public ::IceInternal::TwowayCallbackNC<T>

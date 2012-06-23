@@ -37,8 +37,6 @@
 #   endif
 #endif
 
-static const ::std::string __Streamer__BitmapProvider__setCamera_name = "setCamera";
-
 static const ::std::string __Streamer__BitmapProvider__getBitmap_name = "getBitmap";
 
 static const ::std::string __Streamer__BitmapProvider__helloWorld_name = "helloWorld";
@@ -62,66 +60,8 @@ Streamer::__read(::IceInternal::BasicStream* __is, ::Streamer::BitmapProviderPrx
     }
 }
 
-void
-IceProxy::Streamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __ctx)
-{
-    int __cnt = 0;
-    while(true)
-    {
-        ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
-        try
-        {
-            __delBase = __getDelegate(false);
-            ::IceDelegate::Streamer::BitmapProvider* __del = dynamic_cast< ::IceDelegate::Streamer::BitmapProvider*>(__delBase.get());
-            __del->setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, __ctx);
-            return;
-        }
-        catch(const ::IceInternal::LocalExceptionWrapper& __ex)
-        {
-            __handleExceptionWrapper(__delBase, __ex);
-        }
-        catch(const ::Ice::LocalException& __ex)
-        {
-            __handleException(__delBase, __ex, true, __cnt);
-        }
-    }
-}
-
-::Ice::AsyncResultPtr
-IceProxy::Streamer::BitmapProvider::begin_setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
-{
-    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Streamer__BitmapProvider__setCamera_name, __del, __cookie);
-    try
-    {
-        __result->__prepare(__Streamer__BitmapProvider__setCamera_name, ::Ice::Normal, __ctx);
-        ::IceInternal::BasicStream* __os = __result->__getOs();
-        __os->write(ex);
-        __os->write(ey);
-        __os->write(ez);
-        __os->write(dx);
-        __os->write(dy);
-        __os->write(dz);
-        __os->write(ax);
-        __os->write(ay);
-        __os->write(az);
-        __os->endWriteEncaps();
-        __result->__send(true);
-    }
-    catch(const ::Ice::LocalException& __ex)
-    {
-        __result->__exceptionAsync(__ex);
-    }
-    return __result;
-}
-
-void
-IceProxy::Streamer::BitmapProvider::end_setCamera(const ::Ice::AsyncResultPtr& __result)
-{
-    __end(__result, __Streamer__BitmapProvider__setCamera_name);
-}
-
 ::Streamer::bytes
-IceProxy::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __ctx)
+IceProxy::Streamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __ctx)
 {
     int __cnt = 0;
     while(true)
@@ -132,7 +72,7 @@ IceProxy::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Float d
             __checkTwowayOnly(__Streamer__BitmapProvider__getBitmap_name);
             __delBase = __getDelegate(false);
             ::IceDelegate::Streamer::BitmapProvider* __del = dynamic_cast< ::IceDelegate::Streamer::BitmapProvider*>(__delBase.get());
-            return __del->getBitmap(timer, depthOfField, transparentColor, __ctx);
+            return __del->getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, __ctx);
         }
         catch(const ::IceInternal::LocalExceptionWrapper& __ex)
         {
@@ -146,7 +86,7 @@ IceProxy::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Float d
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::Streamer::BitmapProvider::begin_getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::Streamer::BitmapProvider::begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     __checkAsyncTwowayOnly(__Streamer__BitmapProvider__getBitmap_name);
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __Streamer__BitmapProvider__getBitmap_name, __del, __cookie);
@@ -154,6 +94,15 @@ IceProxy::Streamer::BitmapProvider::begin_getBitmap(::Ice::Float timer, ::Ice::F
     {
         __result->__prepare(__Streamer__BitmapProvider__getBitmap_name, ::Ice::Normal, __ctx);
         ::IceInternal::BasicStream* __os = __result->__getOs();
+        __os->write(ex);
+        __os->write(ey);
+        __os->write(ez);
+        __os->write(dx);
+        __os->write(dy);
+        __os->write(dz);
+        __os->write(ax);
+        __os->write(ay);
+        __os->write(az);
         __os->write(timer);
         __os->write(depthOfField);
         __os->write(transparentColor);
@@ -284,10 +233,10 @@ IceProxy::Streamer::BitmapProvider::__newInstance() const
     return new BitmapProvider;
 }
 
-void
-IceDelegateM::Streamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __context)
+::Streamer::bytes
+IceDelegateM::Streamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __context)
 {
-    ::IceInternal::Outgoing __og(__handler.get(), __Streamer__BitmapProvider__setCamera_name, ::Ice::Normal, __context);
+    ::IceInternal::Outgoing __og(__handler.get(), __Streamer__BitmapProvider__getBitmap_name, ::Ice::Normal, __context);
     try
     {
         ::IceInternal::BasicStream* __os = __og.os();
@@ -300,44 +249,6 @@ IceDelegateM::Streamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float 
         __os->write(ax);
         __os->write(ay);
         __os->write(az);
-    }
-    catch(const ::Ice::LocalException& __ex)
-    {
-        __og.abort(__ex);
-    }
-    bool __ok = __og.invoke();
-    if(!__og.is()->b.empty())
-    {
-        try
-        {
-            if(!__ok)
-            {
-                try
-                {
-                    __og.throwUserException();
-                }
-                catch(const ::Ice::UserException& __ex)
-                {
-                    ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
-                    throw __uue;
-                }
-            }
-            __og.is()->skipEmptyEncaps();
-        }
-        catch(const ::Ice::LocalException& __ex)
-        {
-            throw ::IceInternal::LocalExceptionWrapper(__ex, false);
-        }
-    }
-}
-
-::Streamer::bytes
-IceDelegateM::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __context)
-{
-    ::IceInternal::Outgoing __og(__handler.get(), __Streamer__BitmapProvider__getBitmap_name, ::Ice::Normal, __context);
-    try
-    {
-        ::IceInternal::BasicStream* __os = __og.os();
         __os->write(timer);
         __os->write(depthOfField);
         __os->write(transparentColor);
@@ -417,15 +328,16 @@ IceDelegateM::Streamer::BitmapProvider::helloWorld(const ::std::string& somethin
     }
 }
 
-void
-IceDelegateD::Streamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Context* __context)
+::Streamer::bytes
+IceDelegateD::Streamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __context)
 {
     class _DirectI : public ::IceInternal::Direct
     {
     public:
 
-        _DirectI(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::Ice::Current& __current) : 
+        _DirectI(::Streamer::bytes& __result, ::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
+            _result(__result),
             _m_ex(ex),
             _m_ey(ey),
             _m_ez(ez),
@@ -434,79 +346,7 @@ IceDelegateD::Streamer::BitmapProvider::setCamera(::Ice::Float ex, ::Ice::Float 
             _m_dz(dz),
             _m_ax(ax),
             _m_ay(ay),
-            _m_az(az)
-        {
-        }
-        
-        virtual ::Ice::DispatchStatus
-        run(::Ice::Object* object)
-        {
-            ::Streamer::BitmapProvider* servant = dynamic_cast< ::Streamer::BitmapProvider*>(object);
-            if(!servant)
-            {
-                throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
-            }
-            servant->setCamera(_m_ex, _m_ey, _m_ez, _m_dx, _m_dy, _m_dz, _m_ax, _m_ay, _m_az, _current);
-            return ::Ice::DispatchOK;
-        }
-        
-    private:
-        
-        ::Ice::Float _m_ex;
-        ::Ice::Float _m_ey;
-        ::Ice::Float _m_ez;
-        ::Ice::Float _m_dx;
-        ::Ice::Float _m_dy;
-        ::Ice::Float _m_dz;
-        ::Ice::Float _m_ax;
-        ::Ice::Float _m_ay;
-        ::Ice::Float _m_az;
-    };
-    
-    ::Ice::Current __current;
-    __initCurrent(__current, __Streamer__BitmapProvider__setCamera_name, ::Ice::Normal, __context);
-    try
-    {
-        _DirectI __direct(ex, ey, ez, dx, dy, dz, ax, ay, az, __current);
-        try
-        {
-            __direct.servant()->__collocDispatch(__direct);
-        }
-        catch(...)
-        {
-            __direct.destroy();
-            throw;
-        }
-        __direct.destroy();
-    }
-    catch(const ::Ice::SystemException&)
-    {
-        throw;
-    }
-    catch(const ::IceInternal::LocalExceptionWrapper&)
-    {
-        throw;
-    }
-    catch(const ::std::exception& __ex)
-    {
-        ::IceInternal::LocalExceptionWrapper::throwWrapper(__ex);
-    }
-    catch(...)
-    {
-        throw ::IceInternal::LocalExceptionWrapper(::Ice::UnknownException(__FILE__, __LINE__, "unknown c++ exception"), false);
-    }
-}
-
-::Streamer::bytes
-IceDelegateD::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __context)
-{
-    class _DirectI : public ::IceInternal::Direct
-    {
-    public:
-
-        _DirectI(::Streamer::bytes& __result, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Current& __current) : 
-            ::IceInternal::Direct(__current),
-            _result(__result),
+            _m_az(az),
             _m_timer(timer),
             _m_depthOfField(depthOfField),
             _m_transparentColor(transparentColor)
@@ -521,13 +361,22 @@ IceDelegateD::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Flo
             {
                 throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
             }
-            _result = servant->getBitmap(_m_timer, _m_depthOfField, _m_transparentColor, _current);
+            _result = servant->getBitmap(_m_ex, _m_ey, _m_ez, _m_dx, _m_dy, _m_dz, _m_ax, _m_ay, _m_az, _m_timer, _m_depthOfField, _m_transparentColor, _current);
             return ::Ice::DispatchOK;
         }
         
     private:
         
         ::Streamer::bytes& _result;
+        ::Ice::Float _m_ex;
+        ::Ice::Float _m_ey;
+        ::Ice::Float _m_ez;
+        ::Ice::Float _m_dx;
+        ::Ice::Float _m_dy;
+        ::Ice::Float _m_dz;
+        ::Ice::Float _m_ax;
+        ::Ice::Float _m_ay;
+        ::Ice::Float _m_az;
         ::Ice::Float _m_timer;
         ::Ice::Float _m_depthOfField;
         ::Ice::Float _m_transparentColor;
@@ -538,7 +387,7 @@ IceDelegateD::Streamer::BitmapProvider::getBitmap(::Ice::Float timer, ::Ice::Flo
     ::Streamer::bytes __result;
     try
     {
-        _DirectI __direct(__result, timer, depthOfField, transparentColor, __current);
+        _DirectI __direct(__result, ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, __current);
         try
         {
             __direct.servant()->__collocDispatch(__direct);
@@ -675,7 +524,7 @@ Streamer::BitmapProvider::ice_staticId()
 }
 
 ::Ice::DispatchStatus
-Streamer::BitmapProvider::___setCamera(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+Streamer::BitmapProvider::___getBitmap(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
 {
     __checkMode(::Ice::Normal, __current.mode);
     ::IceInternal::BasicStream* __is = __inS.is();
@@ -689,6 +538,9 @@ Streamer::BitmapProvider::___setCamera(::IceInternal::Incoming& __inS, const ::I
     ::Ice::Float ax;
     ::Ice::Float ay;
     ::Ice::Float az;
+    ::Ice::Float timer;
+    ::Ice::Float depthOfField;
+    ::Ice::Float transparentColor;
     __is->read(ex);
     __is->read(ey);
     __is->read(ez);
@@ -698,26 +550,12 @@ Streamer::BitmapProvider::___setCamera(::IceInternal::Incoming& __inS, const ::I
     __is->read(ax);
     __is->read(ay);
     __is->read(az);
-    __is->endReadEncaps();
-    setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, __current);
-    return ::Ice::DispatchOK;
-}
-
-::Ice::DispatchStatus
-Streamer::BitmapProvider::___getBitmap(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
-{
-    __checkMode(::Ice::Normal, __current.mode);
-    ::IceInternal::BasicStream* __is = __inS.is();
-    __is->startReadEncaps();
-    ::Ice::Float timer;
-    ::Ice::Float depthOfField;
-    ::Ice::Float transparentColor;
     __is->read(timer);
     __is->read(depthOfField);
     __is->read(transparentColor);
     __is->endReadEncaps();
     ::IceInternal::BasicStream* __os = __inS.os();
-    ::Streamer::bytes __ret = getBitmap(timer, depthOfField, transparentColor, __current);
+    ::Streamer::bytes __ret = getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, __current);
     if(__ret.size() == 0)
     {
         __os->writeSize(0);
@@ -751,14 +589,13 @@ static ::std::string __Streamer__BitmapProvider_all[] =
     "ice_id",
     "ice_ids",
     "ice_isA",
-    "ice_ping",
-    "setCamera"
+    "ice_ping"
 };
 
 ::Ice::DispatchStatus
 Streamer::BitmapProvider::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< ::std::string*, ::std::string*> r = ::std::equal_range(__Streamer__BitmapProvider_all, __Streamer__BitmapProvider_all + 7, current.operation);
+    ::std::pair< ::std::string*, ::std::string*> r = ::std::equal_range(__Streamer__BitmapProvider_all, __Streamer__BitmapProvider_all + 6, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -789,10 +626,6 @@ Streamer::BitmapProvider::__dispatch(::IceInternal::Incoming& in, const ::Ice::C
         case 5:
         {
             return ___ice_ping(in, current);
-        }
-        case 6:
-        {
-            return ___setCamera(in, current);
         }
     }
 

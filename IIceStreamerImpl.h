@@ -13,13 +13,10 @@ public:
 
 public:
 
-   void setCamera(
+   ::Streamer::bytes getBitmap(
       ::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, 
       ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, 
       ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az,
-      const ::Ice::Current& );
-
-   ::Streamer::bytes getBitmap(
       ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, 
       const ::Ice::Current& );
 

@@ -45,9 +45,6 @@ namespace Streamer
 namespace Streamer
 {
     [_System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.4.2")]
-    public delegate void Callback_BitmapProvider_setCamera();
-
-    [_System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.4.2")]
     public delegate void Callback_BitmapProvider_getBitmap(byte[] ret__);
 
     [_System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.4.2")]
@@ -59,25 +56,14 @@ namespace Streamer
     [_System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.4.2")]
     public interface BitmapProviderPrx : Ice.ObjectPrx
     {
-        void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az);
-        void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> context__);
+        byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor);
+        byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__);
 
-        Ice.AsyncResult<Streamer.Callback_BitmapProvider_setCamera> begin_setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az);
-        Ice.AsyncResult<Streamer.Callback_BitmapProvider_setCamera> begin_setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> ctx__);
+        Ice.AsyncResult<Streamer.Callback_BitmapProvider_getBitmap> begin_getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor);
+        Ice.AsyncResult<Streamer.Callback_BitmapProvider_getBitmap> begin_getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> ctx__);
 
-        Ice.AsyncResult begin_setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, Ice.AsyncCallback cb__, object cookie__);
-        Ice.AsyncResult begin_setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> ctx__, Ice.AsyncCallback cb__, object cookie__);
-
-        void end_setCamera(Ice.AsyncResult r__);
-
-        byte[] getBitmap(float timer, float depthOfField, float transparentColor);
-        byte[] getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__);
-
-        Ice.AsyncResult<Streamer.Callback_BitmapProvider_getBitmap> begin_getBitmap(float timer, float depthOfField, float transparentColor);
-        Ice.AsyncResult<Streamer.Callback_BitmapProvider_getBitmap> begin_getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> ctx__);
-
-        Ice.AsyncResult begin_getBitmap(float timer, float depthOfField, float transparentColor, Ice.AsyncCallback cb__, object cookie__);
-        Ice.AsyncResult begin_getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> ctx__, Ice.AsyncCallback cb__, object cookie__);
+        Ice.AsyncResult begin_getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, Ice.AsyncCallback cb__, object cookie__);
+        Ice.AsyncResult begin_getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> ctx__, Ice.AsyncCallback cb__, object cookie__);
 
         byte[] end_getBitmap(Ice.AsyncResult r__);
 
@@ -99,9 +85,7 @@ namespace Streamer
     [_System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.4.2")]
     public interface BitmapProviderOperations_
     {
-        void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, Ice.Current current__);
-
-        byte[] getBitmap(float timer, float depthOfField, float transparentColor, Ice.Current current__);
+        byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, Ice.Current current__);
 
         string helloWorld(string something, Ice.Current current__);
     }
@@ -109,9 +93,7 @@ namespace Streamer
     [_System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.4.2")]
     public interface BitmapProviderOperationsNC_
     {
-        void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az);
-
-        byte[] getBitmap(float timer, float depthOfField, float transparentColor);
+        byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor);
 
         string helloWorld(string something);
     }
@@ -141,17 +123,17 @@ namespace Streamer
     {
         #region Synchronous operations
 
-        public byte[] getBitmap(float timer, float depthOfField, float transparentColor)
+        public byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor)
         {
-            return getBitmap(timer, depthOfField, transparentColor, null, false);
+            return getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, null, false);
         }
 
-        public byte[] getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__)
+        public byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__)
         {
-            return getBitmap(timer, depthOfField, transparentColor, context__, true);
+            return getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, context__, true);
         }
 
-        private byte[] getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__, bool explicitContext__)
+        private byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__, bool explicitContext__)
         {
             if(explicitContext__ && context__ == null)
             {
@@ -166,7 +148,7 @@ namespace Streamer
                     checkTwowayOnly__("getBitmap");
                     delBase__ = getDelegate__(false);
                     BitmapProviderDel_ del__ = (BitmapProviderDel_)delBase__;
-                    return del__.getBitmap(timer, depthOfField, transparentColor, context__);
+                    return del__.getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, context__);
                 }
                 catch(IceInternal.LocalExceptionWrapper ex__)
                 {
@@ -217,66 +199,28 @@ namespace Streamer
             }
         }
 
-        public void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az)
-        {
-            setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, null, false);
-        }
-
-        public void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> context__)
-        {
-            setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, context__, true);
-        }
-
-        private void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> context__, bool explicitContext__)
-        {
-            if(explicitContext__ && context__ == null)
-            {
-                context__ = emptyContext_;
-            }
-            int cnt__ = 0;
-            while(true)
-            {
-                Ice.ObjectDel_ delBase__ = null;
-                try
-                {
-                    delBase__ = getDelegate__(false);
-                    BitmapProviderDel_ del__ = (BitmapProviderDel_)delBase__;
-                    del__.setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, context__);
-                    return;
-                }
-                catch(IceInternal.LocalExceptionWrapper ex__)
-                {
-                    handleExceptionWrapper__(delBase__, ex__);
-                }
-                catch(Ice.LocalException ex__)
-                {
-                    handleException__(delBase__, ex__, true, ref cnt__);
-                }
-            }
-        }
-
         #endregion
 
         #region Asynchronous operations
 
-        public Ice.AsyncResult<Streamer.Callback_BitmapProvider_getBitmap> begin_getBitmap(float timer, float depthOfField, float transparentColor)
+        public Ice.AsyncResult<Streamer.Callback_BitmapProvider_getBitmap> begin_getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor)
         {
-            return begin_getBitmap(timer, depthOfField, transparentColor, null, false, null, null);
+            return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, null, false, null, null);
         }
 
-        public Ice.AsyncResult<Streamer.Callback_BitmapProvider_getBitmap> begin_getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> ctx__)
+        public Ice.AsyncResult<Streamer.Callback_BitmapProvider_getBitmap> begin_getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> ctx__)
         {
-            return begin_getBitmap(timer, depthOfField, transparentColor, ctx__, true, null, null);
+            return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, ctx__, true, null, null);
         }
 
-        public Ice.AsyncResult begin_getBitmap(float timer, float depthOfField, float transparentColor, Ice.AsyncCallback cb__, object cookie__)
+        public Ice.AsyncResult begin_getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, Ice.AsyncCallback cb__, object cookie__)
         {
-            return begin_getBitmap(timer, depthOfField, transparentColor, null, false, cb__, cookie__);
+            return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, null, false, cb__, cookie__);
         }
 
-        public Ice.AsyncResult begin_getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> ctx__, Ice.AsyncCallback cb__, object cookie__)
+        public Ice.AsyncResult begin_getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> ctx__, Ice.AsyncCallback cb__, object cookie__)
         {
-            return begin_getBitmap(timer, depthOfField, transparentColor, ctx__, true, cb__, cookie__);
+            return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, ctx__, true, cb__, cookie__);
         }
 
         private const string __getBitmap_name = "getBitmap";
@@ -304,7 +248,7 @@ namespace Streamer
             return ret__;
         }
 
-        private Ice.AsyncResult<Streamer.Callback_BitmapProvider_getBitmap> begin_getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> ctx__, bool explicitContext__, Ice.AsyncCallback cb__, object cookie__)
+        private Ice.AsyncResult<Streamer.Callback_BitmapProvider_getBitmap> begin_getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> ctx__, bool explicitContext__, Ice.AsyncCallback cb__, object cookie__)
         {
             checkAsyncTwowayOnly__(__getBitmap_name);
             IceInternal.TwowayOutgoingAsync<Streamer.Callback_BitmapProvider_getBitmap> result__ =  new IceInternal.TwowayOutgoingAsync<Streamer.Callback_BitmapProvider_getBitmap>(this, __getBitmap_name, getBitmap_completed__, cookie__);
@@ -316,6 +260,15 @@ namespace Streamer
             {
                 result__.prepare__(__getBitmap_name, Ice.OperationMode.Normal, ctx__, explicitContext__);
                 IceInternal.BasicStream os__ = result__.ostr__;
+                os__.writeFloat(ex);
+                os__.writeFloat(ey);
+                os__.writeFloat(ez);
+                os__.writeFloat(dx);
+                os__.writeFloat(dy);
+                os__.writeFloat(dz);
+                os__.writeFloat(ax);
+                os__.writeFloat(ay);
+                os__.writeFloat(az);
                 os__.writeFloat(timer);
                 os__.writeFloat(depthOfField);
                 os__.writeFloat(transparentColor);
@@ -436,71 +389,6 @@ namespace Streamer
             if(cb__ != null)
             {
                 cb__(ret__);
-            }
-        }
-
-        public Ice.AsyncResult<Streamer.Callback_BitmapProvider_setCamera> begin_setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az)
-        {
-            return begin_setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, null, false, null, null);
-        }
-
-        public Ice.AsyncResult<Streamer.Callback_BitmapProvider_setCamera> begin_setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> ctx__)
-        {
-            return begin_setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, ctx__, true, null, null);
-        }
-
-        public Ice.AsyncResult begin_setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, Ice.AsyncCallback cb__, object cookie__)
-        {
-            return begin_setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, null, false, cb__, cookie__);
-        }
-
-        public Ice.AsyncResult begin_setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> ctx__, Ice.AsyncCallback cb__, object cookie__)
-        {
-            return begin_setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, ctx__, true, cb__, cookie__);
-        }
-
-        private const string __setCamera_name = "setCamera";
-
-        public void end_setCamera(Ice.AsyncResult r__)
-        {
-            end__(r__, __setCamera_name);
-        }
-
-        private Ice.AsyncResult<Streamer.Callback_BitmapProvider_setCamera> begin_setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> ctx__, bool explicitContext__, Ice.AsyncCallback cb__, object cookie__)
-        {
-            IceInternal.OnewayOutgoingAsync<Streamer.Callback_BitmapProvider_setCamera> result__ = new IceInternal.OnewayOutgoingAsync<Streamer.Callback_BitmapProvider_setCamera>(this, __setCamera_name, setCamera_completed__, cookie__);
-            if(cb__ != null)
-            {
-                result__.whenCompletedWithAsyncCallback(cb__);
-            }
-            try
-            {
-                result__.prepare__(__setCamera_name, Ice.OperationMode.Normal, ctx__, explicitContext__);
-                IceInternal.BasicStream os__ = result__.ostr__;
-                os__.writeFloat(ex);
-                os__.writeFloat(ey);
-                os__.writeFloat(ez);
-                os__.writeFloat(dx);
-                os__.writeFloat(dy);
-                os__.writeFloat(dz);
-                os__.writeFloat(ax);
-                os__.writeFloat(ay);
-                os__.writeFloat(az);
-                os__.endWriteEncaps();
-                result__.send__(true);
-            }
-            catch(Ice.LocalException ex__)
-            {
-                result__.exceptionAsync__(ex__);
-            }
-            return result__;
-        }
-
-        private void setCamera_completed__(Streamer.Callback_BitmapProvider_setCamera cb__)
-        {
-            if(cb__ != null)
-            {
-                cb__();
             }
         }
 
@@ -663,9 +551,7 @@ namespace Streamer
     [_System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.4.2")]
     public interface BitmapProviderDel_ : Ice.ObjectDel_
     {
-        void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> context__);
-
-        byte[] getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__);
+        byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__);
 
         string helloWorld(string something, _System.Collections.Generic.Dictionary<string, string> context__);
     }
@@ -677,7 +563,7 @@ namespace Streamer
     [_System.CodeDom.Compiler.GeneratedCodeAttribute("slice2cs", "3.4.2")]
     public sealed class BitmapProviderDelM_ : Ice.ObjectDelM_, BitmapProviderDel_
     {
-        public byte[] getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__)
+        public byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__)
         {
             IceInternal.Outgoing og__ = handler__.getOutgoing("getBitmap", Ice.OperationMode.Normal, context__);
             try
@@ -685,6 +571,15 @@ namespace Streamer
                 try
                 {
                     IceInternal.BasicStream os__ = og__.ostr();
+                    os__.writeFloat(ex);
+                    os__.writeFloat(ey);
+                    os__.writeFloat(ez);
+                    os__.writeFloat(dx);
+                    os__.writeFloat(dy);
+                    os__.writeFloat(dz);
+                    os__.writeFloat(ax);
+                    os__.writeFloat(ay);
+                    os__.writeFloat(az);
                     os__.writeFloat(timer);
                     os__.writeFloat(depthOfField);
                     os__.writeFloat(transparentColor);
@@ -770,58 +665,6 @@ namespace Streamer
                 handler__.reclaimOutgoing(og__);
             }
         }
-
-        public void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> context__)
-        {
-            IceInternal.Outgoing og__ = handler__.getOutgoing("setCamera", Ice.OperationMode.Normal, context__);
-            try
-            {
-                try
-                {
-                    IceInternal.BasicStream os__ = og__.ostr();
-                    os__.writeFloat(ex);
-                    os__.writeFloat(ey);
-                    os__.writeFloat(ez);
-                    os__.writeFloat(dx);
-                    os__.writeFloat(dy);
-                    os__.writeFloat(dz);
-                    os__.writeFloat(ax);
-                    os__.writeFloat(ay);
-                    os__.writeFloat(az);
-                }
-                catch(Ice.LocalException ex__)
-                {
-                    og__.abort(ex__);
-                }
-                bool ok__ = og__.invoke();
-                if(!og__.istr().isEmpty())
-                {
-                    try
-                    {
-                        if(!ok__)
-                        {
-                            try
-                            {
-                                og__.throwUserException();
-                            }
-                            catch(Ice.UserException ex__)
-                            {
-                                throw new Ice.UnknownUserException(ex__.ice_name(), ex__);
-                            }
-                        }
-                        og__.istr().skipEmptyEncaps();
-                    }
-                    catch(Ice.LocalException ex__)
-                    {
-                        throw new IceInternal.LocalExceptionWrapper(ex__, false);
-                    }
-                }
-            }
-            finally
-            {
-                handler__.reclaimOutgoing(og__);
-            }
-        }
     }
 }
 
@@ -832,7 +675,7 @@ namespace Streamer
     public sealed class BitmapProviderDelD_ : Ice.ObjectDelD_, BitmapProviderDel_
     {
         [_System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031")]
-        public byte[] getBitmap(float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__)
+        public byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, _System.Collections.Generic.Dictionary<string, string> context__)
         {
             Ice.Current current__ = new Ice.Current();
             initCurrent__(ref current__, "getBitmap", Ice.OperationMode.Normal, context__);
@@ -848,7 +691,7 @@ namespace Streamer
                 {
                     throw new Ice.OperationNotExistException(current__.id, current__.facet, current__.operation);
                 }
-                result__ = servant__.getBitmap(timer, depthOfField, transparentColor, current__);
+                result__ = servant__.getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, current__);
                 return Ice.DispatchStatus.DispatchOK;
             };
             IceInternal.Direct direct__ = null;
@@ -920,49 +763,6 @@ namespace Streamer
             }
             return result__;
         }
-
-        [_System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031")]
-        public void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, _System.Collections.Generic.Dictionary<string, string> context__)
-        {
-            Ice.Current current__ = new Ice.Current();
-            initCurrent__(ref current__, "setCamera", Ice.OperationMode.Normal, context__);
-            IceInternal.Direct.RunDelegate run__ = delegate(Ice.Object obj__)
-            {
-                BitmapProvider servant__ = null;
-                try
-                {
-                    servant__ = (BitmapProvider)obj__;
-                }
-                catch(_System.InvalidCastException)
-                {
-                    throw new Ice.OperationNotExistException(current__.id, current__.facet, current__.operation);
-                }
-                servant__.setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, current__);
-                return Ice.DispatchStatus.DispatchOK;
-            };
-            IceInternal.Direct direct__ = null;
-            try
-            {
-                direct__ = new IceInternal.Direct(current__, run__);
-                try
-                {
-                    Ice.DispatchStatus status__ = direct__.servant().collocDispatch__(direct__);
-                    _System.Diagnostics.Debug.Assert(status__ == Ice.DispatchStatus.DispatchOK);
-                }
-                finally
-                {
-                    direct__.destroy();
-                }
-            }
-            catch(Ice.SystemException)
-            {
-                throw;
-            }
-            catch(_System.Exception ex__)
-            {
-                IceInternal.LocalExceptionWrapper.throwWrapper(ex__);
-            }
-        }
     }
 }
 
@@ -974,19 +774,12 @@ namespace Streamer
     {
         #region Slice operations
 
-        public void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az)
+        public byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor)
         {
-            setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, Ice.ObjectImpl.defaultCurrent);
+            return getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, Ice.ObjectImpl.defaultCurrent);
         }
 
-        public abstract void setCamera(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, Ice.Current current__);
-
-        public byte[] getBitmap(float timer, float depthOfField, float transparentColor)
-        {
-            return getBitmap(timer, depthOfField, transparentColor, Ice.ObjectImpl.defaultCurrent);
-        }
-
-        public abstract byte[] getBitmap(float timer, float depthOfField, float transparentColor, Ice.Current current__);
+        public abstract byte[] getBitmap(float ex, float ey, float ez, float dx, float dy, float dz, float ax, float ay, float az, float timer, float depthOfField, float transparentColor, Ice.Current current__);
 
         public string helloWorld(string something)
         {
@@ -1045,7 +838,7 @@ namespace Streamer
         #region Operation dispatch
 
         [_System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-        public static Ice.DispatchStatus setCamera___(BitmapProvider obj__, IceInternal.Incoming inS__, Ice.Current current__)
+        public static Ice.DispatchStatus getBitmap___(BitmapProvider obj__, IceInternal.Incoming inS__, Ice.Current current__)
         {
             checkMode__(Ice.OperationMode.Normal, current__.mode);
             IceInternal.BasicStream is__ = inS__.istr();
@@ -1068,17 +861,6 @@ namespace Streamer
             ay = is__.readFloat();
             float az;
             az = is__.readFloat();
-            is__.endReadEncaps();
-            obj__.setCamera(ex, ey, ez, dx, dy, dz, ax, ay, az, current__);
-            return Ice.DispatchStatus.DispatchOK;
-        }
-
-        [_System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-        public static Ice.DispatchStatus getBitmap___(BitmapProvider obj__, IceInternal.Incoming inS__, Ice.Current current__)
-        {
-            checkMode__(Ice.OperationMode.Normal, current__.mode);
-            IceInternal.BasicStream is__ = inS__.istr();
-            is__.startReadEncaps();
             float timer;
             timer = is__.readFloat();
             float depthOfField;
@@ -1087,7 +869,7 @@ namespace Streamer
             transparentColor = is__.readFloat();
             is__.endReadEncaps();
             IceInternal.BasicStream os__ = inS__.ostr();
-            byte[] ret__ = obj__.getBitmap(timer, depthOfField, transparentColor, current__);
+            byte[] ret__ = obj__.getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, current__);
             os__.writeByteSeq(ret__);
             return Ice.DispatchStatus.DispatchOK;
         }
@@ -1114,8 +896,7 @@ namespace Streamer
             "ice_id",
             "ice_ids",
             "ice_isA",
-            "ice_ping",
-            "setCamera"
+            "ice_ping"
         };
 
         public override Ice.DispatchStatus dispatch__(IceInternal.Incoming inS__, Ice.Current current__)
@@ -1151,10 +932,6 @@ namespace Streamer
                 case 5:
                 {
                     return ice_ping___(this, inS__, current__);
-                }
-                case 6:
-                {
-                    return setCamera___(this, inS__, current__);
                 }
             }
 

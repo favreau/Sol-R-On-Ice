@@ -248,18 +248,13 @@ void display()
 
 void timerEvent(int value)
 {
-   /*
-   animateSkeleton();
-   gpuKernel->setLamp( 0, 
-      gRoomWidth*0.8f*cos(0.1f*anim), gRoomHeight+100*sin(0.32f*anim), gRoomDepth*0.8f*sin(0.21f*anim), 
-      10.f, 0.f, 1.f, 1.f, 1.f, 1.f );
-
-   // Render scene
-   gpuKernel->render( ubImage, anim, gDepthOfField, gTransparentColor );
-   */
    try 
    {
-      Streamer::bytes bitmap = bitmapProvider->getBitmap( anim, gDepthOfField, gTransparentColor );
+      Streamer::bytes bitmap = bitmapProvider->getBitmap( 
+         gViewPos.x, gViewPos.y, gViewPos.z, 
+         gViewDir.x, gViewDir.y, gViewDir.z, 
+         gViewAngles.x, gViewAngles.y, gViewAngles.z,
+         anim, gDepthOfField, gTransparentColor );
       int c(0);
       for( int i(54); i<bitmap.size()-3; i+=3) {
          ubImage[c+0] = bitmap[i+2];
@@ -322,8 +317,8 @@ void mouse(int button, int state, int x, int y)
 	}
 	mouse_old_x = x;
 	mouse_old_y = y;
-	gViewAngles.x = 0.f;
-	gViewAngles.y = 0.f;
+	//gViewAngles.x = 0.f;
+	//gViewAngles.y = 0.f;
 }
 
 void motion(int x, int y)
@@ -348,8 +343,8 @@ void motion(int x, int y)
 		break;
 	case 2:
 		// Rotates the scene around X and Y axis
-		gViewAngles.y = -asin( (mouse_old_x-x) / 100.f );
-		gViewAngles.x = asin( (mouse_old_y-y) / 100.f );
+		gViewAngles.y += -asin( (mouse_old_x-x) / 100.f );
+		gViewAngles.x += asin( (mouse_old_y-y) / 100.f );
 		break;
 	case 4:
 		// Move gViewPos postion along X and Y axis
@@ -361,10 +356,6 @@ void motion(int x, int y)
 	}
 	mouse_old_x = x;
 	mouse_old_y = y;
-   bitmapProvider->setCamera( 
-      gViewPos.x, gViewPos.y, gViewPos.z, 
-      gViewDir.x, gViewDir.y, gViewDir.z, 
-      gViewAngles.x, gViewAngles.y, gViewAngles.z );
 
 }
 

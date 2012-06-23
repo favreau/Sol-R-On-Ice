@@ -30,39 +30,33 @@ using System.Drawing.Imaging;
 namespace Ice.wpf.client
 {
     /// <summary>
-    /// Interaction logic for HelloWindow.xaml
+    /// Interaction logic for RayTracerWindows.xaml
     /// </summary>
-    public partial class HelloWindow : Window
+    public partial class RayTracerWindow : Window
     {
 
         System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
-        System.Windows.Point previousPoint = new System.Windows.Point( 0, 0 );
-        System.Windows.Point currentPoint = new System.Windows.Point(0, 0);
+        private Ice.Communicator communicator_ = null;
+        private Streamer.BitmapProviderPrx bitmapProvider_ = null;
+        private bool _response = false;
+        private RayTracerWindow _window;
 
+
+        System.Windows.Point previousPoint = new System.Windows.Point(0, 0);
+        System.Windows.Point currentPoint = new System.Windows.Point(0, 0);
         static float _depthOfField = 0;
         static float _anglex = 0;
         static float _angley = 0;
         static float _exez = -1000;
-
-        public HelloWindow()
+        
+        public RayTracerWindow()
         {
             InitializeComponent();
             locateOnScreen(this);
 
             timer.Tick += new EventHandler(dispatcherTimer_Tick); // Everytime timer ticks, timer_Tick will be called
-            timer.Interval = new TimeSpan(100);                 // Timer will tick event/second
+            timer.Interval = new TimeSpan(1000);                   // Timer will tick event/second
             timer.Start();                                        // Start the timer
-        }
-
-        private void Window_Loaded(object sender, EventArgs e)
-        {
-            try
-            {
-            }
-            catch(Ice.LocalException ex)
-            {
-                handleException(ex);
-            }
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -76,30 +70,21 @@ namespace Ice.wpf.client
             communicator_ = null;
         }
 
-        class SayHelloCB
+        class BitmapProviderCB
         {
-            public SayHelloCB(HelloWindow window)
+            public Ice.AsyncResult _result = null;
+
+            public BitmapProviderCB(RayTracerWindow window)
             {
                 _window = window;
             }
 
-            public static Bitmap BytesToBitmap(byte[] byteArray)
-            {
-                using (MemoryStream ms = new MemoryStream(byteArray))
-                {
-                    Bitmap img = (Bitmap)System.Drawing.Image.FromStream(ms);
-                    return img;
-                }
-            }  
-
-            public void response()
+            public void getBitmapCB(byte[] bytes)
             {
                 lock (this)
                 {
                     Debug.Assert(!_response);
                     _response = true;
-
-                    byte[] bytes = _window.bitmapProvider_.getBitmap(0, _depthOfField, 0);
 
                     try
                     {
@@ -111,7 +96,7 @@ namespace Ice.wpf.client
                         b.StreamSource = stream;
                         b.EndInit();
                         
-                        _window.bitmapResult.Source = b;
+                        _window.bitmapDisplay.Source = b;
                     }
                     catch (System.Exception exMessage)
                     {
@@ -130,19 +115,8 @@ namespace Ice.wpf.client
                 }
             }
 
-            public void sent(bool sentSynchronously)
-            {
-                lock (this)
-                {
-                    if (_response)
-                    {
-                        return;
-                    }
-                }
-            }
-
             private bool _response = false;
-            private HelloWindow _window;
+            private RayTracerWindow _window;
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
@@ -153,7 +127,7 @@ namespace Ice.wpf.client
                 {
                     Ice.InitializationData initData = new Ice.InitializationData();
                     initData.properties = Ice.Util.createProperties();
-                    initData.properties.load("config.client");
+                    //initData.properties.load("config.client");
                     initData.dispatcher = delegate(System.Action action, Ice.Connection connection)
                     {
                         Dispatcher.BeginInvoke(DispatcherPriority.Normal, action);
@@ -168,14 +142,12 @@ namespace Ice.wpf.client
                     bitmapProvider_ = Streamer.BitmapProviderPrxHelper.uncheckedCast(prx);
                 }
 
-                SayHelloCB cb = new SayHelloCB(this);
-
-                bitmapProvider_.begin_setCamera(
+                BitmapProviderCB cb = new BitmapProviderCB(this);
+                cb._result = bitmapProvider_.begin_getBitmap(
                     0, 0, _exez,
                     0, 0, _exez+1000,
-                    _anglex, 
-                    _angley, 
-                    0).whenCompleted(cb.response, cb.exception).whenSent(cb.sent);
+                    _anglex, _angley, 0,
+                    0, _depthOfField, 0).whenCompleted(cb.getBitmapCB, cb.exception);
             }
             catch (Ice.LocalException ex)
             {
@@ -212,11 +184,6 @@ namespace Ice.wpf.client
             window.Top = (System.Windows.SystemParameters.PrimaryScreenHeight - window.Height) / 2;
         }
         
-        private Ice.Communicator communicator_ = null;
-        private Streamer.BitmapProviderPrx bitmapProvider_ = null;
-        private bool _response = false;
-        private HelloWindow _window;
-
         private void bitmapResult_ImageFailed(object sender, ExceptionRoutedEventArgs e)
         {
 
@@ -224,8 +191,8 @@ namespace Ice.wpf.client
 
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            _anglex = 0;
-            _angley = 0;
+            //_anglex = 0;
+            //_angley = 0;
             int x = (int)e.GetPosition(null).X;
             int y = (int)e.GetPosition(null).Y;
             if (e.MiddleButton == MouseButtonState.Pressed )
@@ -233,8 +200,8 @@ namespace Ice.wpf.client
                 previousPoint.X = x - this.Width / 2;
                 previousPoint.Y = y - this.Height / 2;
 
-                _anglex = -(float)(previousPoint.Y - currentPoint.Y) / 10000;
-                _angley = (float)(previousPoint.X - currentPoint.X) / 10000;
+                _anglex += -(float)(previousPoint.Y - currentPoint.Y) / 10000;
+                _angley += (float)(previousPoint.X - currentPoint.X) / 10000;
             }
             if (e.LeftButton == MouseButtonState.Pressed)
             {
@@ -246,6 +213,17 @@ namespace Ice.wpf.client
             }
             previousPoint.X = x;
             previousPoint.Y = y;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+            }
+            catch (Ice.LocalException ex)
+            {
+                handleException(ex);
+            }
         }
     }
 }

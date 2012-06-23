@@ -14,10 +14,17 @@ IIceStreamerImpl::~IIceStreamerImpl(void)
 }
 
 ::Streamer::bytes IIceStreamerImpl::getBitmap( 
+   ::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, 
+   ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, 
+   ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az,
    ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, 
    const Ice::Current & )
 {
-   //APPL_LOG_CONSOLE("getBitmap");
+   float4 eye = {ex, ey, ez, 0.f};
+   float4 direction = {dx, dy, dz, 0.f};
+   float4 angle = {ax, ay, az, 0.f};
+   cudaKernel_->setCamera( eye, direction, angle );
+
    cudaKernel_->render( bitmap_, timer, depthOfField, transparentColor );
    ::Streamer::bytes result;
    
@@ -67,20 +74,6 @@ IIceStreamerImpl::~IIceStreamerImpl(void)
    result.push_back(0);
    return result;
 }
-
-void IIceStreamerImpl::setCamera(
-   ::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, 
-   ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, 
-   ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az,
-   const ::Ice::Current& )
-{
-   //APPL_LOG_CONSOLE("setCamera");
-   float4 eye = {ex, ey, ez, 0.f};
-   float4 direction = {dx, dy, dz, 0.f};
-   float4 angle = {ax, ay, az, 0.f};
-   cudaKernel_->setCamera( eye, direction, angle );
-}
-
 
 std::string IIceStreamerImpl::helloWorld( 
    const std::string& something,

@@ -240,9 +240,9 @@ void CudaKernel::setCamera(
 {
 	m_viewPos   = eye;
 	m_viewDir   = dir;
-	m_angles.x  += angles.x;
-	m_angles.y  += angles.y;
-	m_angles.z  += angles.z;
+	m_angles.x  = angles.x;
+	m_angles.y  = angles.y;
+	m_angles.z  = angles.z;
 	m_draft     = m_initialDraft;
 }
 

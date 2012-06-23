@@ -7,13 +7,13 @@ module Streamer
 
    interface BitmapProvider
    {
-      void setCamera( 
+      bytes getBitmap(
          float ex, float ey, float ez, 
          float dx, float dy, float dz, 
-         float ax, float ay, float az );
-       bytes getBitmap(float timer, float depthOfField, float transparentColor);
+         float ax, float ay, float az,
+         float timer, float depthOfField, float transparentColor);
 
-	   string helloWorld( string something );
+      string helloWorld( string something );
    };
 
 };
