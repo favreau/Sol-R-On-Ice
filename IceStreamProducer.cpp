@@ -160,7 +160,8 @@ void IceStreamProducer::createTextures()
    {
       char tmp[5];
       sprintf_s(tmp, "%03d", i+1);
-      std::string filename("../../../Medias/trunk/Textures/256/");
+      //std::string filename("../../../Medias/trunk/Textures/256/");
+      std::string filename("./256/");
       filename += tmp;
       filename += ".bmp";
       cudaKernel_->addTexture(filename.c_str());

@@ -55,8 +55,6 @@ namespace Ice.wpf.client
             locateOnScreen(this);
 
             timer.Tick += new EventHandler(dispatcherTimer_Tick); // Everytime timer ticks, timer_Tick will be called
-            timer.Interval = new TimeSpan(1000);                   // Timer will tick event/second
-            timer.Start();                                        // Start the timer
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -123,31 +121,16 @@ namespace Ice.wpf.client
         {
             try
             {
-                if (communicator_ == null)
+                if (bitmapProvider_ != null)
                 {
-                    Ice.InitializationData initData = new Ice.InitializationData();
-                    initData.properties = Ice.Util.createProperties();
-                    //initData.properties.load("config.client");
-                    initData.dispatcher = delegate(System.Action action, Ice.Connection connection)
-                    {
-                        Dispatcher.BeginInvoke(DispatcherPriority.Normal, action);
-                    };
-                    communicator_ = Ice.Util.initialize(initData);
+                 
+                    BitmapProviderCB cb = new BitmapProviderCB(this);
+                    cb._result = bitmapProvider_.begin_getBitmap(
+                        0, 0, _exez,
+                        0, 0, _exez+1000,
+                        _anglex, _angley, 0,
+                        0, _depthOfField, 0).whenCompleted(cb.getBitmapCB, cb.exception);
                 }
-
-                if (bitmapProvider_ == null)
-                {
-                    Ice.ObjectPrx prx = communicator_.stringToProxy("IceStreamer:tcp -p 10000 -z");
-                    prx = prx.ice_timeout(1000);
-                    bitmapProvider_ = Streamer.BitmapProviderPrxHelper.uncheckedCast(prx);
-                }
-
-                BitmapProviderCB cb = new BitmapProviderCB(this);
-                cb._result = bitmapProvider_.begin_getBitmap(
-                    0, 0, _exez,
-                    0, 0, _exez+1000,
-                    _anglex, _angley, 0,
-                    0, _depthOfField, 0).whenCompleted(cb.getBitmapCB, cb.exception);
             }
             catch (Ice.LocalException ex)
             {
@@ -224,6 +207,30 @@ namespace Ice.wpf.client
             {
                 handleException(ex);
             }
+        }
+
+        private void goBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (communicator_ == null)
+            {
+                Ice.InitializationData initData = new Ice.InitializationData();
+                initData.properties = Ice.Util.createProperties();
+                initData.dispatcher = delegate(System.Action action, Ice.Connection connection)
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, action);
+                };
+                communicator_ = Ice.Util.initialize(initData);
+            }
+            if (bitmapProvider_ == null)
+            {
+                string connection = "IceStreamer:tcp -h " + tbIpAddress.Text + " -p 10000 -z";
+                Ice.ObjectPrx prx = communicator_.stringToProxy(connection);
+                prx = prx.ice_timeout(1000);
+                bitmapProvider_ = Streamer.BitmapProviderPrxHelper.uncheckedCast(prx);
+            }
+
+            timer.Interval = new TimeSpan(1000);                   // Timer will tick event/second
+            timer.Start();                                        // Start the timer
         }
     }
 }
