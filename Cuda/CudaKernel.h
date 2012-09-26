@@ -25,9 +25,12 @@
 
 #include <stdio.h>
 #include <string>
-#include <windows.h>
+#ifdef WIN32
+	#include <windows.h>
+#endif
 
 #include "CudaDataTypes.h"
+
 #if USE_KINECT
 #include <nuiapi.h>
 #endif // USE_KINECT
@@ -35,18 +38,12 @@
 class CudaKernel
 {
 public:
-	CudaKernel( int draft );
+	CudaKernel();
 	~CudaKernel();
 
 public:
 	// ---------- Devices ----------
 	void initializeDevice(
-		int        width, 
-		int        height, 
-		int        nbPrimitives,
-		int        nbLamps,
-		int        nbMaterials,
-		int        nbTextures,
 		int*       levels,
 		int        levelSize);
 	void releaseDevice();
@@ -56,25 +53,22 @@ public:
 public:
 	// ---------- Rendering ----------
 	void render(
-      float4 eye, float4 dir, float4 angles,
-		unsigned char* bitmap,
-		float timer,
-		float pointOfFocus,
-		float transparentColor );
+		char* bitmap,
+		float timer );
 
 public:
 
 	// ---------- Primitives ----------
 	long addPrimitive( PrimitiveType type );
 	void setPrimitive( 
-		int   index, 
+		int   index, int boxId,
 		float x0, float y0, float z0, 
 		float width, 
 		float height, 
 		int   martialId, 
 		int   materialPaddingX, int materialPaddingY );
 	void setPrimitive( 
-		int   index, 
+		int   index, int boxId,
 		float x0, float y0, float z0, 
 		float x1, float y1, float z1, 
 		float x2, float y2, float z2, 
@@ -83,33 +77,38 @@ public:
 		int   martialId, 
 		int   materialPaddingX, int materialPaddingY );
 	void rotatePrimitive( 
-		int   index, 
+		int   index,
 		float x, 
 		float y, 
 		float z );
 	void translatePrimitive( 
-		int   index, 
+		int   index, int boxId,
 		float x, 
 		float y, 
 		float z );
 	void setPrimitiveMaterial( 
 		int   index, 
-		int   materialId,
-		int   materialOffsetX,
-		int   materialOffsetY); 
+		int   materialId); 
 	void getPrimitiveCenter( int index, float& x, float& y, float& z, float& w );
 	void setPrimitiveCenter( int index, float  x, float  y, float  z, float  w );
+
+public:
+   
+   void resetBox( int boxId );
+   void DisplayBoxesInfo();
 
 public:
 
 	// ---------- Complex objects ----------
 	long addCube( 
+      int boxId,
 		float x, float y, float z, 
 		float radius, 
 		int   martialId, 
 		int   materialPaddingX, int materialPaddingY );
 
-	long CudaKernel::addRectangle( 
+	long addRectangle(
+      int boxId,
 		float x, float y, float z, 
 		float width, float height,
 		float depth,
@@ -123,6 +122,7 @@ public:
 	void setLamp( 
 		int index,
 		float x, float y, float z, 
+      float dx, float dy, float dz, float dw,
       float width, float height,
 		float r, float g, float b, float intensity );
 
@@ -135,11 +135,17 @@ public:
 		float r, float g, float b, 
 		float reflection, 
 		float refraction,
-		int   textured,
+		bool  textured,
 		float transparency,
 		int   textureId,
 		float specValue, float specPower, float specCoef,
 		float innerIllumination );
+
+public:
+
+	// ---------- Camera ----------
+	void setCamera( 
+		float4 eye, float4 dir, float4 angles );
 
 public:
 
@@ -153,19 +159,41 @@ public:
 
 public:
 
-   int getImageSize() { return m_imageWidth*m_imageHeight*4; } // Image depth: 32 bits
+   void setSceneInfo(
+      int   width,
+      int   height,
+      float draft,
+      float transparentColor,
+      bool  shadowsEnabled,
+      float viewDistance,
+      float shadowIntensity,
+      int   nbRayIterations,
+      float4 backgroundColor,
+      bool  supportFor3DVision,
+      float width3DVision,
+      bool  renderBoxes);
+   void setSceneInfo( const SceneInfo& sceneInfo ) { m_sceneInfo = sceneInfo; };
+
+   void setDepthOfFieldInfo( 
+      bool  enabled,
+      float pointOfFocus,
+      float strength,
+      int   iterations );
+   void setDepthOfFieldInfo( const DepthOfFieldInfo& depthOfFieldInfo ) { m_depthOfFieldInfo = depthOfFieldInfo; }
 
 #ifdef USE_KINECT
 public:
 	// ---------- Kinect ----------
 
 	long updateSkeletons( 
-		double center_x, double  center_y, double  center_z, 
-		double size,
-		double radius,       int materialId,
-		double head_radius,  int head_materialId,
-		double hands_radius, int hands_materialId,
-		double feet_radius,  int feet_materialId);
+      int    primitiveIndex,
+      int    boxId,
+		float4 skeletonPosition, 
+		float size,
+		float radius,       int materialId,
+		float head_radius,  int head_materialId,
+		float hands_radius, int hands_materialId,
+		float feet_radius,  int feet_materialId);
 
 	bool CudaKernel::getSkeletonPosition( int index, float4& position );
 #endif // USE_KINECT
@@ -175,6 +203,11 @@ public:
 	int getNbActivePrimitives() { return m_nbActivePrimitives; };
 	int getNbActiveLamps()      { return m_nbActiveLamps; };
 	int getNbActiveMaterials()  { return m_nbActiveMaterials; };
+
+public:
+
+   void setBlockSize( int x, int y, int z)    { m_blockSize.x = x; m_blockSize.y = y; m_blockSize.z = z; };
+   void setSharedMemSize( int sharedMemSize ) { m_sharedMemSize = sharedMemSize; };
 
 private:
 
@@ -187,18 +220,16 @@ private:
 private:
 
 	// Host
-	Primitive* m_hPrimitives;
-	Lamp*		  m_hLamps;
-	Material*  m_hMaterials;
-	char*      m_hTextures;
-	float4*    m_hDepthOfField;
-	int*		  m_hLevels;
-	float*	  m_hRandoms;
+	BoundingBox* m_hBoundingBoxes;
+   Primitive*   m_hPrimitives;
+	Lamp*		    m_hLamps;
+	Material*    m_hMaterials;
+	char*        m_hTextures;
+	float4*      m_hDepthOfField;
+	int*		    m_hLevels;
+	float*	    m_hRandoms;
 
-private:
-
-   int         m_imageWidth;
-   int         m_imageHeight;
+   int         m_nbActiveBoxes;
 	int			m_nbActivePrimitives;
 	int			m_nbActiveLamps;
 	int			m_nbActiveMaterials;
@@ -210,14 +241,22 @@ private:
 
 private:
 
-	int			m_initialDraft;
 	int			m_draft;
 	bool		   m_texturedTransfered;
 
 private:
 
+   // Scene
+   SceneInfo m_sceneInfo;
+
+   // Post Processing
+   DepthOfFieldInfo m_depthOfFieldInfo;
+
+private:
+
    // Runtime kernel execution parameters
    dim3 m_blockSize;
+   int  m_sharedMemSize;
 
 #ifdef USE_KINECT
 	// Kinect declarations
@@ -233,9 +272,7 @@ private:
 	HANDLE             m_pDepthStreamHandle;
 	NUI_SKELETON_FRAME m_skeletonFrame;
 
-	long               m_skeletonIndex;
-	long               m_skeletonsBody;
-	long               m_skeletonsLamp;
+   int                m_skeletonIndex;
 #endif // USE_KINECT
 
 };

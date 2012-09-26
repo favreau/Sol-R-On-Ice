@@ -1,5 +1,5 @@
 /* 
-* Cuda Raytracer
+* GPU Raytracer
 * Copyright (C) 2011-2012 Cyrille Favreau <cyrille_favreau@hotmail.com>
 *
 * This library is free software; you can redistribute it and/or
@@ -22,16 +22,14 @@
 */
 
 #include <math.h>
+#include <string.h>
 #include <iostream>
 #include <fstream>
 #include <time.h>
 #include <sstream>
+#include <stdlib.h>
 
-#include <vector_functions.h>
-#include <cuda.h>
 #include <cuda_runtime.h>
-#include <helper_cuda.h>
-
 #ifdef LOGGING
 #include <ETWLoggingModule.h>
 #include <ETWResources.h>
@@ -47,25 +45,29 @@ const long MAX_SOURCE_SIZE = 65535;
 const long MAX_DEVICES = 10;
 
 /*
-* CudaKernel constructor
+________________________________________________________________________________
+
+CudaKernel::CudaKernel
+________________________________________________________________________________
 */
-CudaKernel::CudaKernel( int draft ) :
-	m_hLevels(nullptr), m_levelsSize(0),
-	m_hPrimitives(nullptr), m_nbActivePrimitives(-1), 
-	m_hMaterials(nullptr), m_nbActiveMaterials(-1),
-	m_hTextures(nullptr), m_nbActiveTextures(0),
-	m_hLamps(nullptr), m_nbActiveLamps(-1),
-	m_hRandoms(nullptr),
-	m_hDepthOfField(nullptr),
+CudaKernel::CudaKernel() :
+	m_hLevels(NULL), m_levelsSize(0),
+   m_hBoundingBoxes(NULL), m_nbActiveBoxes(-1),
+	m_hPrimitives(NULL), m_nbActivePrimitives(-1),
+	m_hMaterials(NULL), m_nbActiveMaterials(-1),
+	m_hTextures(NULL), m_nbActiveTextures(0),
+	m_hLamps(NULL), m_nbActiveLamps(-1),
+	m_hRandoms(NULL),
+	m_hDepthOfField(NULL),
 #if USE_KINECT
-	m_hVideo(nullptr), m_hDepth(nullptr),
+	m_hVideo(NULL), m_hDepth(NULL),
 	m_skeletons(0), m_hNextDepthFrameEvent(0), m_hNextVideoFrameEvent(0), m_hNextSkeletonEvent(0),
 	m_pVideoStreamHandle(0), m_pDepthStreamHandle(0),
-	m_skeletonsBody(-1), m_skeletonsLamp(-1), m_skeletonIndex(-1),
+   m_skeletonIndex(-1),
 #endif // USE_KINECT
-	m_initialDraft(draft), m_draft(1),
 	m_texturedTransfered(false),
-   m_blockSize(16,16,0)
+   m_blockSize(1024,1024,1),
+   m_sharedMemSize(256)
 {
 #ifdef LOGGING
 	// Initialize Log
@@ -87,7 +89,7 @@ CudaKernel::CudaKernel( int draft ) :
 	m_hNextSkeletonEvent   = CreateEvent( NULL, TRUE, FALSE, NULL );
 
 	m_skeletons = CreateEvent( NULL, TRUE, FALSE, NULL );			 
-	NuiSkeletonTrackingEnable( m_skeletons, 0 );
+	NuiSkeletonTrackingEnable( m_skeletons, NUI_SKELETON_TRACKING_FLAG_ENABLE_SEATED_SUPPORT );
 
 	NuiImageStreamOpen( NUI_IMAGE_TYPE_COLOR,                  NUI_IMAGE_RESOLUTION_640x480, 0, 2, m_hNextVideoFrameEvent, &m_pVideoStreamHandle );
 	NuiImageStreamOpen( NUI_IMAGE_TYPE_DEPTH_AND_PLAYER_INDEX, NUI_IMAGE_RESOLUTION_320x240, 0, 2, m_hNextDepthFrameEvent, &m_pDepthStreamHandle );
@@ -95,59 +97,116 @@ CudaKernel::CudaKernel( int draft ) :
 	NuiCameraElevationSetAngle( 0 );
 #endif // USE_KINECT
 
-	// Eye position
-	m_viewPos.x =   0.0f;
-	m_viewPos.y =   0.0f;
-	m_viewPos.z = -40.0f;
+   // Eye position
+	m_viewPos.x =   0.f;
+	m_viewPos.y =   0.f;
+	m_viewPos.z = -40.f;
 
 	// Rotation angles
-	m_angles.x = 0.0f;
-	m_angles.y = 0.0f;
-	m_angles.z = 0.0f;
+	m_angles.x = 0.f;
+	m_angles.y = 0.f;
+	m_angles.z = 0.f;
+
+   setDepthOfFieldInfo( true, 0.f, 40.f, 50 );
+   float4 bkColor = {0.f, 0.f, 0.f, 0.f};
+   setSceneInfo( 512, 512, 1, 0.f, true, 10000.f, 0.1f, 5, bkColor, false, 0.f, false );
 }
 
+/*
+________________________________________________________________________________
+
+CudaKernel::~CudaKernel
+________________________________________________________________________________
+*/
+CudaKernel::~CudaKernel()
+{
+   // Clean up
+   releaseDevice();
+
+#if USE_KINECT
+   CloseHandle(m_skeletons);
+   CloseHandle(m_hNextDepthFrameEvent); 
+   CloseHandle(m_hNextVideoFrameEvent); 
+   CloseHandle(m_hNextSkeletonEvent);
+   NuiShutdown();
+#endif // USE_KINECT
+}
+
+/*
+________________________________________________________________________________
+
+Display bounding boxes information
+________________________________________________________________________________
+*/
+void CudaKernel::DisplayBoxesInfo()
+{
+   std::cout << NB_MAX_PRIMITIVES_PER_BOX << " primitives per box" << std::endl;
+   for( int j(0); j<=m_nbActiveBoxes; ++j )
+   {
+      if( m_hBoundingBoxes[j].nbPrimitives > 0)
+      {
+         std::cout << "Box " << j << " (" << 
+            m_hBoundingBoxes[j].parameters[0].x << "," <<
+            m_hBoundingBoxes[j].parameters[0].y << "," <<
+            m_hBoundingBoxes[j].parameters[0].z << ") (" <<
+            m_hBoundingBoxes[j].parameters[1].x << "," <<
+            m_hBoundingBoxes[j].parameters[1].y << "," <<
+            m_hBoundingBoxes[j].parameters[1].z << ") :" <<
+            m_hBoundingBoxes[j].nbPrimitives << " primitives" << std::endl;
+      }
+   }
+}
+
+/*
+________________________________________________________________________________
+
+Initialize CPU & GPU resources
+________________________________________________________________________________
+*/
 void CudaKernel::initializeDevice(
-	int        width, 
-	int        height, 
-	int        nbPrimitives,
-	int        nbLamps,
-	int        nbMaterials,
-	int        nbTextures,
 	int*       levels,
 	int        levelsSize)
 {
-   m_imageWidth  = width;
-   m_imageHeight = height;
-
 	m_hLevels = levels;
 	m_levelsSize = levelsSize;
 
-	initialize_scene( m_imageWidth, m_imageHeight, nbPrimitives, nbLamps, nbMaterials, nbTextures, levelsSize );
+	initialize_scene( m_sceneInfo.width, m_sceneInfo.height, NB_MAX_PRIMITIVES, NB_MAX_LAMPS, NB_MAX_MATERIALS, NB_MAX_TEXTURES, levelsSize );
 
 	// Setup device memory
-	m_hPrimitives = new Primitive[nbPrimitives];
-	memset( m_hPrimitives, 0, nbPrimitives*sizeof(Primitive) ); 
-	m_hLamps = new Lamp[nbLamps];
-	memset( m_hLamps, 0, nbLamps*sizeof(Lamp) ); 
-	m_hMaterials = new Material[nbMaterials];
-	memset( m_hMaterials, 0, nbMaterials*sizeof(Material) ); 
-	m_hTextures = new char[gTextureWidth*gTextureHeight*gColorDepth*nbTextures];
+	m_hPrimitives = new Primitive[NB_MAX_PRIMITIVES];
+	memset( m_hPrimitives, 0, NB_MAX_PRIMITIVES*sizeof(Primitive) ); 
+	m_hLamps = new Lamp[NB_MAX_LAMPS];
+	memset( m_hLamps, 0, NB_MAX_LAMPS*sizeof(Lamp) ); 
+	m_hMaterials = new Material[NB_MAX_MATERIALS];
+	memset( m_hMaterials, 0, NB_MAX_MATERIALS*sizeof(Material) ); 
+	m_hTextures = new char[gTextureWidth*gTextureHeight*gColorDepth*NB_MAX_TEXTURES];
+   
+   // Bounding boxes
+   m_hBoundingBoxes = new BoundingBox[NB_MAX_BOXES];
+   for( int i(0); i<NB_MAX_BOXES; ++i) { resetBox(i); }
 
 	// Randoms
-	m_hRandoms = new float[width*height];
+	m_hRandoms = new float[m_sceneInfo.width*m_sceneInfo.height];
 	int i;
 #pragma omp parallel for
-	for( i=0; i<width*height; ++i)
+	for( i=0; i<m_sceneInfo.width*m_sceneInfo.height; ++i)
 	{
 		m_hRandoms[i] = (rand()%1000-500)/500.f;
 	}
 }
 
+/*
+________________________________________________________________________________
+
+Release CPU & GPU resources
+________________________________________________________________________________
+*/
 void CudaKernel::releaseDevice()
 {
 	LOG_INFO("Release device memory\n");
 	finalize_scene();
 
+   delete m_hBoundingBoxes;
 	delete m_hPrimitives;
 	delete m_hLamps;
 	delete m_hMaterials;
@@ -156,23 +215,15 @@ void CudaKernel::releaseDevice()
 }
 
 /*
-* runKernel
+________________________________________________________________________________
+
+Execute GPU kernel
+________________________________________________________________________________
 */
 void CudaKernel::render( 
-   float4 eye, float4 dir, float4 angles,
-   unsigned char* bitmap,
-	float timer,
-	float pointOfFocus,
-	float transparentColor)
+	char* bitmap,
+	float timer )
 {
-   // Camera
-   m_viewPos   = eye;
-   m_viewDir   = dir;
-   m_angles.x  += angles.x;
-   m_angles.y  += angles.y;
-   m_angles.z  += angles.z;
-   m_draft     = m_initialDraft;
-
 #if USE_KINECT
 	// Video
 	const NUI_IMAGE_FRAME* pImageFrame = 0;
@@ -215,50 +266,48 @@ void CudaKernel::render(
       m_hDepth, gKinectDepth*gKinectDepthHeight*gKinectDepthWidth );
 #endif // USE_KINECT
 
-	// Initialise Input arrays
-	h2d_scene( m_hPrimitives, m_nbActivePrimitives+1, m_hLamps, m_nbActiveLamps+1 );
-
+	// CPU -> GPU Data transfers
+	h2d_scene( m_hBoundingBoxes, m_nbActiveBoxes+1, m_hPrimitives, m_nbActivePrimitives+1, m_hLamps, m_nbActiveLamps+1 );
 	if( !m_texturedTransfered )
 	{
 		h2d_materials( 
          m_hMaterials, m_nbActiveMaterials+1, 
          m_hTextures,  m_nbActiveTextures, 
-         m_hRandoms,   m_imageWidth*m_imageHeight,
+         m_hRandoms,   m_sceneInfo.width*m_sceneInfo.height,
          m_hLevels,    m_levelsSize);
 		m_texturedTransfered = true;
 	}
 
-#ifdef USE_KINECT
-#endif // KINECT
-
-	// Run the ray-tracing kernel!!
+   // Kernel execution
+   Ray ray;
+   ray.origin    = m_viewPos;
+   ray.direction = m_viewDir;
 	cudaRender(
-      m_blockSize,
-		m_nbActivePrimitives+1, m_nbActiveLamps+1,
-		eye, dir, angles, 
-		m_imageWidth, m_imageHeight,
-		pointOfFocus, m_draft, transparentColor, timer );
-	d2h_bitmap( bitmap, m_imageWidth*m_imageHeight*gColorDepth);
+      m_blockSize, m_sharedMemSize,
+		m_nbActiveBoxes+1, m_nbActivePrimitives+1, m_nbActiveLamps+1,
+		ray, m_angles,
+      m_sceneInfo,
+      m_depthOfFieldInfo,
+      timer );
 
-	m_draft--;
-	m_draft = (m_draft < 1) ? 1 : m_draft;
+   // GPU -> CPU Data transfers
+   d2h_bitmap( bitmap, m_sceneInfo);
 }
 
 /*
-*
-*/
-CudaKernel::~CudaKernel()
-{
-	// Clean up
-	releaseDevice();
+________________________________________________________________________________
 
-#if USE_KINECT
-	CloseHandle(m_skeletons);
-	CloseHandle(m_hNextDepthFrameEvent); 
-	CloseHandle(m_hNextVideoFrameEvent); 
-	CloseHandle(m_hNextSkeletonEvent);
-	NuiShutdown();
-#endif // USE_KINECT
+Sets camera
+________________________________________________________________________________
+*/
+void CudaKernel::setCamera( 
+	float4 eye, float4 dir, float4 angles )
+{
+	m_viewPos   = eye;
+	m_viewDir   = dir;
+	m_angles.x  += angles.x;
+	m_angles.y  += angles.y;
+	m_angles.z  += angles.z;
 }
 
 float4 CudaKernel::normalVector( float4 v1, float4 v2 )
@@ -298,18 +347,18 @@ long CudaKernel::addPrimitive( PrimitiveType type )
 }
 
 void CudaKernel::setPrimitive( 
-	int index, 
+	int index, int boxId,
 	float x0, float y0, float z0, 
 	float width, 
 	float height, 
 	int   materialId, 
 	int   materialPaddingX, int materialPaddingY )
 {
-	setPrimitive( index, x0, y0, z0, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, width, height, materialId, materialPaddingX, materialPaddingY );
+	setPrimitive( index, boxId, x0, y0, z0, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, width, height, materialId, materialPaddingX, materialPaddingY );
 }
 
 void CudaKernel::setPrimitive( 
-	int index, 
+	int index, int boxId, 
 	float x0, float y0, float z0, 
 	float x1, float y1, float z1, 
 	float x2, float y2, float z2, 
@@ -324,6 +373,8 @@ void CudaKernel::setPrimitive(
 		m_hPrimitives[index].p0.y   = y0;
 		m_hPrimitives[index].p0.z   = z0;
 		m_hPrimitives[index].p0.w   = width;
+      m_hPrimitives[index].materialInfo.x = (gTextureWidth /width /2)*materialPaddingX;
+      m_hPrimitives[index].materialInfo.y = (gTextureHeight/height/2)*materialPaddingY;
 
 		switch( m_hPrimitives[index].type )
 		{
@@ -361,6 +412,17 @@ void CudaKernel::setPrimitive(
 				m_hPrimitives[index].normal.z = 1.f;
 				break;
 			}
+#ifdef USE_KINECT
+      case ptCamera:
+         {
+            m_hPrimitives[index].normal.x = 0.f;
+            m_hPrimitives[index].normal.y = 0.f;
+            m_hPrimitives[index].normal.z = 1.f;
+            m_hPrimitives[index].materialInfo.x = (gKinectVideoWidth /width /2)*materialPaddingX;
+            m_hPrimitives[index].materialInfo.y = (gKinectVideoHeight/height/2)*materialPaddingY;
+            break;
+         }
+#endif // USE_KINECT
 		case ptYZPlane:
 			{
 				m_hPrimitives[index].normal.x = 1.f;
@@ -376,10 +438,6 @@ void CudaKernel::setPrimitive(
 				m_hPrimitives[index].normal.z = 0.f;
 				break;
 			}
-		default:
-			{
-				break;
-			}
 		}
 
 		m_hPrimitives[index].size.x = width;
@@ -387,9 +445,44 @@ void CudaKernel::setPrimitive(
 		m_hPrimitives[index].size.z = 0.f;
 		m_hPrimitives[index].size.w = 0.f; // Not used
 		m_hPrimitives[index].materialId    = materialId;
-		m_hPrimitives[index].materialInfo.x = (gTextureWidth /width /2)*materialPaddingX;
-		m_hPrimitives[index].materialInfo.y = (gTextureHeight/height/2)*materialPaddingY;
+
+      // Bounding Box
+      if( boxId > m_nbActiveBoxes ) m_nbActiveBoxes = boxId;
+
+      bool found(false);
+      int i(0);
+      if( m_hBoundingBoxes[boxId].nbPrimitives != 0 )
+      {
+         while( !found && i<m_hBoundingBoxes[boxId].nbPrimitives )
+         {
+            found = (index == m_hBoundingBoxes[boxId].primitiveIndex[i]);
+            i += found ? 0 : 1;
+         }
+      }
+      if( !found && i<NB_MAX_PRIMITIVES_PER_BOX-1 ) 
+      {
+         m_hBoundingBoxes[boxId].primitiveIndex[m_hBoundingBoxes[boxId].nbPrimitives] = index;
+         m_hBoundingBoxes[boxId].nbPrimitives++;
+      }
+      // Process box size
+      if( (x0 - width) < m_hBoundingBoxes[boxId].parameters[0].x ) m_hBoundingBoxes[boxId].parameters[0].x = x0-width;
+      if( (y0 - width) < m_hBoundingBoxes[boxId].parameters[0].y ) m_hBoundingBoxes[boxId].parameters[0].y = y0-width;
+      if( (z0 - width) < m_hBoundingBoxes[boxId].parameters[0].z ) m_hBoundingBoxes[boxId].parameters[0].z = z0-width;
+      if( (x0 + width) > m_hBoundingBoxes[boxId].parameters[1].x ) m_hBoundingBoxes[boxId].parameters[1].x = x0+width;
+      if( (y0 + width) > m_hBoundingBoxes[boxId].parameters[1].y ) m_hBoundingBoxes[boxId].parameters[1].y = y0+width;
+      if( (z0 + width) > m_hBoundingBoxes[boxId].parameters[1].z ) m_hBoundingBoxes[boxId].parameters[1].z = z0+width;
 	}
+}
+
+void CudaKernel::resetBox( int boxId )
+{
+   memset( &m_hBoundingBoxes[boxId], 0, sizeof(BoundingBox));
+   m_hBoundingBoxes[boxId].parameters[0].x = m_sceneInfo.viewDistance;
+   m_hBoundingBoxes[boxId].parameters[0].y = m_sceneInfo.viewDistance;
+   m_hBoundingBoxes[boxId].parameters[0].z = m_sceneInfo.viewDistance;
+   m_hBoundingBoxes[boxId].parameters[1].x = -m_sceneInfo.viewDistance;
+   m_hBoundingBoxes[boxId].parameters[1].y = -m_sceneInfo.viewDistance;
+   m_hBoundingBoxes[boxId].parameters[1].z = -m_sceneInfo.viewDistance;
 }
 
 void CudaKernel::rotatePrimitive( 
@@ -415,7 +508,7 @@ void CudaKernel::rotatePrimitive(
 }
 
 void CudaKernel::translatePrimitive( 
-	int   index, 
+	int   index, int boxId,
 	float x, 
 	float y, 
 	float z )
@@ -423,14 +516,12 @@ void CudaKernel::translatePrimitive(
 	if( index>=0 && index<=m_nbActivePrimitives) 
 	{
 		setPrimitive( 
-			index,
+			index, boxId,
 			m_hPrimitives[index].p0.x+x, m_hPrimitives[index].p0.y+y, m_hPrimitives[index].p0.z+z,
 			m_hPrimitives[index].p1.x  , m_hPrimitives[index].p1.y  , m_hPrimitives[index].p1.z,
 			m_hPrimitives[index].p2.x  , m_hPrimitives[index].p2.y  , m_hPrimitives[index].p2.z,
 			m_hPrimitives[index].size.x,m_hPrimitives[index].size.y,
 			m_hPrimitives[index].materialId, 1, 1 );
-
-
 	}
 }
 
@@ -469,15 +560,17 @@ void CudaKernel::setPrimitiveCenter(
 }
 
 long CudaKernel::addCube( 
+   int boxId,
 	float x, float y, float z, 
 	float radius, 
 	int   martialId, 
 	int   materialPaddingX, int materialPaddingY )
 {
-	return addRectangle(x,y,z,radius,radius,radius,martialId,materialPaddingX,materialPaddingY);
+	return addRectangle(boxId, x,y,z,radius,radius,radius,martialId,materialPaddingX,materialPaddingY);
 }
 
 long CudaKernel::addRectangle( 
+   int boxId,
 	float x, float y, float z, 
 	float width, float height,
 	float depth,
@@ -487,35 +580,33 @@ long CudaKernel::addRectangle(
 	long returnValue;
 	// Back
 	returnValue = addPrimitive( ptXYPlane );
-	setPrimitive( returnValue, x, y, z+depth, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, width, height, martialId, materialPaddingX, materialPaddingY ); 
+	setPrimitive( returnValue, boxId, x, y, z+depth, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, width, height, martialId, materialPaddingX, materialPaddingY ); 
 
 	// Front
 	returnValue = addPrimitive( ptXYPlane );
-	setPrimitive( returnValue, x, y, z-depth, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, width, height, martialId, materialPaddingX, materialPaddingY ); 
+	setPrimitive( returnValue, boxId, x, y, z-depth, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, width, height, martialId, materialPaddingX, materialPaddingY ); 
 
 	// Left
 	returnValue = addPrimitive( ptYZPlane );
-	setPrimitive( returnValue, x-width, y, z, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, depth, height, martialId, materialPaddingX, materialPaddingY ); 
+	setPrimitive( returnValue, boxId, x-width, y, z, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, depth, height, martialId, materialPaddingX, materialPaddingY ); 
 
 	// Right
 	returnValue = addPrimitive( ptYZPlane );
-	setPrimitive( returnValue, x+width, y, z, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, depth, height, martialId, materialPaddingX, materialPaddingY ); 
+	setPrimitive( returnValue, boxId, x+width, y, z, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, depth, height, martialId, materialPaddingX, materialPaddingY ); 
 
 	// Top
 	returnValue = addPrimitive( ptXZPlane );
-	setPrimitive( returnValue, x, y+height, z, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, width, depth, martialId, materialPaddingX, materialPaddingY ); 
+	setPrimitive( returnValue, boxId, x, y+height, z, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, width, depth, martialId, materialPaddingX, materialPaddingY ); 
 
 	// Bottom
 	returnValue = addPrimitive( ptXZPlane );
-	setPrimitive( returnValue, x, y-height, z, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, width, depth, martialId, materialPaddingX, materialPaddingY ); 
+	setPrimitive( returnValue, boxId, x, y-height, z, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, width, depth, martialId, materialPaddingX, materialPaddingY ); 
 	return returnValue;
 }
 
 void CudaKernel::setPrimitiveMaterial( 
 	int   index, 
-	int   materialId,
-	int   materialOffsetX,
-	int   materialOffsetY)
+	int   materialId)
 {
 	if( index>=0 && index<=m_nbActivePrimitives) {
 		m_hPrimitives[index].materialId = materialId;
@@ -532,6 +623,7 @@ long CudaKernel::addLamp( LampType lampType )
 void CudaKernel::setLamp( 
    int index,
    float x, float y, float z, 
+   float dx, float dy, float dz, float dw,
    float width, float height,
    float r, float g, float b, float intensity )
 {
@@ -540,7 +632,11 @@ void CudaKernel::setLamp(
 		m_hLamps[index].center.x   = x;
 		m_hLamps[index].center.y   = y;
 		m_hLamps[index].center.z   = z;
-		m_hLamps[index].center.w   = width;
+      m_hLamps[index].center.w   = width;
+      m_hLamps[index].direction.x  = dx;
+      m_hLamps[index].direction.y  = dy;
+      m_hLamps[index].direction.z  = dz;
+      m_hLamps[index].direction.w  = dw;
 		m_hLamps[index].color.x    = r;
 		m_hLamps[index].color.y    = g;
 		m_hLamps[index].color.z    = b;
@@ -560,7 +656,7 @@ void CudaKernel::setMaterial(
 	float r, float g, float b, 
 	float reflection, 
 	float refraction, 
-	int   textured,
+	bool  textured,
 	float transparency,
 	int   textureId,
 	float specValue, float specPower, float specCoef, float innerIllumination )
@@ -578,8 +674,8 @@ void CudaKernel::setMaterial(
 		m_hMaterials[index].reflection  = reflection;
 		m_hMaterials[index].refraction  = refraction;
       m_hMaterials[index].transparency= transparency;
-		m_hMaterials[index].texture.x   = textured;
-		m_hMaterials[index].texture.y   = textureId;
+		m_hMaterials[index].textured    = textured;
+		m_hMaterials[index].textureId   = textureId;
 	}
 }
 
@@ -598,6 +694,47 @@ void CudaKernel::setTexture(
 	}
 }
 
+void CudaKernel::setSceneInfo(
+   int   width,
+   int   height,
+   float draft,
+   float transparentColor,
+   bool  shadowsEnabled,
+   float viewDistance,
+   float shadowIntensity,
+   int   nbRayIterations,
+   float4 backgroundColor,
+   bool  supportFor3DVision,
+   float width3DVision,
+   bool  renderBoxes)
+{
+   m_sceneInfo.width              = width;
+   m_sceneInfo.height             = height;
+   m_sceneInfo.draft              = draft;
+   m_sceneInfo.transparentColor   = transparentColor;
+   m_sceneInfo.shadowsEnabled     = shadowsEnabled;
+   m_sceneInfo.viewDistance       = viewDistance;
+   m_sceneInfo.shadowIntensity    = shadowIntensity;
+   m_sceneInfo.nbRayIterations    = nbRayIterations;
+   m_sceneInfo.backgroundColor    = backgroundColor;
+   m_sceneInfo.supportFor3DVision = supportFor3DVision;
+   m_sceneInfo.width3DVision      = width3DVision;
+   m_sceneInfo.renderBoxes        = renderBoxes;
+}
+
+void CudaKernel::setDepthOfFieldInfo( 
+   bool  enabled,
+   float pointOfFocus,
+   float strength,
+   int   iterations )
+{
+   m_depthOfFieldInfo.enabled = enabled;
+   m_depthOfFieldInfo.pointOfFocus = enabled;
+   m_depthOfFieldInfo.strength = strength;
+   m_depthOfFieldInfo.iterations = iterations;
+}
+
+#if 0
 /*
 *
 */
@@ -691,18 +828,22 @@ long CudaKernel::addTexture( const std::string& filename )
 	free( bitmapImage );
 	return m_nbActiveTextures-1;
 }
+#endif // 0
 
 #ifdef USE_KINECT
 long CudaKernel::updateSkeletons( 
-	double center_x, double  center_y, double  center_z, 
-	double size,
-	double radius,       int materialId,
-	double head_radius,  int head_materialId,
-	double hands_radius, int hands_materialId,
-	double feet_radius,  int feet_materialId)
+   int    primitiveIndex, 
+   int    boxId,
+   float4 skeletonPosition, 
+	float size,
+	float radius,       int materialId,
+	float head_radius,  int head_materialId,
+	float hands_radius, int hands_materialId,
+	float feet_radius,  int feet_materialId)
 {
+   m_skeletonIndex = -1;
+   HRESULT hr = NuiSkeletonGetNextFrame( 0, &m_skeletonFrame );
 	bool found = false;
-	HRESULT hr = NuiSkeletonGetNextFrame( 0, &m_skeletonFrame );
 	if( hr == S_OK )
 	{
 		int i=0;
@@ -710,52 +851,41 @@ long CudaKernel::updateSkeletons(
 		{
 			if( m_skeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) 
 			{
+            m_skeletonIndex = i;
 				found = true;
-				if( m_skeletonIndex == -1 ) 
+            /*
+				for( int j=0; j<20; j++ ) 
 				{
-					// Create Skeleton
-					m_skeletonsBody = m_nbActivePrimitives+1;
-					m_skeletonsLamp = m_nbActiveLamps+1;
-					m_skeletonIndex = i;
-					for( int j=0; j<20; j++ ) addPrimitive( ptSphere );
-				}
-				else 
-				{
-					for( int j=0; j<20; j++ ) 
-					{
-						double r = radius;
-						int   m = materialId;
-						bool createSphere(true);
-						switch (j) {
-						case NUI_SKELETON_POSITION_FOOT_LEFT:
-						case NUI_SKELETON_POSITION_FOOT_RIGHT:
-							r = feet_radius;
-							m = feet_materialId;
-							createSphere = true;
-							break;
-						case NUI_SKELETON_POSITION_HAND_LEFT:
-						case NUI_SKELETON_POSITION_HAND_RIGHT:
-							r = hands_radius;
-							m = hands_materialId;
-							createSphere = true;
-							break;
-						case NUI_SKELETON_POSITION_HEAD:
-							r = head_radius;
-							m = head_materialId;
-							createSphere = true;
-							break;
-						}
-						if( createSphere ) setPrimitive(
-							m_skeletonsBody+j,
-							static_cast<float>(     m_skeletonFrame.SkeletonData[i].SkeletonPositions[j].x * size + center_x),
-							static_cast<float>(     m_skeletonFrame.SkeletonData[i].SkeletonPositions[j].y * size + center_y),
-							static_cast<float>( center_z - 2.f*m_skeletonFrame.SkeletonData[i].SkeletonPositions[j].z * size ),
-							static_cast<float>(r), 
-							static_cast<float>(r), 
-							m,
-							1, 1 );
+					float r = radius;
+					int   m = materialId;
+					switch (j) {
+					case NUI_SKELETON_POSITION_FOOT_LEFT:
+					case NUI_SKELETON_POSITION_FOOT_RIGHT:
+						r = feet_radius;
+						m = feet_materialId;
+						break;
+					case NUI_SKELETON_POSITION_HAND_LEFT:
+					case NUI_SKELETON_POSITION_HAND_RIGHT:
+						r = hands_radius;
+						m = hands_materialId;
+						break;
+					case NUI_SKELETON_POSITION_HEAD:
+						r = head_radius;
+						m = head_materialId;
+						break;
 					}
+					setPrimitive(
+						primitiveIndex+j,
+                  boxId,
+						static_cast<float>( m_skeletonFrame.SkeletonData[i].SkeletonPositions[j].x * size + skeletonPosition.x),
+						static_cast<float>( m_skeletonFrame.SkeletonData[i].SkeletonPositions[j].y * size + skeletonPosition.y),
+						static_cast<float>( skeletonPosition.z - 2.f*m_skeletonFrame.SkeletonData[i].SkeletonPositions[j].z * size ),
+						static_cast<float>(r), 
+						static_cast<float>(r), 
+						m,
+						1, 1 );
 				}
+            */
 			}
 			i++;
 		}
@@ -821,31 +951,16 @@ void CudaKernel::deviceQuery()
          (float)deviceProp.totalGlobalMem/1048576.0f << "MBytes (" << 
          (unsigned long long) deviceProp.totalGlobalMem << " bytes)" << std::endl;
 
+/*
 #if CUDART_VERSION >= 2000
       std::cout << "  (" << deviceProp.multiProcessorCount << ") Multiprocessors x (" << 
          _ConvertSMVer2Cores(deviceProp.major, deviceProp.minor) << ") CUDA Cores/MP:    " << 
          _ConvertSMVer2Cores(deviceProp.major, deviceProp.minor) * deviceProp.multiProcessorCount << " CUDA Cores" << std::endl;
 #endif
+*/
       std::cout << "  GPU Clock rate:                                " <<  deviceProp.clockRate * 1e-3f << "MHz (" << deviceProp.clockRate * 1e-6f << " GHz)" << std::endl;
 
 #if CUDART_VERSION >= 4000
-
-      /*
-      // This is not available in the CUDA Runtime API, so we make the necessary calls the driver API to support this for output
-      int memoryClock;
-      getCudaAttribute<int>(&memoryClock, CU_DEVICE_ATTRIBUTE_MEMORY_CLOCK_RATE, dev);
-      std::cout << "  Memory Clock rate:                             " << memoryClock * 1e-3f << "Mhz" << std::endl;
-      int memBusWidth;
-      getCudaAttribute<int>(&memBusWidth, CU_DEVICE_ATTRIBUTE_GLOBAL_MEMORY_BUS_WIDTH, dev);
-      std::cout << "  Memory Bus Width:                              " << memBusWidth << "-bit" << std::endl;
-      int L2CacheSize;
-      getCudaAttribute<int>(&L2CacheSize, CU_DEVICE_ATTRIBUTE_L2_CACHE_SIZE, dev);
-
-      if (L2CacheSize)
-      {
-         std::cout << "  L2 Cache Size:                                 " << L2CacheSize << "bytes" << std::endl;
-      }
-      */
 
       std::cout << "  Max Texture Dimension Size (x,y,z)             1D=(" << deviceProp.maxTexture1D << 
          "), 2D=(" << deviceProp.maxTexture2D[0] << "," << deviceProp.maxTexture2D[1] << 
@@ -866,8 +981,8 @@ void CudaKernel::deviceQuery()
          deviceProp.maxThreadsDim[1] << " x " <<
          deviceProp.maxThreadsDim[2] << std::endl;
 
-      m_blockSize.x = 32;
-      m_blockSize.y = 32;
+      m_blockSize.x = 16;
+      m_blockSize.y = 16;
       m_blockSize.z = 1;
 
       std::cout << "  Maximum sizes of each dimension of a grid:     " <<
@@ -930,7 +1045,7 @@ void CudaKernel::deviceQuery()
 #ifdef WIN32
    sprintf_s(cTemp, 10, "%d.%d", driverVersion/1000, (driverVersion%100)/10);
 #else
-   sstd::cout << cTemp, "%d.%d", driverVersion/1000, (driverVersion%100)/10);
+   sprintf(cTemp, "%d.%d", driverVersion/1000, (driverVersion%100)/10);
 #endif
    sProfileString +=  cTemp;
 
@@ -939,7 +1054,7 @@ void CudaKernel::deviceQuery()
 #ifdef WIN32
    sprintf_s(cTemp, 10, "%d.%d", runtimeVersion/1000, (runtimeVersion%100)/10);
 #else
-   sstd::cout << cTemp, "%d.%d", runtimeVersion/1000, (runtimeVersion%100)/10);
+   sprintf(cTemp, "%d.%d", runtimeVersion/1000, (runtimeVersion%100)/10);
 #endif
    sProfileString +=  cTemp;
 
@@ -948,7 +1063,7 @@ void CudaKernel::deviceQuery()
 #ifdef WIN32
    sprintf_s(cTemp, 10, "%d", deviceCount);
 #else
-   sstd::cout << cTemp, "%d", deviceCount);
+   sprintf(cTemp, "%d", deviceCount);
 #endif
    sProfileString += cTemp;
 

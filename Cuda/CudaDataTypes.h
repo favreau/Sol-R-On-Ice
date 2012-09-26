@@ -24,6 +24,32 @@
 #pragma once
 
 #include <vector_types.h>
+#include "Consts.h"
+
+// Scene information
+struct SceneInfo
+{
+   int    width;
+   int    height;
+   float  draft;
+   float  transparentColor;
+   bool   shadowsEnabled;
+   float  viewDistance;
+   float  shadowIntensity;
+   int    nbRayIterations;
+   float4 backgroundColor;
+   bool   supportFor3DVision;
+   float  width3DVision;
+   bool   renderBoxes;
+};
+
+struct Ray 
+{
+   float4 origin;
+   float4 direction;
+   float4 inv_direction;
+   int sign[3];
+};
 
 // Enums
 enum PrimitiveType 
@@ -36,14 +62,16 @@ enum PrimitiveType
 	ptYZPlane     = 5,
 	ptXZPlane     = 6,
 	ptCylinder    = 7,
-   ptMagicCarpet = 8
+   ptMagicCarpet = 8,
+   ptEnvironment = 9
 };
 
 enum LampType
 {
    ltSphere  = 0,
    ltXYPlane = 1,
-   ltXZPlane = 2
+   ltXZPlane = 2,
+   ltSpot    = 3
 };
 
 struct Material
@@ -53,8 +81,15 @@ struct Material
    float  reflection;
 	float  refraction;
    float  transparency;
-	int2   texture;
-   float  bonus;
+	bool   textured;
+   int    textureId;
+};
+
+struct BoundingBox
+{
+   float4 parameters[2];
+   int    nbPrimitives;
+   int    primitiveIndex[NB_MAX_PRIMITIVES_PER_BOX];
 };
 
 struct Primitive
@@ -77,23 +112,17 @@ struct Lamp
 {
    float4   center;
    float4   color;
+   float4   direction;
    LampType lampType;
    float    intensity;
 };
 
-// Constants
-#define NO_MATERIAL -1
-#define NO_TEXTURE  -1
-#define gColorDepth    4
-#define gTextureOffset 0.f
-#define gTextureWidth  256
-#define gTextureHeight 256
-#define gTextureDepth  3
+// Post processing effect
+struct DepthOfFieldInfo
+{
+   bool   enabled;
+   float  pointOfFocus;
+   float  strength;
+   int    iterations;
+};
 
-#define gKinectVideoWidth  640
-#define gKinectVideoHeight 480
-#define gKinectVideo       4
-
-#define gKinectDepthWidth  320
-#define gKinectDepthHeight 240
-#define gKinectDepth       2
