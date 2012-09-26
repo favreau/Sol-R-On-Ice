@@ -30,9 +30,10 @@ extern "C" void initialize_scene(
 
 extern "C" void finalize_scene();
 
-extern "C" void h2d_scene( 
-	Primitive*  primitives, int nbPrimitives,
-	Lamp*       lamps,      int nbLamps );
+extern "C" void h2d_scene(
+   BoundingBox* boundingBoxes, int nbActiveBoxes,
+	Primitive*   primitives,    int nbPrimitives,
+	Lamp*        lamps,         int nbLamps );
 
 extern "C" void h2d_materials( 
 	Material*  materials, int nbActiveMaterials,
@@ -40,20 +41,15 @@ extern "C" void h2d_materials(
    float*     randoms,   int nbRandoms,
    int*       levels,    int levelSize );
 
-extern "C" void d2h_bitmap( unsigned char* bitmap, int size );
+extern "C" void d2h_bitmap( char* bitmap, const SceneInfo sceneInfo );
 
 extern "C" void cudaRender(
-   dim3 blockSize,
-	int nbPrimitives, int nbLamps,
-	float4 origin,
-	float4 target,
-	float4 angles,
-	int    width, 
-	int    height, 
-	float  pointOfFocus,
-	int    draft,
-	float  transparentColor,
-	float  timer);
+   dim3 blockSize, int sharedMemSize,
+   int nbActiveBoxes, int nbPrimitives, int nbLamps,
+   Ray ray, float4 angles,
+   SceneInfo sceneInfo,
+   DepthOfFieldInfo depthOfField,
+   float timer);
 
 #ifdef USE_KINECT
 extern "C" void h2d_kinect( 

@@ -1,5 +1,5 @@
 /* 
-* Cuda Raytracer
+* OpenCL Raytracer
 * Copyright (C) 2011-2012 Cyrille Favreau <cyrille_favreau@hotmail.com>
 *
 * This library is free software; you can redistribute it and/or
@@ -23,34 +23,29 @@
 
 #pragma once
 
-const int NB_MAX_PRIMITIVES = 50000; 
-const int NB_MAX_BOXES      = 500;
-const int NB_MAX_LAMPS      = 10;
-const int NB_MAX_MATERIALS  = 50;
-const int NB_MAX_TEXTURES   = 50;
+#include "CudaKernel.h"
 
-const int NB_MAX_PRIMITIVES_PER_BOX = NB_MAX_PRIMITIVES/NB_MAX_BOXES;
+class PDBReader
+{
+public:
 
-// Constants
-#define NO_MATERIAL -1
-#define NO_TEXTURE  -1
-#define gColorDepth    4
+   PDBReader(void);
+   virtual ~PDBReader(void);
 
-// Textures
-#define gTextureOffset 0.f
-//#define gTextureWidth  1024
-//#define gTextureHeight 1024
-#define gTextureWidth  256
-#define gTextureHeight 256
-#define gTextureDepth  3
+public:
 
-#ifdef USE_KINECT
-// Kinect
-#define gKinectVideoWidth  640
-#define gKinectVideoHeight 480
-#define gKinectVideo       4
+   void loadAtomsFromFile( 
+      const std::string& filename,
+      CudaKernel& cudaKernel,
+      int boxId);
 
-#define gKinectDepthWidth  320
-#define gKinectDepthHeight 240
-#define gKinectDepth       2
-#endif // USE_KINECT
+   int getNbBoxes() { return m_nbBoxes; }
+   int getNbPrimitives() { return m_nbPrimitives; }
+
+private:
+
+   int m_nbPrimitives;
+   int m_nbBoxes;
+
+};
+

@@ -10,12 +10,7 @@
 #include "Trace.h"
 #include "IceStreamProducer.h"
 #include "IIceStreamerImpl.h"
-
-const unsigned int gDraft        = 1;
-const unsigned int gWindowWidth  = 768;
-const unsigned int gWindowHeight = 512;
-const unsigned int gWindowDepth  = 4;
-
+#include "PDBReader.h"
 
 IceStreamProducer::IceStreamProducer() :
    cudaKernel_(nullptr),
@@ -35,25 +30,39 @@ int IceStreamProducer::run( int argc, char* argv[] )
    try
    {
       // Initialize Kernel
-      cudaKernel_ = new CudaKernel( gDraft );
+      cudaKernel_ = new CudaKernel();
       cudaKernel_->deviceQuery();
-      cudaKernel_->initializeDevice( gWindowWidth, gWindowHeight, 512, 32, 20+nbTextures_, nbTextures_, NULL, 0 );
+      cudaKernel_->initializeDevice( NULL, 0 );
       createRandomMaterials();
+
+#if 0
+      nbPrimitives_ = cudaKernel_->addPrimitive(ptCheckboard);
+      cudaKernel_->setPrimitive( nbPrimitives_,  0, 0.f, -1000.f, 0.f, 2000, 2000, 3, 100, 100); 
 
       // Create Scene
       for( int i(0); i<20; ++i )
       {
          nbPrimitives_ = cudaKernel_->addPrimitive( ptSphere );
-         cudaKernel_->setPrimitive( nbPrimitives_,  
+         cudaKernel_->setPrimitive( nbPrimitives_, 0,
             rand()%200-100.f, rand()%200-100.f, rand()%200-100.f, rand()%50+20.f, 0.f, rand()%nbMaterials_, 1, 1); 
       }
-      
-      
-      nbPrimitives_ = cudaKernel_->addPrimitive(ptCheckboard);
-      cudaKernel_->setPrimitive( nbPrimitives_,  0.f, -100.f,    0.f, 200, 200, 3, 10, 10); 
+
+#else
+      // PDB
+      PDBReader prbReader;
+      std::string fileName("./Pdb/");
+      fileName += "4GME";
+      fileName += ".pdb";
+      prbReader.loadAtomsFromFile(fileName, *cudaKernel_, 1);
+#endif // 0
 
       nbLamps_ = cudaKernel_->addLamp( ltSphere );
-      cudaKernel_->setLamp( nbLamps_, -500.f, 500.f, -500.f, 10.f, 0.f, 1.f, 1.f, 1.f, 1.f );
+      cudaKernel_->setLamp(
+         nbLamps_,
+         -500.f, 500.f, -500.f, 
+         0.f, 0.f, 0.f,
+         0.f, 10.f, 10.f, 
+         1.f, 1.f, 1.f, 1.f );
 
       producerAdapter_ = communicator()->createObjectAdapter("IceStreamerAdaptor");
 
@@ -78,7 +87,7 @@ int IceStreamProducer::run( int argc, char* argv[] )
 
 void IceStreamProducer::createRandomMaterials()
 {
-   for( int i(0); i<20+nbTextures_; ++i ) 
+   for( int i(0); i<NB_MAX_MATERIALS; ++i ) 
    {
       float reflection = 0.f;
       float refraction = 0.f;
@@ -86,60 +95,13 @@ void IceStreamProducer::createRandomMaterials()
       float transparency = 0.f;
       int   procedural = 0;
       float innerIllumination = 0.f;
-      float specValue =0.8f;
+      float specValue = 0.8f;
       float specPower = 100.f;
-      float specCoef = 1.f;
+      float specCoef  = 1.f;
 
       float r = rand()%100/100.f;
       float g = rand()%100/100.f;
       float b = rand()%100/100.f;
-
-      switch(i) 
-      {
-      case 0:
-         r = 1.f;
-         g = 1.f;
-         b = 1.f;
-         reflection = 0.9f;
-         break;
-      case 1:
-         r = 1.f;
-         g = 1.f;
-         b = 1.f;
-         reflection   = 0.1f;
-         refraction   = 0.9f;
-         transparency = 0.9f;
-         break;
-      case 2:
-         r = 1.f;
-         g = 1.f;
-         b = 1.f;
-         reflection   = 1.0f;
-         refraction   = 0.5f;
-         transparency = 0.9f;
-         break;
-      case 3:
-         r = 1.f;
-         g = 1.f;
-         b = 1.f;
-         break;
-      default:
-         if( i>=20 ) 
-         {
-            texture = i-20;
-            if( texture >= 28 && texture <= 36 )
-            {
-               transparency = 0.5f;
-               refraction   = 0.5f;
-               reflection   = 0.5f;
-            }
-         }
-         else
-         {
-            reflection = 0.1f;
-         }
-         break;
-      }
 
       nbMaterials_ = cudaKernel_->addMaterial();
       cudaKernel_->setMaterial(
@@ -149,4 +111,3 @@ void IceStreamProducer::createRandomMaterials()
          specValue, specPower, specCoef, innerIllumination);
    }
 }
-

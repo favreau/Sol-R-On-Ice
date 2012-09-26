@@ -12,7 +12,7 @@
 #include <ice/ice.h>
 
 // Project
-#include "Cuda/CudaKernel.h"
+#include "CudaKernel.h"
 #include "IIceStreamer.h"
 
 /*

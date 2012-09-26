@@ -107,9 +107,9 @@ CudaKernel::CudaKernel() :
 	m_angles.y = 0.f;
 	m_angles.z = 0.f;
 
-   setDepthOfFieldInfo( true, 0.f, 40.f, 50 );
+   setDepthOfFieldInfo( true, 0.f, 60.f, 100 );
    float4 bkColor = {0.f, 0.f, 0.f, 0.f};
-   setSceneInfo( 512, 512, 1, 0.f, true, 10000.f, 0.1f, 5, bkColor, false, 0.f, false );
+   setSceneInfo( 512, 512, 1, 0.f, true, 50000.f, 0.9f, 5, bkColor, false, 0.f, false );
 }
 
 /*

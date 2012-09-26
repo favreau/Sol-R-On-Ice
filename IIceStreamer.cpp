@@ -39,6 +39,8 @@
 
 static const ::std::string __IceStreamer__BitmapProvider__getBitmap_name = "getBitmap";
 
+static const ::std::string __IceStreamer__BitmapProvider__getSceneInfo_name = "getSceneInfo";
+
 ::Ice::Object* IceInternal::upCast(::IceStreamer::BitmapProvider* p) { return p; }
 ::IceProxy::Ice::Object* IceInternal::upCast(::IceProxy::IceStreamer::BitmapProvider* p) { return p; }
 
@@ -58,8 +60,64 @@ IceStreamer::__read(::IceInternal::BasicStream* __is, ::IceStreamer::BitmapProvi
     }
 }
 
+void
+IceStreamer::SceneInfo::__write(::IceInternal::BasicStream* __os) const
+{
+    __os->write(width);
+    __os->write(height);
+    __os->write(draft);
+    __os->write(transparentColor);
+    __os->write(shadowsEnabled);
+    __os->write(viewDistance);
+    __os->write(shadowIntensity);
+    __os->write(nbRayIterations);
+    __os->write(backgroundColorR);
+    __os->write(backgroundColorG);
+    __os->write(backgroundColorB);
+    __os->write(supportFor3DVision);
+    __os->write(width3DVision);
+    __os->write(renderBoxes);
+}
+
+void
+IceStreamer::SceneInfo::__read(::IceInternal::BasicStream* __is)
+{
+    __is->read(width);
+    __is->read(height);
+    __is->read(draft);
+    __is->read(transparentColor);
+    __is->read(shadowsEnabled);
+    __is->read(viewDistance);
+    __is->read(shadowIntensity);
+    __is->read(nbRayIterations);
+    __is->read(backgroundColorR);
+    __is->read(backgroundColorG);
+    __is->read(backgroundColorB);
+    __is->read(supportFor3DVision);
+    __is->read(width3DVision);
+    __is->read(renderBoxes);
+}
+
+void
+IceStreamer::DepthOfFieldInfo::__write(::IceInternal::BasicStream* __os) const
+{
+    __os->write(enabled);
+    __os->write(pointOfFocus);
+    __os->write(strength);
+    __os->write(iterations);
+}
+
+void
+IceStreamer::DepthOfFieldInfo::__read(::IceInternal::BasicStream* __is)
+{
+    __is->read(enabled);
+    __is->read(pointOfFocus);
+    __is->read(strength);
+    __is->read(iterations);
+}
+
 ::IceStreamer::bytes
-IceProxy::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __ctx)
+IceProxy::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo, const ::Ice::Context* __ctx)
 {
     int __cnt = 0;
     while(true)
@@ -70,7 +128,7 @@ IceProxy::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Float e
             __checkTwowayOnly(__IceStreamer__BitmapProvider__getBitmap_name);
             __delBase = __getDelegate(false);
             ::IceDelegate::IceStreamer::BitmapProvider* __del = dynamic_cast< ::IceDelegate::IceStreamer::BitmapProvider*>(__delBase.get());
-            return __del->getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, __ctx);
+            return __del->getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, scInfo, dofInfo, __ctx);
         }
         catch(const ::IceInternal::LocalExceptionWrapper& __ex)
         {
@@ -84,7 +142,7 @@ IceProxy::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Float e
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::IceStreamer::BitmapProvider::begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::IceStreamer::BitmapProvider::begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     __checkAsyncTwowayOnly(__IceStreamer__BitmapProvider__getBitmap_name);
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __IceStreamer__BitmapProvider__getBitmap_name, __del, __cookie);
@@ -101,9 +159,8 @@ IceProxy::IceStreamer::BitmapProvider::begin_getBitmap(::Ice::Float ex, ::Ice::F
         __os->write(ax);
         __os->write(ay);
         __os->write(az);
-        __os->write(timer);
-        __os->write(depthOfField);
-        __os->write(transparentColor);
+        scInfo.__write(__os);
+        dofInfo.__write(__os);
         __os->endWriteEncaps();
         __result->__send(true);
     }
@@ -139,6 +196,73 @@ IceProxy::IceStreamer::BitmapProvider::end_getBitmap(const ::Ice::AsyncResultPtr
     return __ret;
 }
 
+::IceStreamer::SceneInfo
+IceProxy::IceStreamer::BitmapProvider::getSceneInfo(const ::Ice::Context* __ctx)
+{
+    int __cnt = 0;
+    while(true)
+    {
+        ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
+        try
+        {
+            __checkTwowayOnly(__IceStreamer__BitmapProvider__getSceneInfo_name);
+            __delBase = __getDelegate(false);
+            ::IceDelegate::IceStreamer::BitmapProvider* __del = dynamic_cast< ::IceDelegate::IceStreamer::BitmapProvider*>(__delBase.get());
+            return __del->getSceneInfo(__ctx);
+        }
+        catch(const ::IceInternal::LocalExceptionWrapper& __ex)
+        {
+            __handleExceptionWrapper(__delBase, __ex);
+        }
+        catch(const ::Ice::LocalException& __ex)
+        {
+            __handleException(__delBase, __ex, true, __cnt);
+        }
+    }
+}
+
+::Ice::AsyncResultPtr
+IceProxy::IceStreamer::BitmapProvider::begin_getSceneInfo(const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__IceStreamer__BitmapProvider__getSceneInfo_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __IceStreamer__BitmapProvider__getSceneInfo_name, __del, __cookie);
+    try
+    {
+        __result->__prepare(__IceStreamer__BitmapProvider__getSceneInfo_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->__getOs();
+        __os->endWriteEncaps();
+        __result->__send(true);
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __result->__exceptionAsync(__ex);
+    }
+    return __result;
+}
+
+::IceStreamer::SceneInfo
+IceProxy::IceStreamer::BitmapProvider::end_getSceneInfo(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __IceStreamer__BitmapProvider__getSceneInfo_name);
+    ::IceStreamer::SceneInfo __ret;
+    if(!__result->__wait())
+    {
+        try
+        {
+            __result->__throwUserException();
+        }
+        catch(const ::Ice::UserException& __ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+        }
+    }
+    ::IceInternal::BasicStream* __is = __result->__getIs();
+    __is->startReadEncaps();
+    __ret.__read(__is);
+    __is->endReadEncaps();
+    return __ret;
+}
+
 const ::std::string&
 IceProxy::IceStreamer::BitmapProvider::ice_staticId()
 {
@@ -164,7 +288,7 @@ IceProxy::IceStreamer::BitmapProvider::__newInstance() const
 }
 
 ::IceStreamer::bytes
-IceDelegateM::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __context)
+IceDelegateM::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo, const ::Ice::Context* __context)
 {
     ::IceInternal::Outgoing __og(__handler.get(), __IceStreamer__BitmapProvider__getBitmap_name, ::Ice::Normal, __context);
     try
@@ -179,9 +303,8 @@ IceDelegateM::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Flo
         __os->write(ax);
         __os->write(ay);
         __os->write(az);
-        __os->write(timer);
-        __os->write(depthOfField);
-        __os->write(transparentColor);
+        scInfo.__write(__os);
+        dofInfo.__write(__os);
     }
     catch(const ::Ice::LocalException& __ex)
     {
@@ -217,14 +340,46 @@ IceDelegateM::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Flo
     }
 }
 
+::IceStreamer::SceneInfo
+IceDelegateM::IceStreamer::BitmapProvider::getSceneInfo(const ::Ice::Context* __context)
+{
+    ::IceInternal::Outgoing __og(__handler.get(), __IceStreamer__BitmapProvider__getSceneInfo_name, ::Ice::Normal, __context);
+    bool __ok = __og.invoke();
+    ::IceStreamer::SceneInfo __ret;
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __og.throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+                throw __uue;
+            }
+        }
+        ::IceInternal::BasicStream* __is = __og.is();
+        __is->startReadEncaps();
+        __ret.__read(__is);
+        __is->endReadEncaps();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(__ex, false);
+    }
+}
+
 ::IceStreamer::bytes
-IceDelegateD::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context* __context)
+IceDelegateD::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo, const ::Ice::Context* __context)
 {
     class _DirectI : public ::IceInternal::Direct
     {
     public:
 
-        _DirectI(::IceStreamer::bytes& __result, ::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Current& __current) : 
+        _DirectI(::IceStreamer::bytes& __result, ::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result),
             _m_ex(ex),
@@ -236,9 +391,8 @@ IceDelegateD::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Flo
             _m_ax(ax),
             _m_ay(ay),
             _m_az(az),
-            _m_timer(timer),
-            _m_depthOfField(depthOfField),
-            _m_transparentColor(transparentColor)
+            _m_scInfo(scInfo),
+            _m_dofInfo(dofInfo)
         {
         }
         
@@ -250,7 +404,7 @@ IceDelegateD::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Flo
             {
                 throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
             }
-            _result = servant->getBitmap(_m_ex, _m_ey, _m_ez, _m_dx, _m_dy, _m_dz, _m_ax, _m_ay, _m_az, _m_timer, _m_depthOfField, _m_transparentColor, _current);
+            _result = servant->getBitmap(_m_ex, _m_ey, _m_ez, _m_dx, _m_dy, _m_dz, _m_ax, _m_ay, _m_az, _m_scInfo, _m_dofInfo, _current);
             return ::Ice::DispatchOK;
         }
         
@@ -266,9 +420,8 @@ IceDelegateD::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Flo
         ::Ice::Float _m_ax;
         ::Ice::Float _m_ay;
         ::Ice::Float _m_az;
-        ::Ice::Float _m_timer;
-        ::Ice::Float _m_depthOfField;
-        ::Ice::Float _m_transparentColor;
+        const ::IceStreamer::SceneInfo& _m_scInfo;
+        const ::IceStreamer::DepthOfFieldInfo& _m_dofInfo;
     };
     
     ::Ice::Current __current;
@@ -276,7 +429,73 @@ IceDelegateD::IceStreamer::BitmapProvider::getBitmap(::Ice::Float ex, ::Ice::Flo
     ::IceStreamer::bytes __result;
     try
     {
-        _DirectI __direct(__result, ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, __current);
+        _DirectI __direct(__result, ex, ey, ez, dx, dy, dz, ax, ay, az, scInfo, dofInfo, __current);
+        try
+        {
+            __direct.servant()->__collocDispatch(__direct);
+        }
+        catch(...)
+        {
+            __direct.destroy();
+            throw;
+        }
+        __direct.destroy();
+    }
+    catch(const ::Ice::SystemException&)
+    {
+        throw;
+    }
+    catch(const ::IceInternal::LocalExceptionWrapper&)
+    {
+        throw;
+    }
+    catch(const ::std::exception& __ex)
+    {
+        ::IceInternal::LocalExceptionWrapper::throwWrapper(__ex);
+    }
+    catch(...)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(::Ice::UnknownException(__FILE__, __LINE__, "unknown c++ exception"), false);
+    }
+    return __result;
+}
+
+::IceStreamer::SceneInfo
+IceDelegateD::IceStreamer::BitmapProvider::getSceneInfo(const ::Ice::Context* __context)
+{
+    class _DirectI : public ::IceInternal::Direct
+    {
+    public:
+
+        _DirectI(::IceStreamer::SceneInfo& __result, const ::Ice::Current& __current) : 
+            ::IceInternal::Direct(__current),
+            _result(__result)
+        {
+        }
+        
+        virtual ::Ice::DispatchStatus
+        run(::Ice::Object* object)
+        {
+            ::IceStreamer::BitmapProvider* servant = dynamic_cast< ::IceStreamer::BitmapProvider*>(object);
+            if(!servant)
+            {
+                throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
+            }
+            _result = servant->getSceneInfo(_current);
+            return ::Ice::DispatchOK;
+        }
+        
+    private:
+        
+        ::IceStreamer::SceneInfo& _result;
+    };
+    
+    ::Ice::Current __current;
+    __initCurrent(__current, __IceStreamer__BitmapProvider__getSceneInfo_name, ::Ice::Normal, __context);
+    ::IceStreamer::SceneInfo __result;
+    try
+    {
+        _DirectI __direct(__result, __current);
         try
         {
             __direct.servant()->__collocDispatch(__direct);
@@ -359,9 +578,8 @@ IceStreamer::BitmapProvider::___getBitmap(::IceInternal::Incoming& __inS, const 
     ::Ice::Float ax;
     ::Ice::Float ay;
     ::Ice::Float az;
-    ::Ice::Float timer;
-    ::Ice::Float depthOfField;
-    ::Ice::Float transparentColor;
+    ::IceStreamer::SceneInfo scInfo;
+    ::IceStreamer::DepthOfFieldInfo dofInfo;
     __is->read(ex);
     __is->read(ey);
     __is->read(ez);
@@ -371,12 +589,11 @@ IceStreamer::BitmapProvider::___getBitmap(::IceInternal::Incoming& __inS, const 
     __is->read(ax);
     __is->read(ay);
     __is->read(az);
-    __is->read(timer);
-    __is->read(depthOfField);
-    __is->read(transparentColor);
+    scInfo.__read(__is);
+    dofInfo.__read(__is);
     __is->endReadEncaps();
     ::IceInternal::BasicStream* __os = __inS.os();
-    ::IceStreamer::bytes __ret = getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, __current);
+    ::IceStreamer::bytes __ret = getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, scInfo, dofInfo, __current);
     if(__ret.size() == 0)
     {
         __os->writeSize(0);
@@ -388,9 +605,21 @@ IceStreamer::BitmapProvider::___getBitmap(::IceInternal::Incoming& __inS, const 
     return ::Ice::DispatchOK;
 }
 
+::Ice::DispatchStatus
+IceStreamer::BitmapProvider::___getSceneInfo(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    __inS.is()->skipEmptyEncaps();
+    ::IceInternal::BasicStream* __os = __inS.os();
+    ::IceStreamer::SceneInfo __ret = getSceneInfo(__current);
+    __ret.__write(__os);
+    return ::Ice::DispatchOK;
+}
+
 static ::std::string __IceStreamer__BitmapProvider_all[] =
 {
     "getBitmap",
+    "getSceneInfo",
     "ice_id",
     "ice_ids",
     "ice_isA",
@@ -400,7 +629,7 @@ static ::std::string __IceStreamer__BitmapProvider_all[] =
 ::Ice::DispatchStatus
 IceStreamer::BitmapProvider::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< ::std::string*, ::std::string*> r = ::std::equal_range(__IceStreamer__BitmapProvider_all, __IceStreamer__BitmapProvider_all + 5, current.operation);
+    ::std::pair< ::std::string*, ::std::string*> r = ::std::equal_range(__IceStreamer__BitmapProvider_all, __IceStreamer__BitmapProvider_all + 6, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -414,17 +643,21 @@ IceStreamer::BitmapProvider::__dispatch(::IceInternal::Incoming& in, const ::Ice
         }
         case 1:
         {
-            return ___ice_id(in, current);
+            return ___getSceneInfo(in, current);
         }
         case 2:
         {
-            return ___ice_ids(in, current);
+            return ___ice_id(in, current);
         }
         case 3:
         {
-            return ___ice_isA(in, current);
+            return ___ice_ids(in, current);
         }
         case 4:
+        {
+            return ___ice_isA(in, current);
+        }
+        case 5:
         {
             return ___ice_ping(in, current);
         }

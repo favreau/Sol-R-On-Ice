@@ -91,6 +91,324 @@ void __patch__BitmapProviderPtr(void*, ::Ice::ObjectPtr&);
 namespace IceStreamer
 {
 
+struct SceneInfo
+{
+    ::Ice::Int width;
+    ::Ice::Int height;
+    ::Ice::Float draft;
+    ::Ice::Float transparentColor;
+    bool shadowsEnabled;
+    ::Ice::Float viewDistance;
+    ::Ice::Float shadowIntensity;
+    ::Ice::Int nbRayIterations;
+    ::Ice::Float backgroundColorR;
+    ::Ice::Float backgroundColorG;
+    ::Ice::Float backgroundColorB;
+    bool supportFor3DVision;
+    ::Ice::Float width3DVision;
+    bool renderBoxes;
+
+    bool operator==(const SceneInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(width != __rhs.width)
+        {
+            return false;
+        }
+        if(height != __rhs.height)
+        {
+            return false;
+        }
+        if(draft != __rhs.draft)
+        {
+            return false;
+        }
+        if(transparentColor != __rhs.transparentColor)
+        {
+            return false;
+        }
+        if(shadowsEnabled != __rhs.shadowsEnabled)
+        {
+            return false;
+        }
+        if(viewDistance != __rhs.viewDistance)
+        {
+            return false;
+        }
+        if(shadowIntensity != __rhs.shadowIntensity)
+        {
+            return false;
+        }
+        if(nbRayIterations != __rhs.nbRayIterations)
+        {
+            return false;
+        }
+        if(backgroundColorR != __rhs.backgroundColorR)
+        {
+            return false;
+        }
+        if(backgroundColorG != __rhs.backgroundColorG)
+        {
+            return false;
+        }
+        if(backgroundColorB != __rhs.backgroundColorB)
+        {
+            return false;
+        }
+        if(supportFor3DVision != __rhs.supportFor3DVision)
+        {
+            return false;
+        }
+        if(width3DVision != __rhs.width3DVision)
+        {
+            return false;
+        }
+        if(renderBoxes != __rhs.renderBoxes)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const SceneInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(width < __rhs.width)
+        {
+            return true;
+        }
+        else if(__rhs.width < width)
+        {
+            return false;
+        }
+        if(height < __rhs.height)
+        {
+            return true;
+        }
+        else if(__rhs.height < height)
+        {
+            return false;
+        }
+        if(draft < __rhs.draft)
+        {
+            return true;
+        }
+        else if(__rhs.draft < draft)
+        {
+            return false;
+        }
+        if(transparentColor < __rhs.transparentColor)
+        {
+            return true;
+        }
+        else if(__rhs.transparentColor < transparentColor)
+        {
+            return false;
+        }
+        if(shadowsEnabled < __rhs.shadowsEnabled)
+        {
+            return true;
+        }
+        else if(__rhs.shadowsEnabled < shadowsEnabled)
+        {
+            return false;
+        }
+        if(viewDistance < __rhs.viewDistance)
+        {
+            return true;
+        }
+        else if(__rhs.viewDistance < viewDistance)
+        {
+            return false;
+        }
+        if(shadowIntensity < __rhs.shadowIntensity)
+        {
+            return true;
+        }
+        else if(__rhs.shadowIntensity < shadowIntensity)
+        {
+            return false;
+        }
+        if(nbRayIterations < __rhs.nbRayIterations)
+        {
+            return true;
+        }
+        else if(__rhs.nbRayIterations < nbRayIterations)
+        {
+            return false;
+        }
+        if(backgroundColorR < __rhs.backgroundColorR)
+        {
+            return true;
+        }
+        else if(__rhs.backgroundColorR < backgroundColorR)
+        {
+            return false;
+        }
+        if(backgroundColorG < __rhs.backgroundColorG)
+        {
+            return true;
+        }
+        else if(__rhs.backgroundColorG < backgroundColorG)
+        {
+            return false;
+        }
+        if(backgroundColorB < __rhs.backgroundColorB)
+        {
+            return true;
+        }
+        else if(__rhs.backgroundColorB < backgroundColorB)
+        {
+            return false;
+        }
+        if(supportFor3DVision < __rhs.supportFor3DVision)
+        {
+            return true;
+        }
+        else if(__rhs.supportFor3DVision < supportFor3DVision)
+        {
+            return false;
+        }
+        if(width3DVision < __rhs.width3DVision)
+        {
+            return true;
+        }
+        else if(__rhs.width3DVision < width3DVision)
+        {
+            return false;
+        }
+        if(renderBoxes < __rhs.renderBoxes)
+        {
+            return true;
+        }
+        else if(__rhs.renderBoxes < renderBoxes)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const SceneInfo& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const SceneInfo& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const SceneInfo& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const SceneInfo& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+
+    void __write(::IceInternal::BasicStream*) const;
+    void __read(::IceInternal::BasicStream*);
+};
+
+struct DepthOfFieldInfo
+{
+    bool enabled;
+    ::Ice::Float pointOfFocus;
+    ::Ice::Float strength;
+    ::Ice::Int iterations;
+
+    bool operator==(const DepthOfFieldInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return true;
+        }
+        if(enabled != __rhs.enabled)
+        {
+            return false;
+        }
+        if(pointOfFocus != __rhs.pointOfFocus)
+        {
+            return false;
+        }
+        if(strength != __rhs.strength)
+        {
+            return false;
+        }
+        if(iterations != __rhs.iterations)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool operator<(const DepthOfFieldInfo& __rhs) const
+    {
+        if(this == &__rhs)
+        {
+            return false;
+        }
+        if(enabled < __rhs.enabled)
+        {
+            return true;
+        }
+        else if(__rhs.enabled < enabled)
+        {
+            return false;
+        }
+        if(pointOfFocus < __rhs.pointOfFocus)
+        {
+            return true;
+        }
+        else if(__rhs.pointOfFocus < pointOfFocus)
+        {
+            return false;
+        }
+        if(strength < __rhs.strength)
+        {
+            return true;
+        }
+        else if(__rhs.strength < strength)
+        {
+            return false;
+        }
+        if(iterations < __rhs.iterations)
+        {
+            return true;
+        }
+        else if(__rhs.iterations < iterations)
+        {
+            return false;
+        }
+        return false;
+    }
+
+    bool operator!=(const DepthOfFieldInfo& __rhs) const
+    {
+        return !operator==(__rhs);
+    }
+    bool operator<=(const DepthOfFieldInfo& __rhs) const
+    {
+        return operator<(__rhs) || operator==(__rhs);
+    }
+    bool operator>(const DepthOfFieldInfo& __rhs) const
+    {
+        return !operator<(__rhs) && !operator==(__rhs);
+    }
+    bool operator>=(const DepthOfFieldInfo& __rhs) const
+    {
+        return !operator<(__rhs);
+    }
+
+    void __write(::IceInternal::BasicStream*) const;
+    void __read(::IceInternal::BasicStream*);
+};
+
 typedef ::std::vector< ::Ice::Byte> bytes;
 
 }
@@ -100,6 +418,9 @@ namespace IceStreamer
 
 class Callback_BitmapProvider_getBitmap_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_BitmapProvider_getBitmap_Base> Callback_BitmapProvider_getBitmapPtr;
+
+class Callback_BitmapProvider_getSceneInfo_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_BitmapProvider_getSceneInfo_Base> Callback_BitmapProvider_getSceneInfoPtr;
 
 }
 
@@ -113,51 +434,99 @@ class BitmapProvider : virtual public ::IceProxy::Ice::Object
 {
 public:
 
-    ::IceStreamer::bytes getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor)
+    ::IceStreamer::bytes getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo)
     {
-        return getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, 0);
+        return getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, scInfo, dofInfo, 0);
     }
-    ::IceStreamer::bytes getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx)
+    ::IceStreamer::bytes getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo, const ::Ice::Context& __ctx)
     {
-        return getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, &__ctx);
-    }
-
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor)
-    {
-        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, 0, ::IceInternal::__dummyCallback, 0);
+        return getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, scInfo, dofInfo, &__ctx);
     }
 
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo)
     {
-        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, scInfo, dofInfo, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo, const ::Ice::Context& __ctx)
     {
-        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, 0, __del, __cookie);
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, scInfo, dofInfo, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, &__ctx, __del, __cookie);
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, scInfo, dofInfo, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::IceStreamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, 0, __del, __cookie);
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, scInfo, dofInfo, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx, const ::IceStreamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo, const ::IceStreamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, &__ctx, __del, __cookie);
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, scInfo, dofInfo, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, const ::IceStreamer::SceneInfo& scInfo, const ::IceStreamer::DepthOfFieldInfo& dofInfo, const ::Ice::Context& __ctx, const ::IceStreamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, scInfo, dofInfo, &__ctx, __del, __cookie);
     }
 
     ::IceStreamer::bytes end_getBitmap(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::IceStreamer::SceneInfo&, const ::IceStreamer::DepthOfFieldInfo&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::IceStreamer::SceneInfo&, const ::IceStreamer::DepthOfFieldInfo&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    ::IceStreamer::SceneInfo getSceneInfo()
+    {
+        return getSceneInfo(0);
+    }
+    ::IceStreamer::SceneInfo getSceneInfo(const ::Ice::Context& __ctx)
+    {
+        return getSceneInfo(&__ctx);
+    }
+
+    ::Ice::AsyncResultPtr begin_getSceneInfo()
+    {
+        return begin_getSceneInfo(0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_getSceneInfo(const ::Ice::Context& __ctx)
+    {
+        return begin_getSceneInfo(&__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_getSceneInfo(const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getSceneInfo(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getSceneInfo(const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getSceneInfo(&__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getSceneInfo(const ::IceStreamer::Callback_BitmapProvider_getSceneInfoPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getSceneInfo(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getSceneInfo(const ::Ice::Context& __ctx, const ::IceStreamer::Callback_BitmapProvider_getSceneInfoPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getSceneInfo(&__ctx, __del, __cookie);
+    }
+
+    ::IceStreamer::SceneInfo end_getSceneInfo(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::IceStreamer::SceneInfo getSceneInfo(const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_getSceneInfo(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -374,7 +743,9 @@ class BitmapProvider : virtual public ::IceDelegate::Ice::Object
 {
 public:
 
-    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*) = 0;
+    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::IceStreamer::SceneInfo&, const ::IceStreamer::DepthOfFieldInfo&, const ::Ice::Context*) = 0;
+
+    virtual ::IceStreamer::SceneInfo getSceneInfo(const ::Ice::Context*) = 0;
 };
 
 }
@@ -392,7 +763,9 @@ class BitmapProvider : virtual public ::IceDelegate::IceStreamer::BitmapProvider
 {
 public:
 
-    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
+    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::IceStreamer::SceneInfo&, const ::IceStreamer::DepthOfFieldInfo&, const ::Ice::Context*);
+
+    virtual ::IceStreamer::SceneInfo getSceneInfo(const ::Ice::Context*);
 };
 
 }
@@ -410,7 +783,9 @@ class BitmapProvider : virtual public ::IceDelegate::IceStreamer::BitmapProvider
 {
 public:
 
-    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
+    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::IceStreamer::SceneInfo&, const ::IceStreamer::DepthOfFieldInfo&, const ::Ice::Context*);
+
+    virtual ::IceStreamer::SceneInfo getSceneInfo(const ::Ice::Context*);
 };
 
 }
@@ -434,8 +809,11 @@ public:
     virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
     static const ::std::string& ice_staticId();
 
-    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::IceStreamer::SceneInfo&, const ::IceStreamer::DepthOfFieldInfo&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___getBitmap(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::IceStreamer::SceneInfo getSceneInfo(const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___getSceneInfo(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -577,6 +955,122 @@ template<class T, typename CT> Callback_BitmapProvider_getBitmapPtr
 newCallback_BitmapProvider_getBitmap(T* instance, void (T::*cb)(const ::IceStreamer::bytes&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_BitmapProvider_getBitmap<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_BitmapProvider_getSceneInfo : public Callback_BitmapProvider_getSceneInfo_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::IceStreamer::SceneInfo&);
+
+    CallbackNC_BitmapProvider_getSceneInfo(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::IceStreamer::BitmapProviderPrx __proxy = ::IceStreamer::BitmapProviderPrx::uncheckedCast(__result->getProxy());
+        ::IceStreamer::SceneInfo __ret;
+        try
+        {
+            __ret = __proxy->end_getSceneInfo(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)(__ret);
+#else
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_BitmapProvider_getSceneInfoPtr
+newCallback_BitmapProvider_getSceneInfo(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::IceStreamer::SceneInfo&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_BitmapProvider_getSceneInfo<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_BitmapProvider_getSceneInfoPtr
+newCallback_BitmapProvider_getSceneInfo(T* instance, void (T::*cb)(const ::IceStreamer::SceneInfo&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_BitmapProvider_getSceneInfo<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_BitmapProvider_getSceneInfo : public Callback_BitmapProvider_getSceneInfo_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::IceStreamer::SceneInfo&, const CT&);
+
+    Callback_BitmapProvider_getSceneInfo(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::IceStreamer::BitmapProviderPrx __proxy = ::IceStreamer::BitmapProviderPrx::uncheckedCast(__result->getProxy());
+        ::IceStreamer::SceneInfo __ret;
+        try
+        {
+            __ret = __proxy->end_getSceneInfo(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            __exception(__result, ex);
+#else
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+#endif
+            return;
+        }
+        if(response)
+        {
+#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
+            (callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+#else
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+#endif
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_BitmapProvider_getSceneInfoPtr
+newCallback_BitmapProvider_getSceneInfo(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::IceStreamer::SceneInfo&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_BitmapProvider_getSceneInfo<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_BitmapProvider_getSceneInfoPtr
+newCallback_BitmapProvider_getSceneInfo(T* instance, void (T::*cb)(const ::IceStreamer::SceneInfo&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_BitmapProvider_getSceneInfo<T, CT>(instance, cb, excb, sentcb);
 }
 
 }

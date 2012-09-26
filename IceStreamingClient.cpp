@@ -1,8 +1,30 @@
+/* 
+* GPU Raytracer
+* Copyright (C) 2011-2012 Cyrille Favreau <cyrille_favreau@hotmail.com>
+*
+* This library is free software; you can redistribute it and/or
+* modify it under the terms of the GNU Library General Public
+* License as published by the Free Software Foundation; either
+* version 2 of the License, or (at your option) any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* Library General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+*/
+
+/*
+* Author: Cyrille Favreau <cyrille_favreau@hotmail.com>
+*
+*/
+
+#define _CRT_SECURE_NO_WARNINGS
+
 // Ice
 #include <Ice/Ice.h>
-
-// Cuda
-#include <vector_functions.h>
 
 // OpenGL Graphics Includes
 #include <GL/glew.h>
@@ -13,70 +35,68 @@
 #include <time.h>
 #include <iostream>
 #include <cassert>
+#include <vector>
+#include <math.h>
+#include <string.h>
+#include <stdlib.h>
 
 // Project
+#include "CudaKernel.h"
 #include "IIceStreamer.h"
 
 // Ice
-::Ice::CommunicatorPtr communicator;
-::IceStreamer::BitmapProviderPrx bitmapProvider;
+::Ice::CommunicatorPtr gCommunicator;
+::IceStreamer::BitmapProviderPrx gBitmapProvider;
 
 // General Settings
-const long TARGET_FPS = 60;
+const long TARGET_FPS = 200;
 const long REFRESH_DELAY = 1000/TARGET_FPS; //ms
 
 // GPU
-int platform     = 0;
-int device       = 0;
+int gBlockSize(1024);
+int gSharedMemSize(64);
 
 // Rendering window vars
-const unsigned int draft        = 1;
-unsigned int window_width       = 768;
-unsigned int window_height      = 512;
-const unsigned int window_depth = 4;
+unsigned int gWindowWidth  = 512;
+unsigned int gWindowHeight = 512;
+unsigned int gWindowDepth  = 4;
 
-// ----------------------------------
+// ----------------------------------------------------------------------
 // Scene
 // ----------------------------------------------------------------------
-const float gRoomWidth  = 2000.f;
-const float gRoomHeight = 1000.f;
-const float gRoomDepth  = 2000.f;
-float gTransparentColor = 0.01f;
-int   currentMaterial   = 0;
+::IceStreamer::SceneInfo gSceneInfo = { gWindowWidth, gWindowHeight, 1.f, 0.f, true, 50000.f, 0.9f, 3, 0.f, 0.f, 0.f, false, 0.f, false };
+bool gRefreshNeeded(true);
 
-int gMaterials[2];
-
-int nbPrimitives = 0;
-int nbLamps      = 0;
-int nbMaterials  = 0;
-int nbTextures   = 20;
+bool gAnimate(false);
+long gTickCount(0);
 
 // Camera
 float4 gViewPos;
 float4 gViewDir;
 float4 gViewAngles;
-float4 gPreviewViewPos;
-float4 lampPosition;
-
-// materials
-float gReflection   = 0.f;
-float gRefraction   = 1.f;
-float gTransparency = 0.f;
-float gSpecValue  = 1.f;
-float gSpecPower  = 100.f; 
-float gSpecCoef   = 1.f;
-float gInnerIllumination = 0.f;
+float4 gPreviewViewPos = {0.f, 0.f, 0.f, 0.f};
+float4 gLampPosition;
+float4 gLampDirection;
 
 #ifdef USE_KINECT
-const float gSkeletonSize      = 200.0;
-const float gSkeletonThickness =  20.0;
+int gSkeletonPrimitiveIndex    = -1;
+int gSkeletonBoxID             = 2;
+const float gSkeletonSize      = 500.f;
+const float gSkeletonThickness =  60.f;
+float4 gSkeletonPosition       = { 0.f, 0.f, 0.f, 0.f };
 #endif // USE_KINECT
 
+// Post processing
+::IceStreamer::DepthOfFieldInfo gDepthOfField = { true, 4000.f, 40.f, 100 };
 
 // --------------------------------------------------------------------------------
 // OpenGL
 // --------------------------------------------------------------------------------
-GLubyte* ubImage;
+GLubyte* gUbImage;
+int gTimebase(0);
+int gFrame(0);
+int gFPS(0);
+bool gHelp(true);
 
 // GL functionality
 void initgl(int argc, char** argv);
@@ -94,7 +114,6 @@ void (*pCleanup)(int) = &Cleanup;
 
 // Sim and Auto-Verification parameters 
 float anim = 0.f;
-float gDepthOfField  = 0.f;
 bool bNoPrompt = false;  
 
 // mouse controls
@@ -105,6 +124,32 @@ float rotate_x = 0.0, rotate_y = 0.0;
 // Raytracer Module
 unsigned int* uiOutput = NULL;
 
+/*
+________________________________________________________________________________
+
+vectorRotation
+________________________________________________________________________________
+*/
+void vectorRotation( float4& vector, float4 angles )
+{ 
+	float4 result = vector;
+	/* X axis */
+	result.y = vector.y*cos(angles.x) - vector.z*sin(angles.x);
+	result.z = vector.y*sin(angles.x) + vector.z*cos(angles.x);
+	vector = result;
+	result = vector;
+	/* Y axis */
+	result.z = vector.z*cos(angles.y) - vector.x*sin(angles.y);
+	result.x = vector.z*sin(angles.y) + vector.x*cos(angles.y);
+	vector = result;
+}
+
+/*
+________________________________________________________________________________
+
+getRandomValue
+________________________________________________________________________________
+*/
 float getRandomValue( int range, int safeZone, bool allowNegativeValues = true )
 {
 	float value( static_cast<float>(rand()%range) + safeZone);
@@ -115,73 +160,73 @@ float getRandomValue( int range, int safeZone, bool allowNegativeValues = true )
 	return value;
 }
 
+/*
+________________________________________________________________________________
+
+idle
+________________________________________________________________________________
+*/
 void idle()
 {
 }
 
+/*
+________________________________________________________________________________
+
+cleanup
+________________________________________________________________________________
+*/
 void cleanup()
 {
 }
 
+#if USE_KINECT
+/*
+________________________________________________________________________________
+
+animateSkeleton
+________________________________________________________________________________
+*/
 void animateSkeleton()
 {
-#if USE_KINECT
-	long hr = gpuKernel->updateSkeletons(
-		0.f, gSkeletonSize-500.f, 100.f,          // Position
-		gSkeletonSize,                // Skeleton size
-		gSkeletonThickness,         2, // Default material
-		gSkeletonThickness*2.0f,    1, // Head size and material
-		gSkeletonThickness*1.5f,    10, // Hands size and material
-		gSkeletonThickness*1.8f,    10  // Feet size and material
-		);
-	if( hr == S_OK )
-	{
-		float4 position;
-		const float size = 1500.f;
+   long hr = gpuKernel->updateSkeletons(
+      gSkeletonPrimitiveIndex,
+      gSkeletonBoxID,
+      gSkeletonPosition,              // Position
+      gSkeletonSize,                  // Skeleton size
+      gSkeletonThickness,         2,  // Default material
+      gSkeletonThickness*2.0f,    1,  // Head size and material
+      gSkeletonThickness*1.5f,    10, // Hands size and material
+      gSkeletonThickness*1.8f,    10  // Feet size and material
+      );
+   if( hr == S_OK )
+   {
+      float4 position;
+      const float size = 1500.f;
 
-		// Left Hand
-		if( gpuKernel->getSkeletonPosition(NUI_SKELETON_POSITION_HAND_LEFT, position) )
-		{
-			for( int i(0); i<6; ++i )
-			{
-				float x,y,z,w;
-				gpuKernel->getPrimitiveCenter(leftPrimitiveId-i,x,y,z,w);
-				gpuKernel->setPrimitiveCenter(leftPrimitiveId-i,x,position.y*size,z,w );
-			}
-		}
+      // Head
+      if( gpuKernel->getSkeletonPosition(NUI_SKELETON_POSITION_HEAD, position) )
+      {
 
-		// Right Hand
-		if( gpuKernel->getSkeletonPosition(NUI_SKELETON_POSITION_HAND_RIGHT, position) )
-		{
-			for( int i(0); i<6; ++i )
-			{
-				float x,y,z,w;
-				gpuKernel->getPrimitiveCenter(rightPrimitiveId-i,x,y,z,w);
-				gpuKernel->setPrimitiveCenter(rightPrimitiveId-i,x,position.y*size,z,w );
-			}
-		}
+         gViewAngles.y = -5.f*asin( 
+            position.x - 
+            gPreviewViewPos.x );
+         gViewAngles.x = 5.f*asin( 
+            position.y - 
+            gPreviewViewPos.y );
 
-		// Head
-		if( gpuKernel->getSkeletonPosition(NUI_SKELETON_POSITION_HEAD, position) )
-		{
+         gViewPos.z -= 7000.f*(position.z - gPreviewViewPos.z);
+         gViewDir.z -= 7000.f*(position.z - gPreviewViewPos.z);
 
-			gViewAngles.y = -0.8f*asin( 
-				position.x - 
-				gPreviewViewPos.x );
-			gViewAngles.x = 0.8f*asin( 
-				position.y - 
-				gPreviewViewPos.y );
+         gPreviewViewPos.x = position.x;
+         gPreviewViewPos.y = position.y;
+         gPreviewViewPos.z = position.z;
 
-			gPreviewViewPos.x = position.x;
-			gPreviewViewPos.y = position.y;
-
-			gViewPos.y -= 400.f;
-			gpuKernel->setCamera( gViewPos, gViewDir, gViewAngles );
-			gViewPos.y += 400.f;
-		}
-	}
-#endif // USE_KINEXT
+         gpuKernel->setCamera( gViewPos, gViewDir, gViewAngles );
+      }
+   }
 }
+#endif // USE_KINECT
 
 /*
 --------------------------------------------------------------------------------
@@ -190,17 +235,17 @@ setup the window and assign callbacks
 */
 void initgl( int argc, char **argv )
 {
-	size_t len(window_width*window_height*window_depth);
-	ubImage = new GLubyte[len];
-	memset( ubImage, 0, len ); 
+	size_t len(gWindowWidth*gWindowHeight*gWindowDepth);
+	gUbImage = new GLubyte[len];
+	memset( gUbImage, 0, len ); 
 
 	glutInit(&argc, (char**)argv);
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
 
-	glutInitWindowPosition (glutGet(GLUT_SCREEN_WIDTH)/2 - window_width/2, glutGet(GLUT_SCREEN_HEIGHT)/2 - window_height/2);
+	glutInitWindowPosition (glutGet(GLUT_SCREEN_WIDTH)/2 - gWindowWidth/2, glutGet(GLUT_SCREEN_HEIGHT)/2 - gWindowHeight/2);
 
-	glutInitWindowSize(window_width, window_height);
-	glutCreateWindow("Cuda Raytracer");
+	glutInitWindowSize(gWindowWidth, gWindowHeight);
+	glutCreateWindow("Protein Visualizer");
 
 	glutDisplayFunc(display);       // register GLUT callback functions
 	glutKeyboardFunc(keyboard);
@@ -208,6 +253,14 @@ void initgl( int argc, char **argv )
 	glutMotionFunc(motion);
 	glutTimerFunc(REFRESH_DELAY,timerEvent,REFRESH_DELAY);
 	return;
+}
+
+void RenderString(float x, float y, void *font, const std::string& string, const float4& rgb)
+{
+  glColor3f(rgb.x, rgb.y, rgb.z);
+  glRasterPos2f(x, y);
+
+  glutBitmapString( font, reinterpret_cast<const unsigned char*>(string.c_str()) );
 }
 
 void TexFunc(void)
@@ -218,7 +271,7 @@ void TexFunc(void)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, window_width, window_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, ubImage);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, gWindowWidth/static_cast<float>(gSceneInfo.draft), gWindowHeight/static_cast<float>(gSceneInfo.draft), 0, GL_RGBA, GL_UNSIGNED_BYTE, gUbImage);
 
 	glBegin(GL_QUADS);
 	glTexCoord2f(1.0, 1.0);
@@ -242,6 +295,44 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	TexFunc();
+
+   float4 textColor = {1.f, 1.f, 1.f, 0.f};
+   if( gHelp )
+   {
+      gFrame++;
+      int time=glutGet(GLUT_ELAPSED_TIME);
+      if( time - gTimebase > 1000 )
+      {
+         gFPS = gFrame*1000/(time-gTimebase);
+         gTimebase = time;
+         gFrame=0;
+      }
+
+      char tmp[1024];
+      strcpy(tmp, "b: Randomly change background color\n");
+      strcat(tmp, "B: Reset background color to black\n");
+      strcat(tmp, "d: Enable/Disable depth of field post processing effect\n");
+      strcat(tmp, "i: Switch Boxes/Primitives\n");
+      strcat(tmp, "m: Automatic animation for performance testing\n");
+      strcat(tmp, "n: Next protein\n");
+      strcat(tmp, "o: Increase number of blocks\n");
+      strcat(tmp, "p: Increase shared memory\n");
+      strcat(tmp, "s: Enable/Disable shadows\n");
+      strcat(tmp, "1: Decrease depth of field post processing effect\n");
+      strcat(tmp, "2: Increase depth of field post processing effect\n");
+      strcat(tmp, "4: Decrease view distance\n");
+      strcat(tmp, "5: Increase view distance\n");
+      strcat(tmp, "7: Decrease 3DVision distance between eyes\n");
+      strcat(tmp, "8: Increase 3DVision distance between eyes\n");
+      strcat(tmp, "9: Increase shadow intensity\n");
+      strcat(tmp, "-: Decrease number of ray iterations\n");
+      strcat(tmp, "+: Increase number of ray iterations\n");
+      strcat(tmp, "h: Help\n");
+      strcat(tmp, "Escape: Exit application\n");
+      RenderString(-0.9f, 0.9f, GLUT_BITMAP_HELVETICA_10, tmp, textColor );
+   }
+   RenderString(0.f, -0.9f, GLUT_BITMAP_HELVETICA_10, "Copyright(C) Cyrille Favreau - http://cudaopencl.blogspot.com", textColor );
+
 	glFlush();
 
 	glutSwapBuffers();
@@ -249,39 +340,46 @@ void display()
 
 void timerEvent(int value)
 {
-	/*
-	animateSkeleton();
-	gpuKernel->setLamp( 0, 
-	gRoomWidth*0.8f*cos(0.1f*anim), gRoomHeight+100*sin(0.32f*anim), gRoomDepth*0.8f*sin(0.21f*anim), 
-	10.f, 0.f, 1.f, 1.f, 1.f, 1.f );
+#ifdef USE_KINECT
+   animateSkeleton();
+#endif // USE_KINECT
 
-	// Render scene
-	gpuKernel->render( ubImage, anim, gDepthOfField, gTransparentColor );
-	*/
-	try 
-	{
-		IceStreamer::bytes bitmap = bitmapProvider->getBitmap( 
-			gViewPos.x, gViewPos.y, gViewPos.z, 
-			gViewDir.x, gViewDir.y, gViewDir.z, 
-			gViewAngles.x, gViewAngles.y, gViewAngles.z,
-			anim, gDepthOfField, gTransparentColor );
-		for( unsigned int i(0); i<bitmap.size(); ++i) ubImage[i] = bitmap[i];
-	}
-	catch(const Ice::Exception& e)
-	{
-		std::cout << e.ice_name() << std::endl;
-		std::cout << e.ice_file() << std::endl;
-		std::cout << e.ice_stackTrace() << std::endl;
-	}
-	catch( ... ) 
-	{
-		std::cout << "Unknown exception" << std::endl;
-	}
+   if( gRefreshNeeded )
+   {
+      try 
+      {
+         IceStreamer::bytes bitmap = gBitmapProvider->getBitmap( 
+            gViewPos.x, gViewPos.y, gViewPos.z, 
+            gViewDir.x, gViewDir.y, gViewDir.z, 
+            gViewAngles.x, gViewAngles.y, gViewAngles.z,
+            gSceneInfo, gDepthOfField );
+         for( unsigned int i(0); i<bitmap.size(); ++i) 
+         {
+            gUbImage[i] = bitmap[i];
+         }
+      }
+      catch(const Ice::Exception& e)
+      {
+         std::cout << e.ice_name() << std::endl;
+         std::cout << e.ice_file() << std::endl;
+         std::cout << e.ice_stackTrace() << std::endl;
+      }
+      catch( ... ) 
+      {
+         std::cout << "Unknown exception" << std::endl;
+      }
 
-	glutPostRedisplay();
-	glutTimerFunc(REFRESH_DELAY, timerEvent,0);
-
-	anim += 0.02f;
+#ifdef WIN32
+      long t = GetTickCount();
+      anim += (t - gTickCount) / 1000.f;
+      gTickCount = t;
+#else
+      anim += 0.2f;
+#endif
+   }
+   glutPostRedisplay();
+   glutTimerFunc(REFRESH_DELAY, timerEvent,0);
+   gRefreshNeeded = false;
 }
 
 // Keyboard events handler
@@ -292,6 +390,114 @@ void keyboard(unsigned char key, int x, int y)
 
 	switch(key) 
 	{
+	case 'f':
+		{
+			// Toggle to full screen mode
+			glutFullScreen();
+			break;
+		}
+   case '/':
+      {
+         gSceneInfo.draft += 0.1f;
+         break;
+      }
+   case '*':
+      {
+         gSceneInfo.draft -= 0.1f;
+         break;
+      }
+   case '+':
+      {
+         gSceneInfo.nbRayIterations++;
+         gSceneInfo.nbRayIterations = (gSceneInfo.nbRayIterations>10) ? 10 : gSceneInfo.nbRayIterations;
+         break;
+      }
+   case '-':
+      {
+         gSceneInfo.nbRayIterations--;
+         gSceneInfo.nbRayIterations = (gSceneInfo.nbRayIterations<1) ? 1 : gSceneInfo.nbRayIterations;
+         break;
+      }
+	case 'm':
+		{
+         gAnimate = !gAnimate;
+			break;
+		}
+   case 'b':
+      {
+         gSceneInfo.backgroundColorR = static_cast<float>(rand()%100/100.f);
+         gSceneInfo.backgroundColorG = static_cast<float>(rand()%100/100.f);
+         gSceneInfo.backgroundColorB = static_cast<float>(rand()%100/100.f);
+         break;
+      }
+   case 'B':
+      {
+         gSceneInfo.backgroundColorR = 0.f;
+         gSceneInfo.backgroundColorG = 0.f;
+         gSceneInfo.backgroundColorB = 0.f;
+         break;
+      }
+   case 'i':
+      {
+         gSceneInfo.renderBoxes = !gSceneInfo.renderBoxes;
+         break;
+      }
+   case 'h':
+      {
+         gHelp = !gHelp;
+         break;
+      }
+   case 's':
+      {
+         gSceneInfo.shadowsEnabled = !gSceneInfo.shadowsEnabled;
+         break;
+      }
+   case 'd':
+      {
+         gDepthOfField.enabled = !gDepthOfField.enabled;
+         break;
+      }
+   case '1':
+      {
+         gDepthOfField.strength += 10.f;
+         break;
+      }
+   case '2':
+      {
+         gDepthOfField.strength -= 10.f;
+         break;
+      }
+   case '3':
+      {
+         gSceneInfo.supportFor3DVision = !gSceneInfo.supportFor3DVision;
+         break;
+      }
+   case '4':
+      {
+         gSceneInfo.viewDistance -= 200.f;
+         break;
+      }
+   case '5':
+      {
+         gSceneInfo.viewDistance += 200.f;
+         break;
+      }
+   case '7':
+      {
+         gSceneInfo.width3DVision += 10.f;
+         break;
+      }
+   case '8':
+      {
+         gSceneInfo.width3DVision -= 10.f;
+         break;
+      }
+   case '9':
+      {
+         gSceneInfo.shadowIntensity += 0.1f;
+         gSceneInfo.shadowIntensity = (gSceneInfo.shadowIntensity > 1.f) ? 0.f : gSceneInfo.shadowIntensity;
+         break;
+      }
 	case '\033': 
 	case '\015': 
 	case 'X':    
@@ -303,6 +509,7 @@ void keyboard(unsigned char key, int x, int y)
 			break;
 		}
 	}
+   gRefreshNeeded = true;
 }
 
 // Mouse event handlers
@@ -322,8 +529,8 @@ void mouse(int button, int state, int x, int y)
 	}
 	mouse_old_x = x;
 	mouse_old_y = y;
-	//gViewAngles.x = 0.f;
-	//gViewAngles.y = 0.f;
+	gViewAngles.x = 0.f;
+	gViewAngles.y = 0.f;
 }
 
 void motion(int x, int y)
@@ -331,37 +538,44 @@ void motion(int x, int y)
 	switch( mouse_buttons ) 
 	{
 	case 1:
-
-		if( glutGetModifiers() != GLUT_ACTIVE_CTRL ) 
-		{
-			// Move gViewPos position along the Z axis
-			gViewPos.z += 2*(mouse_old_y-y);
-			if( glutGetModifiers() != GLUT_ACTIVE_SHIFT ) 
-			{
-				gViewDir.z += 2*(mouse_old_y-y);
-			}
-		}
-		else
-		{
-			gDepthOfField += 10*(mouse_old_y-y);
-		}
+      // Translate
+      if( glutGetModifiers() != GLUT_ACTIVE_CTRL ) 
+      {
+         // Moving back and forth
+         gViewPos.z += 10*(mouse_old_y-y);
+         if( glutGetModifiers() != GLUT_ACTIVE_SHIFT ) 
+         {
+            // Changing camera angle
+            gViewDir.z += 10*(mouse_old_y-y);
+         }
+      }
+      else
+      {
+         // Depth of field focus
+         gDepthOfField.pointOfFocus += 4*(mouse_old_y-y);
+      }
+      gRefreshNeeded = true;
 		break;
 	case 2:
+	{
 		// Rotates the scene around X and Y axis
-		gViewAngles.y += -asin( (mouse_old_x-x) / 100.f );
-		gViewAngles.x += asin( (mouse_old_y-y) / 100.f );
-		break;
+		gViewAngles.y = -asin( (mouse_old_x-x) / 100.f );
+		gViewAngles.x =  asin( (mouse_old_y-y) / 100.f );
+      gRefreshNeeded = true;
+      break;
+	}
 	case 4:
 		// Move gViewPos postion along X and Y axis
 		gViewPos.x += (mouse_old_x-x);
 		gViewPos.y += (mouse_old_y-y);
 		gViewDir.x += (mouse_old_x-x);
 		gViewDir.y += (mouse_old_y-y);
+      gRefreshNeeded = true;
 		break;
 	}
-	mouse_old_x = x;
-	mouse_old_y = y;
 
+   mouse_old_x = x;
+   mouse_old_y = y;
 }
 
 // Function to clean up and exit
@@ -370,60 +584,65 @@ void Cleanup(int iExitCode)
 {
 	// Cleanup allocated objects
 	std::cout << "\nStarting Cleanup...\n\n" << std::endl;
-
-	if( ubImage ) delete [] ubImage;
-	communicator->destroy();
+	if( gUbImage ) delete [] gUbImage;
 
 	exit (iExitCode);
 }
 
-void main( int argc, char* argv[] )
+int main( int argc, char* argv[] )
 {
-	if( argc == 5 ) {
-		std::cout << argv[1] << std::endl;
-		sscanf_s( argv[1], "%d", &platform );
-		sscanf_s( argv[2], "%d", &device );
-		sscanf_s( argv[3], "%d", &window_width );
-		sscanf_s( argv[4], "%d", &window_height );
-	}
-
-	// Camera initialization
-	gViewPos.x =     0.f;
-	gViewPos.y =     0.f;
-	gViewPos.z = -1000.f;
-
-	gViewDir.x = 0.f;
-	gViewDir.y = 0.f;
-	gViewDir.z = 0.f;
-
-	gViewAngles.x = 0.f;
-	gViewAngles.y = 0.f;
-	gViewAngles.z = 0.f;
-
-	try 
+	if( argc == 3 )
 	{
-		communicator = Ice::initialize(argc, argv);
-		std::cout << "Connecting to Ice server ..." << std::endl;
-
-		bitmapProvider = ::IceStreamer::BitmapProviderPrx::checkedCast(
-			communicator->propertyToProxy("IceStreamerAdaptor.Proxy"));
-
-		// First initialize OpenGL context, so we can properly set the GL for CUDA.
-		// This is necessary in order to achieve optimal performance with OpenGL/CUDA interop.
-		initgl( argc, argv );
-
-		atexit(cleanup);
-		glutMainLoop();
-	}
-	catch(const Ice::Exception& e)
-	{
-		std::cout << e.ice_stackTrace() << std::endl;
-	}
-	catch( ... ) 
-	{
-		std::cout << "Unknown exception" << std::endl;
+		gWindowWidth  = atoi(argv[1]);
+		gWindowHeight = atoi(argv[2]);
+		gSceneInfo.width = gWindowWidth;
+		gSceneInfo.height = gWindowHeight;
 	}
 
-	// Normally unused return path
-	Cleanup(EXIT_SUCCESS);
+   try 
+   {
+      gCommunicator = Ice::initialize(argc, argv);
+      std::cout << "Connecting to Ice server ..." << std::endl;
+
+      gBitmapProvider = ::IceStreamer::BitmapProviderPrx::checkedCast(
+         gCommunicator->propertyToProxy("IceStreamerAdaptor.Proxy"));
+
+      gSceneInfo = gBitmapProvider->getSceneInfo();
+      gWindowWidth  = gSceneInfo.width;
+      gWindowHeight = gSceneInfo.height;
+
+      // Camera information
+      gViewPos.x =     0.f;
+      gViewPos.y =     0.f;
+      gViewPos.z = -5000.f;
+
+      gViewDir.x = 0.f;
+      gViewDir.y = 0.f;
+      gViewDir.z = 0.f;
+
+      gViewAngles.x = 0.f;
+      gViewAngles.y = 0.f;
+      gViewAngles.z = 0.f;
+
+      // First initialize OpenGL context, so we can properly set the GL for CUDA.
+      // This is necessary in order to achieve optimal performance with OpenGL/CUDA interop.
+      initgl( argc, argv );
+
+      atexit(cleanup);
+      glutMainLoop();
+   }
+   catch(const Ice::Exception& e)
+   {
+      std::cout << e.ice_stackTrace() << std::endl;
+   }
+   catch( ... ) 
+   {
+      std::cout << "Unknown exception" << std::endl;
+   }
+
+   // Normally unused return path
+   Cleanup(EXIT_SUCCESS);
+
+	return 0;
 }
+

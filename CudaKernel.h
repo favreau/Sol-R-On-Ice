@@ -173,6 +173,7 @@ public:
       float width3DVision,
       bool  renderBoxes);
    void setSceneInfo( const SceneInfo& sceneInfo ) { m_sceneInfo = sceneInfo; };
+   SceneInfo getSceneInfo() { return m_sceneInfo; }
 
    void setDepthOfFieldInfo( 
       bool  enabled,
