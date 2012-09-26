@@ -159,11 +159,20 @@ void CudaKernel::releaseDevice()
 * runKernel
 */
 void CudaKernel::render( 
-	unsigned char* bitmap,
+   float4 eye, float4 dir, float4 angles,
+   unsigned char* bitmap,
 	float timer,
 	float pointOfFocus,
 	float transparentColor)
 {
+   // Camera
+   m_viewPos   = eye;
+   m_viewDir   = dir;
+   m_angles.x  += angles.x;
+   m_angles.y  += angles.y;
+   m_angles.z  += angles.z;
+   m_draft     = m_initialDraft;
+
 #if USE_KINECT
 	// Video
 	const NUI_IMAGE_FRAME* pImageFrame = 0;
@@ -226,24 +235,13 @@ void CudaKernel::render(
 	cudaRender(
       m_blockSize,
 		m_nbActivePrimitives+1, m_nbActiveLamps+1,
-		m_viewPos, m_viewDir, m_angles, 
+		eye, dir, angles, 
 		m_imageWidth, m_imageHeight,
 		pointOfFocus, m_draft, transparentColor, timer );
 	d2h_bitmap( bitmap, m_imageWidth*m_imageHeight*gColorDepth);
 
 	m_draft--;
 	m_draft = (m_draft < 1) ? 1 : m_draft;
-}
-
-void CudaKernel::setCamera( 
-	float4 eye, float4 dir, float4 angles )
-{
-	m_viewPos   = eye;
-	m_viewDir   = dir;
-	m_angles.x  = angles.x;
-	m_angles.y  = angles.y;
-	m_angles.z  = angles.z;
-	m_draft     = m_initialDraft;
 }
 
 /*

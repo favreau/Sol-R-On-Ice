@@ -1,5 +1,5 @@
 // Ice
-#include <ice/ice.h>
+#include <Ice/Ice.h>
 
 // Cuda
 #include <vector_functions.h>
@@ -19,10 +19,10 @@
 
 // Ice
 ::Ice::CommunicatorPtr communicator;
-::Streamer::BitmapProviderPrx bitmapProvider;
+::IceStreamer::BitmapProviderPrx bitmapProvider;
 
 // General Settings
-const long TARGET_FPS = 200;
+const long TARGET_FPS = 60;
 const long REFRESH_DELAY = 1000/TARGET_FPS; //ms
 
 // GPU
@@ -31,8 +31,8 @@ int device       = 0;
 
 // Rendering window vars
 const unsigned int draft        = 1;
-unsigned int window_width       = 256;
-unsigned int window_height      = 256;
+unsigned int window_width       = 768;
+unsigned int window_height      = 512;
 const unsigned int window_depth = 4;
 
 // ----------------------------------
@@ -71,6 +71,7 @@ float gInnerIllumination = 0.f;
 const float gSkeletonSize      = 200.0;
 const float gSkeletonThickness =  20.0;
 #endif // USE_KINECT
+
 
 // --------------------------------------------------------------------------------
 // OpenGL
@@ -125,60 +126,60 @@ void cleanup()
 void animateSkeleton()
 {
 #if USE_KINECT
-   long hr = gpuKernel->updateSkeletons(
-      0.f, gSkeletonSize-500.f, 100.f,          // Position
-      gSkeletonSize,                // Skeleton size
-      gSkeletonThickness,         2, // Default material
-      gSkeletonThickness*2.0f,    1, // Head size and material
-      gSkeletonThickness*1.5f,    10, // Hands size and material
-      gSkeletonThickness*1.8f,    10  // Feet size and material
-      );
-   if( hr == S_OK )
-   {
-      float4 position;
-      const float size = 1500.f;
+	long hr = gpuKernel->updateSkeletons(
+		0.f, gSkeletonSize-500.f, 100.f,          // Position
+		gSkeletonSize,                // Skeleton size
+		gSkeletonThickness,         2, // Default material
+		gSkeletonThickness*2.0f,    1, // Head size and material
+		gSkeletonThickness*1.5f,    10, // Hands size and material
+		gSkeletonThickness*1.8f,    10  // Feet size and material
+		);
+	if( hr == S_OK )
+	{
+		float4 position;
+		const float size = 1500.f;
 
-      // Left Hand
-      if( gpuKernel->getSkeletonPosition(NUI_SKELETON_POSITION_HAND_LEFT, position) )
-      {
-         for( int i(0); i<6; ++i )
-         {
-            float x,y,z,w;
-            gpuKernel->getPrimitiveCenter(leftPrimitiveId-i,x,y,z,w);
-            gpuKernel->setPrimitiveCenter(leftPrimitiveId-i,x,position.y*size,z,w );
-         }
-      }
+		// Left Hand
+		if( gpuKernel->getSkeletonPosition(NUI_SKELETON_POSITION_HAND_LEFT, position) )
+		{
+			for( int i(0); i<6; ++i )
+			{
+				float x,y,z,w;
+				gpuKernel->getPrimitiveCenter(leftPrimitiveId-i,x,y,z,w);
+				gpuKernel->setPrimitiveCenter(leftPrimitiveId-i,x,position.y*size,z,w );
+			}
+		}
 
-      // Right Hand
-      if( gpuKernel->getSkeletonPosition(NUI_SKELETON_POSITION_HAND_RIGHT, position) )
-      {
-         for( int i(0); i<6; ++i )
-         {
-            float x,y,z,w;
-            gpuKernel->getPrimitiveCenter(rightPrimitiveId-i,x,y,z,w);
-            gpuKernel->setPrimitiveCenter(rightPrimitiveId-i,x,position.y*size,z,w );
-         }
-      }
+		// Right Hand
+		if( gpuKernel->getSkeletonPosition(NUI_SKELETON_POSITION_HAND_RIGHT, position) )
+		{
+			for( int i(0); i<6; ++i )
+			{
+				float x,y,z,w;
+				gpuKernel->getPrimitiveCenter(rightPrimitiveId-i,x,y,z,w);
+				gpuKernel->setPrimitiveCenter(rightPrimitiveId-i,x,position.y*size,z,w );
+			}
+		}
 
-      // Head
-      if( gpuKernel->getSkeletonPosition(NUI_SKELETON_POSITION_HEAD, position) )
-      {
+		// Head
+		if( gpuKernel->getSkeletonPosition(NUI_SKELETON_POSITION_HEAD, position) )
+		{
 
-         gViewAngles.y = -0.8f*asin( 
-            position.x - 
-            gPreviewViewPos.x );
-         gViewAngles.x = 0.8f*asin( 
-            position.y - 
-            gPreviewViewPos.y );
+			gViewAngles.y = -0.8f*asin( 
+				position.x - 
+				gPreviewViewPos.x );
+			gViewAngles.x = 0.8f*asin( 
+				position.y - 
+				gPreviewViewPos.y );
 
-         gPreviewViewPos.x = position.x;
-         gPreviewViewPos.y = position.y;
+			gPreviewViewPos.x = position.x;
+			gPreviewViewPos.y = position.y;
 
-         gViewPos.y -= 400.f;
-         gpuKernel->setCamera( gViewPos, gViewDir, gViewAngles );
-         gViewPos.y += 400.f;
-      }
-   }
+			gViewPos.y -= 400.f;
+			gpuKernel->setCamera( gViewPos, gViewDir, gViewAngles );
+			gViewPos.y += 400.f;
+		}
+	}
 #endif // USE_KINEXT
 }
 
@@ -248,31 +249,35 @@ void display()
 
 void timerEvent(int value)
 {
-   try 
-   {
-      Streamer::bytes bitmap = bitmapProvider->getBitmap( 
-         gViewPos.x, gViewPos.y, gViewPos.z, 
-         gViewDir.x, gViewDir.y, gViewDir.z, 
-         gViewAngles.x, gViewAngles.y, gViewAngles.z,
-         anim, gDepthOfField, gTransparentColor );
-      int c(0);
-      for( int i(54); i<bitmap.size()-3; i+=3) {
-         ubImage[c+0] = bitmap[i+2];
-         ubImage[c+1] = bitmap[i+1];
-         ubImage[c+2] = bitmap[i+0];
-         ubImage[c+3] = 0;
-         c+=4;
-      }
-   }
-   catch(const Ice::Exception& e)
-   {
-      std::cerr << e.ice_stackTrace() << std::endl;
-   }
-   catch( ... ) 
-   {
-      std::cerr << "Unknown exception" << std::endl;
-   }
-	
+	/*
+	animateSkeleton();
+	gpuKernel->setLamp( 0, 
+	gRoomWidth*0.8f*cos(0.1f*anim), gRoomHeight+100*sin(0.32f*anim), gRoomDepth*0.8f*sin(0.21f*anim), 
+	10.f, 0.f, 1.f, 1.f, 1.f, 1.f );
+
+	// Render scene
+	gpuKernel->render( ubImage, anim, gDepthOfField, gTransparentColor );
+	*/
+	try 
+	{
+		IceStreamer::bytes bitmap = bitmapProvider->getBitmap( 
+			gViewPos.x, gViewPos.y, gViewPos.z, 
+			gViewDir.x, gViewDir.y, gViewDir.z, 
+			gViewAngles.x, gViewAngles.y, gViewAngles.z,
+			anim, gDepthOfField, gTransparentColor );
+		for( unsigned int i(0); i<bitmap.size(); ++i) ubImage[i] = bitmap[i];
+	}
+	catch(const Ice::Exception& e)
+	{
+		std::cout << e.ice_name() << std::endl;
+		std::cout << e.ice_file() << std::endl;
+		std::cout << e.ice_stackTrace() << std::endl;
+	}
+	catch( ... ) 
+	{
+		std::cout << "Unknown exception" << std::endl;
+	}
+
 	glutPostRedisplay();
 	glutTimerFunc(REFRESH_DELAY, timerEvent,0);
 
@@ -327,19 +332,19 @@ void motion(int x, int y)
 	{
 	case 1:
 
-      if( glutGetModifiers() != GLUT_ACTIVE_CTRL ) 
-      {
-         // Move gViewPos position along the Z axis
-         gViewPos.z += 2*(mouse_old_y-y);
-         if( glutGetModifiers() != GLUT_ACTIVE_SHIFT ) 
-         {
-            gViewDir.z += 2*(mouse_old_y-y);
-         }
-      }
-      else
-      {
-         gDepthOfField += 10*(mouse_old_y-y);
-      }
+		if( glutGetModifiers() != GLUT_ACTIVE_CTRL ) 
+		{
+			// Move gViewPos position along the Z axis
+			gViewPos.z += 2*(mouse_old_y-y);
+			if( glutGetModifiers() != GLUT_ACTIVE_SHIFT ) 
+			{
+				gViewDir.z += 2*(mouse_old_y-y);
+			}
+		}
+		else
+		{
+			gDepthOfField += 10*(mouse_old_y-y);
+		}
 		break;
 	case 2:
 		// Rotates the scene around X and Y axis
@@ -367,7 +372,7 @@ void Cleanup(int iExitCode)
 	std::cout << "\nStarting Cleanup...\n\n" << std::endl;
 
 	if( ubImage ) delete [] ubImage;
-   communicator->destroy();
+	communicator->destroy();
 
 	exit (iExitCode);
 }
@@ -382,57 +387,42 @@ void main( int argc, char* argv[] )
 		sscanf_s( argv[4], "%d", &window_height );
 	}
 
-   // Camera initialization
-   gViewPos.x =     0.f;
-   gViewPos.y =     0.f;
-   gViewPos.z = -1000.f;
+	// Camera initialization
+	gViewPos.x =     0.f;
+	gViewPos.y =     0.f;
+	gViewPos.z = -1000.f;
 
-   gViewDir.x = 0.f;
-   gViewDir.y = 0.f;
-   gViewDir.z = 0.f;
+	gViewDir.x = 0.f;
+	gViewDir.y = 0.f;
+	gViewDir.z = 0.f;
 
-   gViewAngles.x = 0.f;
-   gViewAngles.y = 0.f;
-   gViewAngles.z = 0.f;
+	gViewAngles.x = 0.f;
+	gViewAngles.y = 0.f;
+	gViewAngles.z = 0.f;
 
-   try 
-   {
-      communicator = Ice::initialize(argc, argv);
-      std::cout << "Connecting to Ice server ..." << std::endl;
+	try 
+	{
+		communicator = Ice::initialize(argc, argv);
+		std::cout << "Connecting to Ice server ..." << std::endl;
 
-      std::string connectionString;
-      connectionString += "IceStreamer:tcp -p 10000 -z";
-      connectionString += " -h ";
-      if( argc == 2 ) 
-      {
-         connectionString += argv[1];
-      }
-      else
-      {
-         connectionString += "localhost";
-      }
+		bitmapProvider = ::IceStreamer::BitmapProviderPrx::checkedCast(
+			communicator->propertyToProxy("IceStreamerAdaptor.Proxy"));
 
-      std::cout << "Connection string: " << connectionString << std::endl;
-      bitmapProvider = ::Streamer::BitmapProviderPrx::checkedCast(
-         communicator->stringToProxy(connectionString));
+		// First initialize OpenGL context, so we can properly set the GL for CUDA.
+		// This is necessary in order to achieve optimal performance with OpenGL/CUDA interop.
+		initgl( argc, argv );
 
-      std::cout << "helloWorld: " << bitmapProvider->helloWorld("Say something") << std::endl;
-
-      // First initialize OpenGL context, so we can properly set the GL for CUDA.
-      // This is necessary in order to achieve optimal performance with OpenGL/CUDA interop.
-      initgl( argc, argv );
-
-      atexit(cleanup);
-      glutMainLoop();
-   }
-   catch(const Ice::Exception& e)
-   {
-      std::cerr << e.ice_stackTrace() << std::endl;
-   }
-   catch( ... ) 
-   {
-      std::cerr << "Unknown exception" << std::endl;
-   }
+		atexit(cleanup);
+		glutMainLoop();
+	}
+	catch(const Ice::Exception& e)
+	{
+		std::cout << e.ice_stackTrace() << std::endl;
+	}
+	catch( ... ) 
+	{
+		std::cout << "Unknown exception" << std::endl;
+	}
 
 	// Normally unused return path
 	Cleanup(EXIT_SUCCESS);

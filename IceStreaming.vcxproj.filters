@@ -10,11 +10,11 @@
     <ClCompile Include="IIceStreamerImpl.cpp">
       <Filter>Ice</Filter>
     </ClCompile>
-    <ClCompile Include="IIceStreamer.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="IceStreamingServer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IIceStreamer.cpp">
+      <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

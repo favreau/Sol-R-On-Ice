@@ -51,7 +51,7 @@
 namespace IceProxy
 {
 
-namespace Streamer
+namespace IceStreamer
 {
 
 class BitmapProvider;
@@ -60,7 +60,7 @@ class BitmapProvider;
 
 }
 
-namespace Streamer
+namespace IceStreamer
 {
 
 class BitmapProvider;
@@ -72,55 +72,52 @@ bool operator<(const BitmapProvider&, const BitmapProvider&);
 namespace IceInternal
 {
 
-::Ice::Object* upCast(::Streamer::BitmapProvider*);
-::IceProxy::Ice::Object* upCast(::IceProxy::Streamer::BitmapProvider*);
+::Ice::Object* upCast(::IceStreamer::BitmapProvider*);
+::IceProxy::Ice::Object* upCast(::IceProxy::IceStreamer::BitmapProvider*);
 
 }
 
-namespace Streamer
+namespace IceStreamer
 {
 
-typedef ::IceInternal::Handle< ::Streamer::BitmapProvider> BitmapProviderPtr;
-typedef ::IceInternal::ProxyHandle< ::IceProxy::Streamer::BitmapProvider> BitmapProviderPrx;
+typedef ::IceInternal::Handle< ::IceStreamer::BitmapProvider> BitmapProviderPtr;
+typedef ::IceInternal::ProxyHandle< ::IceProxy::IceStreamer::BitmapProvider> BitmapProviderPrx;
 
 void __read(::IceInternal::BasicStream*, BitmapProviderPrx&);
 void __patch__BitmapProviderPtr(void*, ::Ice::ObjectPtr&);
 
 }
 
-namespace Streamer
+namespace IceStreamer
 {
 
 typedef ::std::vector< ::Ice::Byte> bytes;
 
 }
 
-namespace Streamer
+namespace IceStreamer
 {
 
 class Callback_BitmapProvider_getBitmap_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_BitmapProvider_getBitmap_Base> Callback_BitmapProvider_getBitmapPtr;
-
-class Callback_BitmapProvider_helloWorld_Base : virtual public ::IceInternal::CallbackBase { };
-typedef ::IceUtil::Handle< Callback_BitmapProvider_helloWorld_Base> Callback_BitmapProvider_helloWorldPtr;
 
 }
 
 namespace IceProxy
 {
 
-namespace Streamer
+namespace IceStreamer
 {
 
 class BitmapProvider : virtual public ::IceProxy::Ice::Object
 {
 public:
 
-    ::Streamer::bytes getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor)
+    ::IceStreamer::bytes getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor)
     {
         return getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, 0);
     }
-    ::Streamer::bytes getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx)
+    ::IceStreamer::bytes getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx)
     {
         return getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, &__ctx);
     }
@@ -145,70 +142,22 @@ public:
         return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Streamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::IceStreamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
         return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx, const ::Streamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float ex, ::Ice::Float ey, ::Ice::Float ez, ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az, ::Ice::Float timer, ::Ice::Float depthOfField, ::Ice::Float transparentColor, const ::Ice::Context& __ctx, const ::IceStreamer::Callback_BitmapProvider_getBitmapPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
         return begin_getBitmap(ex, ey, ez, dx, dy, dz, ax, ay, az, timer, depthOfField, transparentColor, &__ctx, __del, __cookie);
     }
 
-    ::Streamer::bytes end_getBitmap(const ::Ice::AsyncResultPtr&);
+    ::IceStreamer::bytes end_getBitmap(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
+    ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
-    
-public:
-
-    ::std::string helloWorld(const ::std::string& something)
-    {
-        return helloWorld(something, 0);
-    }
-    ::std::string helloWorld(const ::std::string& something, const ::Ice::Context& __ctx)
-    {
-        return helloWorld(something, &__ctx);
-    }
-
-    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something)
-    {
-        return begin_helloWorld(something, 0, ::IceInternal::__dummyCallback, 0);
-    }
-
-    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something, const ::Ice::Context& __ctx)
-    {
-        return begin_helloWorld(something, &__ctx, ::IceInternal::__dummyCallback, 0);
-    }
-
-    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
-    {
-        return begin_helloWorld(something, 0, __del, __cookie);
-    }
-
-    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
-    {
-        return begin_helloWorld(something, &__ctx, __del, __cookie);
-    }
-
-    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something, const ::Streamer::Callback_BitmapProvider_helloWorldPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
-    {
-        return begin_helloWorld(something, 0, __del, __cookie);
-    }
-
-    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string& something, const ::Ice::Context& __ctx, const ::Streamer::Callback_BitmapProvider_helloWorldPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
-    {
-        return begin_helloWorld(something, &__ctx, __del, __cookie);
-    }
-
-    ::std::string end_helloWorld(const ::Ice::AsyncResultPtr&);
-    
-private:
-
-    ::std::string helloWorld(const ::std::string&, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_helloWorld(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -418,16 +367,14 @@ private:
 namespace IceDelegate
 {
 
-namespace Streamer
+namespace IceStreamer
 {
 
 class BitmapProvider : virtual public ::IceDelegate::Ice::Object
 {
 public:
 
-    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*) = 0;
-
-    virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Context*) = 0;
+    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*) = 0;
 };
 
 }
@@ -437,17 +384,15 @@ public:
 namespace IceDelegateM
 {
 
-namespace Streamer
+namespace IceStreamer
 {
 
-class BitmapProvider : virtual public ::IceDelegate::Streamer::BitmapProvider,
+class BitmapProvider : virtual public ::IceDelegate::IceStreamer::BitmapProvider,
                        virtual public ::IceDelegateM::Ice::Object
 {
 public:
 
-    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
-
-    virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Context*);
+    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
 };
 
 }
@@ -457,24 +402,22 @@ public:
 namespace IceDelegateD
 {
 
-namespace Streamer
+namespace IceStreamer
 {
 
-class BitmapProvider : virtual public ::IceDelegate::Streamer::BitmapProvider,
+class BitmapProvider : virtual public ::IceDelegate::IceStreamer::BitmapProvider,
                        virtual public ::IceDelegateD::Ice::Object
 {
 public:
 
-    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
-
-    virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Context*);
+    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Context*);
 };
 
 }
 
 }
 
-namespace Streamer
+namespace IceStreamer
 {
 
 class BitmapProvider : virtual public ::Ice::Object
@@ -491,11 +434,8 @@ public:
     virtual const ::std::string& ice_id(const ::Ice::Current& = ::Ice::Current()) const;
     static const ::std::string& ice_staticId();
 
-    virtual ::Streamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual ::IceStreamer::bytes getBitmap(::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, ::Ice::Float, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___getBitmap(::IceInternal::Incoming&, const ::Ice::Current&);
-
-    virtual ::std::string helloWorld(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
-    ::Ice::DispatchStatus ___helloWorld(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -520,7 +460,7 @@ inline bool operator<(const BitmapProvider& l, const BitmapProvider& r)
 
 }
 
-namespace Streamer
+namespace IceStreamer
 {
 
 template<class T>
@@ -532,7 +472,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception&);
     typedef void (T::*Sent)(bool);
-    typedef void (T::*Response)(const ::Streamer::bytes&);
+    typedef void (T::*Response)(const ::IceStreamer::bytes&);
 
     CallbackNC_BitmapProvider_getBitmap(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
@@ -541,8 +481,8 @@ public:
 
     virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
     {
-        ::Streamer::BitmapProviderPrx __proxy = ::Streamer::BitmapProviderPrx::uncheckedCast(__result->getProxy());
-        ::Streamer::bytes __ret;
+        ::IceStreamer::BitmapProviderPrx __proxy = ::IceStreamer::BitmapProviderPrx::uncheckedCast(__result->getProxy());
+        ::IceStreamer::bytes __ret;
         try
         {
             __ret = __proxy->end_getBitmap(__result);
@@ -570,13 +510,13 @@ public:
 };
 
 template<class T> Callback_BitmapProvider_getBitmapPtr
-newCallback_BitmapProvider_getBitmap(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::Streamer::bytes&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_BitmapProvider_getBitmap(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::IceStreamer::bytes&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_BitmapProvider_getBitmap<T>(instance, cb, excb, sentcb);
 }
 
 template<class T> Callback_BitmapProvider_getBitmapPtr
-newCallback_BitmapProvider_getBitmap(T* instance, void (T::*cb)(const ::Streamer::bytes&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_BitmapProvider_getBitmap(T* instance, void (T::*cb)(const ::IceStreamer::bytes&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_BitmapProvider_getBitmap<T>(instance, cb, excb, sentcb);
 }
@@ -590,7 +530,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
     typedef void (T::*Sent)(bool , const CT&);
-    typedef void (T::*Response)(const ::Streamer::bytes&, const CT&);
+    typedef void (T::*Response)(const ::IceStreamer::bytes&, const CT&);
 
     Callback_BitmapProvider_getBitmap(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
@@ -599,8 +539,8 @@ public:
 
     virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
     {
-        ::Streamer::BitmapProviderPrx __proxy = ::Streamer::BitmapProviderPrx::uncheckedCast(__result->getProxy());
-        ::Streamer::bytes __ret;
+        ::IceStreamer::BitmapProviderPrx __proxy = ::IceStreamer::BitmapProviderPrx::uncheckedCast(__result->getProxy());
+        ::IceStreamer::bytes __ret;
         try
         {
             __ret = __proxy->end_getBitmap(__result);
@@ -628,131 +568,15 @@ public:
 };
 
 template<class T, typename CT> Callback_BitmapProvider_getBitmapPtr
-newCallback_BitmapProvider_getBitmap(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::Streamer::bytes&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_BitmapProvider_getBitmap(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::IceStreamer::bytes&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_BitmapProvider_getBitmap<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T, typename CT> Callback_BitmapProvider_getBitmapPtr
-newCallback_BitmapProvider_getBitmap(T* instance, void (T::*cb)(const ::Streamer::bytes&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_BitmapProvider_getBitmap(T* instance, void (T::*cb)(const ::IceStreamer::bytes&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_BitmapProvider_getBitmap<T, CT>(instance, cb, excb, sentcb);
-}
-
-template<class T>
-class CallbackNC_BitmapProvider_helloWorld : public Callback_BitmapProvider_helloWorld_Base, public ::IceInternal::TwowayCallbackNC<T>
-{
-public:
-
-    typedef IceUtil::Handle<T> TPtr;
-
-    typedef void (T::*Exception)(const ::Ice::Exception&);
-    typedef void (T::*Sent)(bool);
-    typedef void (T::*Response)(const ::std::string&);
-
-    CallbackNC_BitmapProvider_helloWorld(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
-        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
-    {
-    }
-
-    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
-    {
-        ::Streamer::BitmapProviderPrx __proxy = ::Streamer::BitmapProviderPrx::uncheckedCast(__result->getProxy());
-        ::std::string __ret;
-        try
-        {
-            __ret = __proxy->end_helloWorld(__result);
-        }
-        catch(::Ice::Exception& ex)
-        {
-#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
-            __exception(__result, ex);
-#else
-            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
-#endif
-            return;
-        }
-        if(response)
-        {
-#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
-            (callback.get()->*response)(__ret);
-#else
-            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
-#endif
-        }
-    }
-
-    Response response;
-};
-
-template<class T> Callback_BitmapProvider_helloWorldPtr
-newCallback_BitmapProvider_helloWorld(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
-{
-    return new CallbackNC_BitmapProvider_helloWorld<T>(instance, cb, excb, sentcb);
-}
-
-template<class T> Callback_BitmapProvider_helloWorldPtr
-newCallback_BitmapProvider_helloWorld(T* instance, void (T::*cb)(const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
-{
-    return new CallbackNC_BitmapProvider_helloWorld<T>(instance, cb, excb, sentcb);
-}
-
-template<class T, typename CT>
-class Callback_BitmapProvider_helloWorld : public Callback_BitmapProvider_helloWorld_Base, public ::IceInternal::TwowayCallback<T, CT>
-{
-public:
-
-    typedef IceUtil::Handle<T> TPtr;
-
-    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
-    typedef void (T::*Sent)(bool , const CT&);
-    typedef void (T::*Response)(const ::std::string&, const CT&);
-
-    Callback_BitmapProvider_helloWorld(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
-        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
-    {
-    }
-
-    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
-    {
-        ::Streamer::BitmapProviderPrx __proxy = ::Streamer::BitmapProviderPrx::uncheckedCast(__result->getProxy());
-        ::std::string __ret;
-        try
-        {
-            __ret = __proxy->end_helloWorld(__result);
-        }
-        catch(::Ice::Exception& ex)
-        {
-#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
-            __exception(__result, ex);
-#else
-            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
-#endif
-            return;
-        }
-        if(response)
-        {
-#if defined(_MSC_VER) && (_MSC_VER < 1300) // VC++ 6 compiler bug
-            (callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
-#else
-            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
-#endif
-        }
-    }
-
-    Response response;
-};
-
-template<class T, typename CT> Callback_BitmapProvider_helloWorldPtr
-newCallback_BitmapProvider_helloWorld(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
-{
-    return new Callback_BitmapProvider_helloWorld<T, CT>(instance, cb, excb, sentcb);
-}
-
-template<class T, typename CT> Callback_BitmapProvider_helloWorldPtr
-newCallback_BitmapProvider_helloWorld(T* instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
-{
-    return new Callback_BitmapProvider_helloWorld<T, CT>(instance, cb, excb, sentcb);
 }
 
 }

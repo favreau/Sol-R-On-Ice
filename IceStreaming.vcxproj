@@ -72,7 +72,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 5.0.props" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 4.2.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -113,10 +113,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
@@ -125,6 +129,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Kinect|x64'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
@@ -133,6 +139,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Kinect|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -142,7 +150,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>$(IceHome)\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -166,7 +174,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>$(IceHome)\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -190,7 +198,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>USE_KINECT;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>$(IceHome)\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -212,7 +220,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>$(IceHome)\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -235,7 +243,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>$(IceHome)\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -258,7 +266,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_KINECT;USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>$(IceHome)\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -282,7 +290,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_KINECT;USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>$(IceHome)\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -301,9 +309,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|x64'">
     <Link>
       <AdditionalLibraryDirectories>$(IceHome)\lib\vc100\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Ice.lib;IceUtil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(IceHome)\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -350,7 +359,7 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 5.0.targets" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 4.2.targets" />
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>

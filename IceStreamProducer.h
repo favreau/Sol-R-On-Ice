@@ -39,7 +39,6 @@ public:
 private:
 
    void createRandomMaterials();
-   void createTextures();
 
 private:
 
