@@ -186,7 +186,8 @@
     </Link>
     <CudaCompile />
     <CudaCompile>
-      <MaxRegCount>32</MaxRegCount>
+      <MaxRegCount>
+      </MaxRegCount>
       <CodeGeneration>compute_13,sm_13</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
@@ -209,7 +210,8 @@
     <CudaCompile />
     <CudaCompile>
       <CodeGeneration>compute_13,sm_13</CodeGeneration>
-      <MaxRegCount>32</MaxRegCount>
+      <MaxRegCount>
+      </MaxRegCount>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -254,7 +256,8 @@
       <AdditionalLibraryDirectories>$(OutDir);$(IceHome)\lib\vc100</AdditionalLibraryDirectories>
     </Link>
     <CudaCompile>
-      <MaxRegCount>32</MaxRegCount>
+      <MaxRegCount>
+      </MaxRegCount>
       <CodeGeneration>compute_13,sm_13</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
@@ -303,7 +306,8 @@
     <CudaCompile />
     <CudaCompile>
       <CodeGeneration>compute_13,sm_13</CodeGeneration>
-      <MaxRegCount>32</MaxRegCount>
+      <MaxRegCount>
+      </MaxRegCount>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|x64'">

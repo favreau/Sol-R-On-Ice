@@ -25,8 +25,14 @@
 #include <iostream>
 
 // Cuda
-#include <cutil_inline.h>
-#include <cutil_math.h>
+#include <cuda_runtime_api.h>
+#if CUDART_VERSION>=5000
+   #include <helper_cuda.h>
+   #include <helper_math.h>
+#else
+   #include <cutil_inline.h>
+   #include <cutil_math.h>
+#endif
 
 // Project
 #include "CudaDataTypes.h"
@@ -1766,22 +1772,22 @@ extern "C" void initialize_scene(
    int width, int height, int nbPrimitives, int nbLamps, int nbMaterials, int nbTextures, int nbLevels )
 {
    // Scene resources
-   cutilSafeCall(cudaMalloc( (void**)&d_boundingBoxes, NB_MAX_BOXES*sizeof(BoundingBox)));
-   cutilSafeCall(cudaMalloc( (void**)&d_primitives,    nbPrimitives*sizeof(Primitive)));
-   cutilSafeCall(cudaMalloc( (void**)&d_lamps,         nbLamps*sizeof(Lamp)));
-   cutilSafeCall(cudaMalloc( (void**)&d_materials,     nbMaterials*sizeof(Material)));
-   cutilSafeCall(cudaMalloc( (void**)&d_textures,      nbTextures*gTextureDepth*gTextureWidth*gTextureHeight));
-   cutilSafeCall(cudaMalloc( (void**)&d_randoms,       width*height*sizeof(float)));
-   cutilSafeCall(cudaMalloc( (void**)&d_levels,        nbLevels*sizeof(int)));
+   checkCudaErrors(cudaMalloc( (void**)&d_boundingBoxes, NB_MAX_BOXES*sizeof(BoundingBox)));
+   checkCudaErrors(cudaMalloc( (void**)&d_primitives,    nbPrimitives*sizeof(Primitive)));
+   checkCudaErrors(cudaMalloc( (void**)&d_lamps,         nbLamps*sizeof(Lamp)));
+   checkCudaErrors(cudaMalloc( (void**)&d_materials,     nbMaterials*sizeof(Material)));
+   checkCudaErrors(cudaMalloc( (void**)&d_textures,      nbTextures*gTextureDepth*gTextureWidth*gTextureHeight));
+   checkCudaErrors(cudaMalloc( (void**)&d_randoms,       width*height*sizeof(float)));
+   checkCudaErrors(cudaMalloc( (void**)&d_levels,        nbLevels*sizeof(int)));
 
    // Rendering canvas
-   cutilSafeCall(cudaMalloc( (void**)&d_postProcessingBuffer,  width*height*sizeof(float4)));
-   cutilSafeCall(cudaMalloc( (void**)&d_bitmap,                width*height*gColorDepth*sizeof(char)));
+   checkCudaErrors(cudaMalloc( (void**)&d_postProcessingBuffer,  width*height*sizeof(float4)));
+   checkCudaErrors(cudaMalloc( (void**)&d_bitmap,                width*height*gColorDepth*sizeof(char)));
 
 #ifdef USE_KINECT
    // Kinect video and depth buffers
-   cutilSafeCall(cudaMalloc( (void**)&d_kinectVideo,   gKinectVideo*gKinectVideoWidth*gKinectVideoHeight*sizeof(char)));
-   cutilSafeCall(cudaMalloc( (void**)&d_kinectDepth,   gKinectDepth*gKinectDepthWidth*gKinectDepthHeight*sizeof(char)));
+   checkCudaErrors(cudaMalloc( (void**)&d_kinectVideo,   gKinectVideo*gKinectVideoWidth*gKinectVideoHeight*sizeof(char)));
+   checkCudaErrors(cudaMalloc( (void**)&d_kinectDepth,   gKinectDepth*gKinectDepthWidth*gKinectDepthHeight*sizeof(char)));
 #endif // USE_KINECT
 }
 
@@ -1793,18 +1799,18 @@ ________________________________________________________________________________
 */
 extern "C" void finalize_scene()
 {
-   cutilSafeCall(cudaFree( d_boundingBoxes ));
-   cutilSafeCall(cudaFree( d_primitives ));
-   cutilSafeCall(cudaFree( d_lamps ));
-   cutilSafeCall(cudaFree( d_materials ));
-   cutilSafeCall(cudaFree( d_textures ));
-   cutilSafeCall(cudaFree( d_randoms ));
-   cutilSafeCall(cudaFree( d_levels ));
-   cutilSafeCall(cudaFree( d_postProcessingBuffer ));
-   cutilSafeCall(cudaFree( d_bitmap ));
+   checkCudaErrors(cudaFree( d_boundingBoxes ));
+   checkCudaErrors(cudaFree( d_primitives ));
+   checkCudaErrors(cudaFree( d_lamps ));
+   checkCudaErrors(cudaFree( d_materials ));
+   checkCudaErrors(cudaFree( d_textures ));
+   checkCudaErrors(cudaFree( d_randoms ));
+   checkCudaErrors(cudaFree( d_levels ));
+   checkCudaErrors(cudaFree( d_postProcessingBuffer ));
+   checkCudaErrors(cudaFree( d_bitmap ));
 #ifdef USE_KINECT
-   cutilSafeCall(cudaFree( d_kinectVideo ));
-   cutilSafeCall(cudaFree( d_kinectDepth ));
+   checkCudaErrors(cudaFree( d_kinectVideo ));
+   checkCudaErrors(cudaFree( d_kinectDepth ));
 #endif // USE_KINECT
 }
 
@@ -1819,9 +1825,9 @@ extern "C" void h2d_scene(
    Primitive*  primitives,     int nbPrimitives,
    Lamp*       lamps,          int nbLamps )
 {
-   cutilSafeCall(cudaMemcpy( d_boundingBoxes, boundingBoxes, nbActiveBoxes*sizeof(BoundingBox), cudaMemcpyHostToDevice ));
-   cutilSafeCall(cudaMemcpy( d_primitives,    primitives,    nbPrimitives*sizeof(Primitive),    cudaMemcpyHostToDevice ));
-   cutilSafeCall(cudaMemcpy( d_lamps,         lamps,         nbLamps*sizeof(Lamp),              cudaMemcpyHostToDevice ));
+   checkCudaErrors(cudaMemcpy( d_boundingBoxes, boundingBoxes, nbActiveBoxes*sizeof(BoundingBox), cudaMemcpyHostToDevice ));
+   checkCudaErrors(cudaMemcpy( d_primitives,    primitives,    nbPrimitives*sizeof(Primitive),    cudaMemcpyHostToDevice ));
+   checkCudaErrors(cudaMemcpy( d_lamps,         lamps,         nbLamps*sizeof(Lamp),              cudaMemcpyHostToDevice ));
 }
 
 extern "C" void h2d_materials( 
@@ -1830,10 +1836,10 @@ extern "C" void h2d_materials(
    float*     randoms,   int nbRandoms,
    int*       levels,    int levelSize)
 {
-   cutilSafeCall(cudaMemcpy( d_materials, materials, nbActiveMaterials*sizeof(Material), cudaMemcpyHostToDevice ));
-   cutilSafeCall(cudaMemcpy( d_textures,  textures,  nbActiveTextures*sizeof(char)*gTextureDepth*gTextureWidth*gTextureHeight,  cudaMemcpyHostToDevice ));
-   cutilSafeCall(cudaMemcpy( d_randoms,   randoms,   nbRandoms*sizeof(float), cudaMemcpyHostToDevice ));
-   cutilSafeCall(cudaMemcpy( d_levels,    levels,    levelSize*sizeof(int), cudaMemcpyHostToDevice ));
+   checkCudaErrors(cudaMemcpy( d_materials, materials, nbActiveMaterials*sizeof(Material), cudaMemcpyHostToDevice ));
+   checkCudaErrors(cudaMemcpy( d_textures,  textures,  nbActiveTextures*sizeof(char)*gTextureDepth*gTextureWidth*gTextureHeight,  cudaMemcpyHostToDevice ));
+   checkCudaErrors(cudaMemcpy( d_randoms,   randoms,   nbRandoms*sizeof(float), cudaMemcpyHostToDevice ));
+   checkCudaErrors(cudaMemcpy( d_levels,    levels,    levelSize*sizeof(int), cudaMemcpyHostToDevice ));
 }
 
 #ifdef USE_KINECT
@@ -1841,8 +1847,8 @@ extern "C" void h2d_kinect(
    char* kinectVideo, int videoSize,
    char* kinectDepth, int depthSize )
 {
-   cutilSafeCall(cudaMemcpy( d_kinectVideo, kinectVideo, videoSize*sizeof(char), cudaMemcpyHostToDevice ));
-   cutilSafeCall(cudaMemcpy( d_kinectDepth, kinectDepth, depthSize*sizeof(char), cudaMemcpyHostToDevice ));
+   checkCudaErrors(cudaMemcpy( d_kinectVideo, kinectVideo, videoSize*sizeof(char), cudaMemcpyHostToDevice ));
+   checkCudaErrors(cudaMemcpy( d_kinectDepth, kinectDepth, depthSize*sizeof(char), cudaMemcpyHostToDevice ));
 }
 #endif // USE_KINECT
 
@@ -1854,7 +1860,7 @@ ________________________________________________________________________________
 */
 extern "C" void d2h_bitmap( char* bitmap, const SceneInfo sceneInfo )
 {
-   cutilSafeCall(cudaMemcpy( 
+   checkCudaErrors(cudaMemcpy( 
       bitmap, 
       d_bitmap, 
       sceneInfo.width*sceneInfo.height*gColorDepth*sizeof(char), 

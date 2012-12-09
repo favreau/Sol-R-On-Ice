@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef __E__Svn_CUDA_IceStreaming_trunk_IIceStreamer_h__
-#define __E__Svn_CUDA_IceStreaming_trunk_IIceStreamer_h__
+#ifndef __E__svn_GPGPU_CUDA_IceStreaming_trunk_IIceStreamer_h__
+#define __E__svn_GPGPU_CUDA_IceStreaming_trunk_IIceStreamer_h__
 
 #include <Ice/LocalObjectF.h>
 #include <Ice/ProxyF.h>
