@@ -6,6 +6,7 @@
     </Filter>
     <Filter Include="Generated Files">
       <UniqueIdentifier>{378f3eb9-060b-48fc-9de3-7b3f4f915c1c}</UniqueIdentifier>
+      <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Configuration Files">
       <UniqueIdentifier>{a0456991-bcbd-4568-a00d-41c1110d0486}</UniqueIdentifier>
@@ -20,13 +21,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IIceStreamer.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="IceStreamingClient.cfg">
       <Filter>Configuration Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IIceStreamer.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

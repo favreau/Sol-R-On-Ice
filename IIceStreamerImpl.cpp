@@ -5,8 +5,19 @@ IIceStreamerImpl::IIceStreamerImpl( CudaKernel* cudaKernel ) :
    cudaKernel_(cudaKernel)
 {
    SceneInfo sceneInfo = cudaKernel_->getSceneInfo();
-   int imageSize = sceneInfo.width*sceneInfo.height*gColorDepth;
-   bitmap_ = new char[imageSize];
+
+   int colorDepth(4);
+   /*
+   switch( sceneInfo.misc.x )
+   {
+   case 0: colorDepth=4; break;
+   case 1: colorDepth=3; break;
+   case 2: colorDepth=4; break;
+   }*/
+
+   imageSize_ = 512*512*4;//sceneInfo.width.x*sceneInfo.height.x*colorDepth;
+   bitmap_ = new char[imageSize_];
+   memset( bitmap_,0,imageSize_ );
    timer_ = 0;
 }
 
@@ -21,7 +32,7 @@ IIceStreamerImpl::~IIceStreamerImpl(void)
    ::Ice::Float dx, ::Ice::Float dy, ::Ice::Float dz, 
    ::Ice::Float ax, ::Ice::Float ay, ::Ice::Float az,
    const ::IceStreamer::SceneInfo& scInfo,
-   const ::IceStreamer::DepthOfFieldInfo& dofInfo, 
+   const ::IceStreamer::PostProcessingInfo& ppInfo, 
    const Ice::Current & )
 {
 	::IceStreamer::bytes result;
@@ -32,38 +43,41 @@ IIceStreamerImpl::~IIceStreamerImpl(void)
 
       // Scene Information
       SceneInfo sceneInfo;
-      sceneInfo.backgroundColor.x = scInfo.backgroundColorR;
-      sceneInfo.backgroundColor.y = scInfo.backgroundColorG;
-      sceneInfo.backgroundColor.z = scInfo.backgroundColorB;
-      sceneInfo.draft             = scInfo.draft;
-      sceneInfo.height            = scInfo.height;
-      sceneInfo.width             = scInfo.width;
-      sceneInfo.nbRayIterations   = scInfo.nbRayIterations;
-      sceneInfo.renderBoxes       = scInfo.renderBoxes;
-      sceneInfo.shadowIntensity   = scInfo.shadowIntensity;
-      sceneInfo.shadowsEnabled    = scInfo.shadowsEnabled;
-      sceneInfo.supportFor3DVision= scInfo.supportFor3DVision;
-      sceneInfo.transparentColor  = scInfo.transparentColor;
-      sceneInfo.viewDistance      = scInfo.viewDistance;
-      sceneInfo.width3DVision     = scInfo.width3DVision;
+      sceneInfo.width.x              = scInfo.width;
+      sceneInfo.height.x             = scInfo.height;
+      sceneInfo.shadowsEnabled.x     = scInfo.shadowsEnabled;
+      sceneInfo.nbRayIterations.x    = scInfo.nbRayIterations;
+      sceneInfo.transparentColor.x   = scInfo.transparentColor;
+      sceneInfo.viewDistance.x       = scInfo.viewDistance;
+      sceneInfo.shadowIntensity.x    = scInfo.shadowIntensity;
+      sceneInfo.width3DVision.x      = scInfo.width3DVision;
+      sceneInfo.backgroundColor.x    = scInfo.backgroundColorR;
+      sceneInfo.backgroundColor.y    = scInfo.backgroundColorG;
+      sceneInfo.backgroundColor.z    = scInfo.backgroundColorB;
+      sceneInfo.supportFor3DVision.x = scInfo.supportFor3DVision;
+      sceneInfo.renderBoxes.x        = scInfo.renderBoxes;
+      sceneInfo.pathTracingIteration.x = scInfo.pathTracingIteration;
+      sceneInfo.maxPathTracingIterations.x = scInfo.maxPathTracingIterations;
+      sceneInfo.misc.x               = scInfo.outputType;
+      sceneInfo.misc.y               = scInfo.timer;
+      sceneInfo.misc.z               = scInfo.fog;
+      sceneInfo.misc.w               = scInfo.isometric3D;
       cudaKernel_->setSceneInfo(sceneInfo);
 
-      // Depth of field effect
-      DepthOfFieldInfo deathOfFieldInfo;
-      deathOfFieldInfo.enabled      = dofInfo.enabled;
-      deathOfFieldInfo.iterations   = dofInfo.iterations;
-      deathOfFieldInfo.pointOfFocus = dofInfo.pointOfFocus;
-      deathOfFieldInfo.strength     = dofInfo.strength;
-      cudaKernel_->setDepthOfFieldInfo(deathOfFieldInfo);
+      // PostProcessing effect
+      PostProcessingInfo postProcessingInfo;
+      postProcessingInfo.type.x   = ppInfo.type;
+      postProcessingInfo.param1.x = ppInfo.param1;
+      postProcessingInfo.param2.x = ppInfo.param2;
+      postProcessingInfo.param3.x = ppInfo.param3;
+      cudaKernel_->setPostProcessingInfo(postProcessingInfo);
 
       cudaKernel_->setCamera(eye, direction, angle);
-      cudaKernel_->render( bitmap_, timer_ );
+      cudaKernel_->render_begin( timer_ );
+      cudaKernel_->render_end( bitmap_ );
 
-      int imageSize = sceneInfo.width*sceneInfo.height*gColorDepth;
-	   for( int i(0); i<imageSize; ++i)
-	   {
-		  result.push_back(bitmap_[i]);
-	   }
+	   for( int i(0); i<imageSize_; ++i) 
+         result.push_back(bitmap_[i]);
 	}
 	catch( ... )
 	{
@@ -78,19 +92,22 @@ IIceStreamerImpl::~IIceStreamerImpl(void)
    // Scene Information
    SceneInfo scInfo = cudaKernel_->getSceneInfo();
    ::IceStreamer::SceneInfo sceneInfo;
+   sceneInfo.outputType        = scInfo.misc.x;
+   sceneInfo.timer             = scInfo.misc.y;
+   sceneInfo.fog               = scInfo.misc.z;
+   sceneInfo.isometric3D       = scInfo.misc.w;
    sceneInfo.backgroundColorR  = scInfo.backgroundColor.x;
    sceneInfo.backgroundColorG  = scInfo.backgroundColor.y;
    sceneInfo.backgroundColorB  = scInfo.backgroundColor.z;
-   sceneInfo.draft             = scInfo.draft;
-   sceneInfo.height            = scInfo.height;
-   sceneInfo.width             = scInfo.width;
-   sceneInfo.nbRayIterations   = scInfo.nbRayIterations;
-   sceneInfo.renderBoxes       = scInfo.renderBoxes;
-   sceneInfo.shadowIntensity   = scInfo.shadowIntensity;
-   sceneInfo.shadowsEnabled    = scInfo.shadowsEnabled;
-   sceneInfo.supportFor3DVision= scInfo.supportFor3DVision;
-   sceneInfo.transparentColor  = scInfo.transparentColor;
-   sceneInfo.viewDistance      = scInfo.viewDistance;
-   sceneInfo.width3DVision     = scInfo.width3DVision;
+   sceneInfo.height            = scInfo.height.x;
+   sceneInfo.width             = scInfo.width.x;
+   sceneInfo.nbRayIterations   = scInfo.nbRayIterations.x;
+   sceneInfo.renderBoxes       = scInfo.renderBoxes.x;
+   sceneInfo.shadowIntensity   = scInfo.shadowIntensity.x;
+   sceneInfo.shadowsEnabled    = scInfo.shadowsEnabled.x;
+   sceneInfo.supportFor3DVision= scInfo.supportFor3DVision.x;
+   sceneInfo.transparentColor  = scInfo.transparentColor.x;
+   sceneInfo.viewDistance      = scInfo.viewDistance.x;
+   sceneInfo.width3DVision     = scInfo.width3DVision.x;
    return sceneInfo;
 }

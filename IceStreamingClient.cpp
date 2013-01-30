@@ -39,9 +39,9 @@
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
+#include <vector_types.h>
 
 // Project
-#include "CudaKernel.h"
 #include "IIceStreamer.h"
 
 // Ice
@@ -64,7 +64,34 @@ unsigned int gWindowDepth  = 4;
 // ----------------------------------------------------------------------
 // Scene
 // ----------------------------------------------------------------------
-::IceStreamer::SceneInfo gSceneInfo = { gWindowWidth, gWindowHeight, 1.f, 0.f, true, 50000.f, 0.9f, 3, 0.f, 0.f, 0.f, false, 0.f, false };
+float4 gBkColor = {1.f, 1.f, 1.f, 0.f};
+int   gTotalPathTracingIterations = 1;
+int4  misc = {::IceStreamer::otOpenGL,0,1,1};
+
+::IceStreamer::SceneInfo gSceneInfo = 
+{ 
+   gWindowWidth,               // width
+   gWindowHeight,              // height
+   true,                       // shadowsEnabled
+   5,                          // nbRayIterations
+   3.f,                        // transparentColor
+   20000.f,                    // viewDistance
+   0.9f,                       // shadowIntensity
+   20.f,                       // width3DVision
+   gBkColor.x,                 // backgroundColor
+   gBkColor.y,                 // backgroundColor
+   gBkColor.z,                 // backgroundColor
+   gBkColor.w,                 // backgroundColor
+   0,                          // supportFor3DVision
+   0,                          // renderBoxes
+   0,                          // pathTracingIteration
+   gTotalPathTracingIterations,// maxPathTracingIterations
+   0,                          // outputType
+   0,                          // Timer
+   0,                          // Fog
+   0                           // Isometric3D
+};
+
 bool gRefreshNeeded(true);
 
 bool gAnimate(false);
@@ -87,7 +114,7 @@ float4 gSkeletonPosition       = { 0.f, 0.f, 0.f, 0.f };
 #endif // USE_KINECT
 
 // Post processing
-::IceStreamer::DepthOfFieldInfo gDepthOfField = { true, 4000.f, 40.f, 100 };
+::IceStreamer::PostProcessingInfo gPostProcessingInfo = { 0, 4000.f, 40.f, 100 };
 
 // --------------------------------------------------------------------------------
 // OpenGL
@@ -120,9 +147,6 @@ bool bNoPrompt = false;
 int mouse_old_x, mouse_old_y;
 int mouse_buttons = 0;
 float rotate_x = 0.0, rotate_y = 0.0;
-
-// Raytracer Module
-unsigned int* uiOutput = NULL;
 
 /*
 ________________________________________________________________________________
@@ -180,64 +204,15 @@ void cleanup()
 {
 }
 
-#if USE_KINECT
-/*
-________________________________________________________________________________
-
-animateSkeleton
-________________________________________________________________________________
-*/
-void animateSkeleton()
-{
-   long hr = gpuKernel->updateSkeletons(
-      gSkeletonPrimitiveIndex,
-      gSkeletonBoxID,
-      gSkeletonPosition,              // Position
-      gSkeletonSize,                  // Skeleton size
-      gSkeletonThickness,         2,  // Default material
-      gSkeletonThickness*2.0f,    1,  // Head size and material
-      gSkeletonThickness*1.5f,    10, // Hands size and material
-      gSkeletonThickness*1.8f,    10  // Feet size and material
-      );
-   if( hr == S_OK )
-   {
-      float4 position;
-      const float size = 1500.f;
-
-      // Head
-      if( gpuKernel->getSkeletonPosition(NUI_SKELETON_POSITION_HEAD, position) )
-      {
-
-         gViewAngles.y = -5.f*asin( 
-            position.x - 
-            gPreviewViewPos.x );
-         gViewAngles.x = 5.f*asin( 
-            position.y - 
-            gPreviewViewPos.y );
-
-         gViewPos.z -= 7000.f*(position.z - gPreviewViewPos.z);
-         gViewDir.z -= 7000.f*(position.z - gPreviewViewPos.z);
-
-         gPreviewViewPos.x = position.x;
-         gPreviewViewPos.y = position.y;
-         gPreviewViewPos.z = position.z;
-
-         gpuKernel->setCamera( gViewPos, gViewDir, gViewAngles );
-      }
-   }
-}
-#endif // USE_KINECT
-
 /*
 --------------------------------------------------------------------------------
-setup the window and assign callbacks
+the window and assign callbacks
 --------------------------------------------------------------------------------
 */
 void initgl( int argc, char **argv )
 {
 	size_t len(gWindowWidth*gWindowHeight*gWindowDepth);
 	gUbImage = new GLubyte[len];
-	memset( gUbImage, 0, len ); 
 
 	glutInit(&argc, (char**)argv);
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
@@ -271,7 +246,11 @@ void TexFunc(void)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, gWindowWidth/static_cast<float>(gSceneInfo.draft), gWindowHeight/static_cast<float>(gSceneInfo.draft), 0, GL_RGBA, GL_UNSIGNED_BYTE, gUbImage);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 
+      gWindowWidth, 
+      gWindowHeight, 
+      0, GL_RGBA, GL_UNSIGNED_BYTE, 
+      gUbImage);
 
 	glBegin(GL_QUADS);
 	glTexCoord2f(1.0, 1.0);
@@ -340,10 +319,6 @@ void display()
 
 void timerEvent(int value)
 {
-#ifdef USE_KINECT
-   animateSkeleton();
-#endif // USE_KINECT
-
    if( gRefreshNeeded )
    {
       try 
@@ -352,11 +327,10 @@ void timerEvent(int value)
             gViewPos.x, gViewPos.y, gViewPos.z, 
             gViewDir.x, gViewDir.y, gViewDir.z, 
             gViewAngles.x, gViewAngles.y, gViewAngles.z,
-            gSceneInfo, gDepthOfField );
+            gSceneInfo, gPostProcessingInfo );
+         
          for( unsigned int i(0); i<bitmap.size(); ++i) 
-         {
             gUbImage[i] = bitmap[i];
-         }
       }
       catch(const Ice::Exception& e)
       {
@@ -396,16 +370,6 @@ void keyboard(unsigned char key, int x, int y)
 			glutFullScreen();
 			break;
 		}
-   case '/':
-      {
-         gSceneInfo.draft += 0.1f;
-         break;
-      }
-   case '*':
-      {
-         gSceneInfo.draft -= 0.1f;
-         break;
-      }
    case '+':
       {
          gSceneInfo.nbRayIterations++;
@@ -450,21 +414,6 @@ void keyboard(unsigned char key, int x, int y)
    case 's':
       {
          gSceneInfo.shadowsEnabled = !gSceneInfo.shadowsEnabled;
-         break;
-      }
-   case 'd':
-      {
-         gDepthOfField.enabled = !gDepthOfField.enabled;
-         break;
-      }
-   case '1':
-      {
-         gDepthOfField.strength += 10.f;
-         break;
-      }
-   case '2':
-      {
-         gDepthOfField.strength -= 10.f;
          break;
       }
    case '3':
@@ -552,7 +501,7 @@ void motion(int x, int y)
       else
       {
          // Depth of field focus
-         gDepthOfField.pointOfFocus += 4*(mouse_old_y-y);
+         gPostProcessingInfo.param1 += 4*(mouse_old_y-y);
       }
       gRefreshNeeded = true;
 		break;

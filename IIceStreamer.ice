@@ -3,32 +3,53 @@
 
 module IceStreamer
 {
+   // 3D vision type
+   enum VisionType
+   {
+      vtStandard,
+      vtAnaglyph,
+      vt3DVision
+   };
+
+   enum OutputType
+   {
+      otOpenGL,
+      otDelphi,
+      otJPEG
+   };
+
    // Scene information
    struct SceneInfo
    {
       int    width;
       int    height;
-      float  draft;
+      int    shadowsEnabled;
+      int    nbRayIterations;
       float  transparentColor;
-      bool   shadowsEnabled;
       float  viewDistance;
       float  shadowIntensity;
-      int    nbRayIterations;
+      float  width3DVision;
       float  backgroundColorR;
       float  backgroundColorG;
       float  backgroundColorB;
-      bool   supportFor3DVision;
-      float  width3DVision;
-      bool   renderBoxes;
+      float  backgroundColorA;
+      int    supportFor3DVision;
+      int    renderBoxes;
+      int    pathTracingIteration;
+      int    maxPathTracingIterations;
+      int    outputType; 
+      int    timer;
+      int    fog; // (0: disabled, 1: enabled)
+      int    isometric3D;
    };
 
    // Post processing effect
-   struct DepthOfFieldInfo
+   struct PostProcessingInfo
    {
-      bool   enabled;
-      float  pointOfFocus;
-      float  strength;
-      int    iterations;
+      int   type;
+      float param1; // pointOfFocus;
+      float param2; // strength;
+      int   param3; // iterations;
    };
 
    sequence<byte> bytes;
@@ -40,7 +61,7 @@ module IceStreamer
          float dx, float dy, float dz, 
          float ax, float ay, float az,
          SceneInfo scInfo,
-         DepthOfFieldInfo dofInfo);
+         PostProcessingInfo ppInfo);
 
       SceneInfo getSceneInfo();
    };

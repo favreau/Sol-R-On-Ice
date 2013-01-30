@@ -13,12 +13,6 @@
     <ClCompile Include="IIceStreamer.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="CudaKernel.cpp">
-      <Filter>Cuda</Filter>
-    </ClCompile>
-    <ClCompile Include="PDBReader.cpp">
-      <Filter>PDB</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Trace.h">
@@ -33,21 +27,6 @@
     <ClInclude Include="IIceStreamer.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="CudaDataTypes.h">
-      <Filter>Cuda</Filter>
-    </ClInclude>
-    <ClInclude Include="CudaKernel.h">
-      <Filter>Cuda</Filter>
-    </ClInclude>
-    <ClInclude Include="CudaRayTracer.h">
-      <Filter>Cuda</Filter>
-    </ClInclude>
-    <ClInclude Include="Consts.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PDBReader.h">
-      <Filter>PDB</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="IIceStreamer.ice">
@@ -58,9 +37,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Cuda">
-      <UniqueIdentifier>{ece801e0-275d-4bf2-bfed-95edbdee4a42}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{64530b78-922b-4c35-9951-895ca152bdfb}</UniqueIdentifier>
     </Filter>
@@ -73,13 +49,5 @@
     <Filter Include="Configuration Files">
       <UniqueIdentifier>{178ed84c-8b2d-4111-92aa-ddd9155d45db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PDB">
-      <UniqueIdentifier>{5664daef-4a00-455f-9505-03c060b97c6d}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <CudaCompile Include="CudaRayTracer.cu">
-      <Filter>Cuda</Filter>
-    </CudaCompile>
   </ItemGroup>
 </Project>

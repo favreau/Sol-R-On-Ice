@@ -49,11 +49,6 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <UseOfMfc>Dynamic</UseOfMfc>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -82,10 +77,6 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
-  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
@@ -105,42 +96,48 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|x64'">
     <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
   </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'">
+    <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
+    <OutDir>E:\Git\ProteinVisualizer\windows\x64</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'">
-    <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>E:\Git\ProteinVisualizer\windows\win32</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
+    <OutDir>E:\Git\ProteinVisualizer\windows\x64</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>E:\Git\ProteinVisualizer\windows\win32</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Kinect|x64'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
+    <OutDir>E:\Git\ProteinVisualizer\windows\x64</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Kinect|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>E:\Git\ProteinVisualizer\windows\win32</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'">
+    <OutDir>E:\Git\ProteinVisualizer\windows\win32</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|x64'">
+    <OutDir>E:\Git\ProteinVisualizer\windows\x64</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -150,12 +147,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>cudart.lib;glew64.lib;Iced.lib;IceUtild.lib</AdditionalDependencies>
+      <AdditionalDependencies>RayTracingEngine_Cuda_d.lib;cudart.lib;glew64.lib;Iced.lib;IceUtild.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <AdditionalLibraryDirectories>$(OutDir);$(IceHome)\lib\vc100\x64</AdditionalLibraryDirectories>
@@ -174,7 +171,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -191,29 +188,6 @@
       <CodeGeneration>compute_13,sm_13</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>USE_KINECT;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>cudart.lib;OpenCL.lib;glew32.lib;OpenCLRaytracerModule.lib;Iced.lib;IceUtild.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(IceHome)\lib\vc100;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-    <CudaCompile />
-    <CudaCompile>
-      <CodeGeneration>compute_13,sm_13</CodeGeneration>
-      <MaxRegCount>
-      </MaxRegCount>
-    </CudaCompile>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -222,14 +196,14 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>cudart.lib;glew64.lib;Ice.lib;IceUtil.lib</AdditionalDependencies>
+      <AdditionalDependencies>RayTracingEngine_Cuda.lib;cudart.lib;glew64.lib;Ice.lib;IceUtil.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir);$(IceHome)\lib\vc100\x64</AdditionalLibraryDirectories>
     </Link>
     <CudaCompile>
@@ -245,7 +219,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -269,7 +243,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_KINECT;USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -293,7 +267,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_KINECT;USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -316,34 +290,32 @@
       <AdditionalDependencies>Ice.lib;IceUtil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>.;$(IceHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(IceHome)\lib\vc100;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CudaKernel.cpp" />
     <ClCompile Include="IceStreamingServer.cpp" />
     <ClCompile Include="IceStreamProducer.cpp" />
     <ClCompile Include="IIceStreamer.cpp" />
     <ClCompile Include="IIceStreamerImpl.cpp" />
-    <ClCompile Include="PDBReader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Consts.h" />
-    <ClInclude Include="CudaDataTypes.h" />
-    <ClInclude Include="CudaKernel.h" />
-    <ClInclude Include="CudaRayTracer.h" />
     <ClInclude Include="IceStreamProducer.h" />
     <ClInclude Include="IIceStreamer.h" />
     <ClInclude Include="IIceStreamerImpl.h" />
-    <ClInclude Include="PDBReader.h" />
     <ClInclude Include="Trace.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IceStreamingServer.cfg" />
     <None Include="IIceStreamer.ice" />
-  </ItemGroup>
-  <ItemGroup>
-    <CudaCompile Include="CudaRayTracer.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -23,10 +23,10 @@
     <ClCompile Include="IIceStreamer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IIceStreamer.h" />
+    <None Include="IceStreamingClient.cfg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="IceStreamingClient.cfg" />
+    <ClInclude Include="IIceStreamer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{855E77E0-8183-41E2-8148-6272A74174D6}</ProjectGuid>
@@ -74,15 +74,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>E:\Git\ProteinVisualizer\windows\win32</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>E:\Git\ProteinVisualizer\windows\x64</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>E:\Git\ProteinVisualizer\windows\win32</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>E:\Git\ProteinVisualizer\windows\x64</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
