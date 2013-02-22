@@ -66,7 +66,6 @@ unsigned int gWindowDepth  = 4;
 // ----------------------------------------------------------------------
 float4 gBkColor = {1.f, 1.f, 1.f, 0.f};
 int   gTotalPathTracingIterations = 1;
-int4  misc = {::IceStreamer::otOpenGL,0,1,1};
 
 ::IceStreamer::SceneInfo gSceneInfo = 
 { 
@@ -86,10 +85,10 @@ int4  misc = {::IceStreamer::otOpenGL,0,1,1};
    0,                          // renderBoxes
    0,                          // pathTracingIteration
    gTotalPathTracingIterations,// maxPathTracingIterations
-   0,                          // outputType
+   ::IceStreamer::otOpenGL,    // outputType
    0,                          // Timer
-   0,                          // Fog
-   0                           // Isometric3D
+   1,                          // Fog
+   1                           // Isometric3D
 };
 
 bool gRefreshNeeded(true);
@@ -123,7 +122,7 @@ GLubyte* gUbImage;
 int gTimebase(0);
 int gFrame(0);
 int gFPS(0);
-bool gHelp(true);
+bool gHelp(false);
 
 // GL functionality
 void initgl(int argc, char** argv);
@@ -215,18 +214,18 @@ void initgl( int argc, char **argv )
 	gUbImage = new GLubyte[len];
 
 	glutInit(&argc, (char**)argv);
-	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
-
-	glutInitWindowPosition (glutGet(GLUT_SCREEN_WIDTH)/2 - gWindowWidth/2, glutGet(GLUT_SCREEN_HEIGHT)/2 - gWindowHeight/2);
+	glutInitDisplayMode( GLUT_RGB | GLUT_DOUBLE );
+	glutInitWindowPosition(glutGet(GLUT_SCREEN_WIDTH)/2 - gWindowWidth/2, glutGet(GLUT_SCREEN_HEIGHT)/2 - gWindowHeight/2);
 
 	glutInitWindowSize(gWindowWidth, gWindowHeight);
-	glutCreateWindow("Protein Visualizer");
+	glutCreateWindow("Ray-tracer Client");
 
 	glutDisplayFunc(display);       // register GLUT callback functions
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
-	glutTimerFunc(REFRESH_DELAY,timerEvent,REFRESH_DELAY);
+	glutTimerFunc(REFRESH_DELAY,timerEvent,1);
+
 	return;
 }
 
@@ -246,11 +245,7 @@ void TexFunc(void)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 
-      gWindowWidth, 
-      gWindowHeight, 
-      0, GL_RGBA, GL_UNSIGNED_BYTE, 
-      gUbImage);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, gWindowWidth, gWindowHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, gUbImage);
 
 	glBegin(GL_QUADS);
 	glTexCoord2f(1.0, 1.0);
@@ -310,7 +305,7 @@ void display()
       strcat(tmp, "Escape: Exit application\n");
       RenderString(-0.9f, 0.9f, GLUT_BITMAP_HELVETICA_10, tmp, textColor );
    }
-   RenderString(0.f, -0.9f, GLUT_BITMAP_HELVETICA_10, "Copyright(C) Cyrille Favreau - http://cudaopencl.blogspot.com", textColor );
+   RenderString(-0.9f, -0.9f, GLUT_BITMAP_HELVETICA_10, "Copyright(C) Cyrille Favreau - http://cudaopencl.blogspot.com", textColor );
 
 	glFlush();
 
@@ -505,7 +500,7 @@ void motion(int x, int y)
       }
       gRefreshNeeded = true;
 		break;
-	case 2:
+	case 4:
 	{
 		// Rotates the scene around X and Y axis
 		gViewAngles.y = -asin( (mouse_old_x-x) / 100.f );
@@ -513,7 +508,7 @@ void motion(int x, int y)
       gRefreshNeeded = true;
       break;
 	}
-	case 4:
+	case 2:
 		// Move gViewPos postion along X and Y axis
 		gViewPos.x += (mouse_old_x-x);
 		gViewPos.y += (mouse_old_y-y);

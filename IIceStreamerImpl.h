@@ -27,8 +27,4 @@ public:
 private:
    
    CudaKernel* cudaKernel_;
-   char*       bitmap_;
-   float       timer_;
-   int         imageSize_;
-
 };

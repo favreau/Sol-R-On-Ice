@@ -27,7 +27,7 @@ float4 gViewAngles = { 0.f, 0.f, 0.f, 0.f };
 
 SceneInfo gSceneInfo = 
 { 
-   512,                        // width
+   768,                        // width
    512,                        // height
    true,                       // shadowsEnabled
    5,                          // nbRayIterations
@@ -86,7 +86,7 @@ int IceStreamProducer::run( int argc, char* argv[] )
 {
    try
    {
-      cudaKernel_ = new CudaKernel(false, true);
+      cudaKernel_ = new CudaKernel(false);
       gSceneInfo.pathTracingIteration.x = 0;
       cudaKernel_->setSceneInfo( gSceneInfo );
       cudaKernel_->initBuffers();

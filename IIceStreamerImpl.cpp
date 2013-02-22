@@ -5,26 +5,11 @@ IIceStreamerImpl::IIceStreamerImpl( CudaKernel* cudaKernel ) :
    cudaKernel_(cudaKernel)
 {
    SceneInfo sceneInfo = cudaKernel_->getSceneInfo();
-
-   int colorDepth(4);
-   /*
-   switch( sceneInfo.misc.x )
-   {
-   case 0: colorDepth=4; break;
-   case 1: colorDepth=3; break;
-   case 2: colorDepth=4; break;
-   }*/
-
-   imageSize_ = 512*512*4;//sceneInfo.width.x*sceneInfo.height.x*colorDepth;
-   bitmap_ = new char[imageSize_];
-   memset( bitmap_,0,imageSize_ );
-   timer_ = 0;
 }
 
 
 IIceStreamerImpl::~IIceStreamerImpl(void)
 {
-   delete bitmap_;
 }
 
 ::IceStreamer::bytes IIceStreamerImpl::getBitmap( 
@@ -36,7 +21,20 @@ IIceStreamerImpl::~IIceStreamerImpl(void)
    const Ice::Current & )
 {
 	::IceStreamer::bytes result;
-	try {
+	try 
+   {
+      int colorDepth;
+      switch( scInfo.outputType )
+      {
+      case ::IceStreamer::otOpenGL:
+      case ::IceStreamer::otJPEG:
+         colorDepth = 4;
+      default:
+         colorDepth = 3;
+      }
+      int imageSize = scInfo.width*scInfo.height*colorDepth;
+      char* bitmap = new char[imageSize];
+
 	   float4 eye = {ex, ey, ez, 0.f};
 	   float4 direction = {dx, dy, dz, 0.f};
 	   float4 angle = {ax, ay, az, 0.f};
@@ -56,7 +54,7 @@ IIceStreamerImpl::~IIceStreamerImpl(void)
       sceneInfo.backgroundColor.z    = scInfo.backgroundColorB;
       sceneInfo.supportFor3DVision.x = scInfo.supportFor3DVision;
       sceneInfo.renderBoxes.x        = scInfo.renderBoxes;
-      sceneInfo.pathTracingIteration.x = scInfo.pathTracingIteration;
+      sceneInfo.pathTracingIteration.x = 0;//scInfo.pathTracingIteration;
       sceneInfo.maxPathTracingIterations.x = scInfo.maxPathTracingIterations;
       sceneInfo.misc.x               = scInfo.outputType;
       sceneInfo.misc.y               = scInfo.timer;
@@ -73,11 +71,13 @@ IIceStreamerImpl::~IIceStreamerImpl(void)
       cudaKernel_->setPostProcessingInfo(postProcessingInfo);
 
       cudaKernel_->setCamera(eye, direction, angle);
-      cudaKernel_->render_begin( timer_ );
-      cudaKernel_->render_end( bitmap_ );
+      cudaKernel_->render_begin( 0 );
+      cudaKernel_->render_end( bitmap );
 
-	   for( int i(0); i<imageSize_; ++i) 
-         result.push_back(bitmap_[i]);
+	   for( int i(0); i<imageSize; ++i) 
+         result.push_back( bitmap[i]);
+
+      delete [] bitmap;
 	}
 	catch( ... )
 	{
