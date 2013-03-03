@@ -98,16 +98,16 @@ int IceStreamProducer::run( int argc, char* argv[] )
 
       // Lamp
       int nbPrimitives = cudaKernel_->addPrimitive( ptSphere );
-      cudaKernel_->setPrimitive( nbPrimitives, 0, 50000.f, 50000.f, -50000.f, 5000.f, 0.f, 0.f, 99, 1 , 1);
+      cudaKernel_->setPrimitive( nbPrimitives, 50000.f, 50000.f, -50000.f, 5000.f, 0.f, 0.f, 99, 1 , 1);
 
       // PDB
       PDBReader prbReader;
       std::string fileName("./1BNA.pdb");
       float4 size = prbReader.loadAtomsFromFile(
-         fileName, *cudaKernel_, 10, gNbMaxBoxes,
+         fileName, *cudaKernel_,
          static_cast<GeometryType>(gGeometryType), 
-         gDefaultAtomSize, gDefaultStickSize, gAtomMaterialType );
-      gNbBoxes = cudaKernel_->compactBoxes();
+         gDefaultAtomSize, gDefaultStickSize, gAtomMaterialType, 50.f );
+      gNbBoxes = cudaKernel_->compactBoxes(true);
 
       producerAdapter_ = communicator()->createObjectAdapter("IceStreamerAdaptor");
 

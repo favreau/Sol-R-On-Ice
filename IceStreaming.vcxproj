@@ -103,7 +103,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
-    <OutDir>E:\Git\ProteinVisualizer\windows\x64</OutDir>
+    <OutDir>E:\Git\ProteinVisualizer\windows\x64\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;$(IncludePath)</IncludePath>
@@ -114,7 +114,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
-    <OutDir>E:\Git\ProteinVisualizer\windows\x64</OutDir>
+    <OutDir>E:\Git\ProteinVisualizer\windows\x64\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
@@ -125,7 +125,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Kinect|x64'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
-    <OutDir>E:\Git\ProteinVisualizer\windows\x64</OutDir>
+    <OutDir>E:\Git\ProteinVisualizer\windows\x64\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Kinect|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
@@ -137,7 +137,7 @@
     <OutDir>E:\Git\ProteinVisualizer\windows\win32</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|x64'">
-    <OutDir>E:\Git\ProteinVisualizer\windows\x64</OutDir>
+    <OutDir>E:\Git\ProteinVisualizer\windows\x64\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -147,7 +147,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\trunk;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -196,7 +196,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\trunk;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -243,7 +243,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_KINECT;USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\trunk;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -290,7 +290,7 @@
       <AdditionalDependencies>Ice.lib;IceUtil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\trunk;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'">
