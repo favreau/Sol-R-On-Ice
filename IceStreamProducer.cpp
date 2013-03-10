@@ -102,7 +102,7 @@ int IceStreamProducer::run( int argc, char* argv[] )
 
       // PDB
       PDBReader prbReader;
-      std::string fileName("./1BNA.pdb");
+      std::string fileName("./pdb/1BNA.pdb");
       float4 size = prbReader.loadAtomsFromFile(
          fileName, *cudaKernel_,
          static_cast<GeometryType>(gGeometryType), 
