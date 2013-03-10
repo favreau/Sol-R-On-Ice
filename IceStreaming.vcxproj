@@ -171,7 +171,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\trunk;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -219,7 +219,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\trunk;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -267,7 +267,7 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>USE_KINECT;USE_OPENGL;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\trunk;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -295,7 +295,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\tags\version-00.02.00;$(IceHome)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\trunk;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(IceHome)\lib\vc100;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
