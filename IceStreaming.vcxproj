@@ -66,44 +66,11 @@
     <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 5.0.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Kinect|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Kinect|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|x64'">
-    <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'">
-    <Import Project="$(ALLUSERSPROFILE)\ZeroC\ice.props" />
-  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
-    <OutDir>E:\Git\ProteinVisualizer\windows\x64\</OutDir>
+    <OutDir>$(KITTING)\bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;$(IncludePath)</IncludePath>
@@ -114,7 +81,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
-    <OutDir>E:\Git\ProteinVisualizer\windows\x64\</OutDir>
+    <OutDir>$(KITTING)\bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\inc;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\inc;C:\local\nVidia\win32\NVIDIA GPU Computing Toolkit\CUDA\v4.0\include\;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\inc;$(IncludePath)</IncludePath>
@@ -132,9 +99,6 @@
     <LibraryPath>C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\shared\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\OpenCL\common\lib\Win32;C:\local\nVidia\win32\NVIDIA GPU Computing SDK 4.0\C\common\lib\win32;$(LibraryPath)</LibraryPath>
     <OutDir>E:\Git\ProteinVisualizer\windows\win32</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'">
-    <OutDir>E:\Git\ProteinVisualizer\windows\win32</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|x64'">
     <OutDir>E:\Git\ProteinVisualizer\windows\x64\</OutDir>
@@ -293,14 +257,6 @@
       <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\trunk;$(IceHome)\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Kinect|Win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>.;..\..\RaytracingEngine\trunk;$(IceHome)\include</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <AdditionalLibraryDirectories>$(IceHome)\lib\vc100;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="IceStreamingServer.cpp" />
     <ClCompile Include="IceStreamProducer.cpp" />
@@ -318,9 +274,6 @@
     <None Include="IIceStreamer.ice" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 5.0.targets" />
-  </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties ZerocIce_Enabled="True" ZerocIce_Prefix="True" />

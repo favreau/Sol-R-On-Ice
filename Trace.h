@@ -1,11 +1,3 @@
-/*
-* Copyright (C) 2010 by Lombard Odier Darier Hentsch et Cie, Geneva, Switzerland.
-* ALL RIGHTS RESERVED.
-*
-* This software is subject to copyright protection under the laws of Switzerland
-* and other countries.
-*/
-
 #pragma once
 
 // System
